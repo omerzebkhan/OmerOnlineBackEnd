@@ -47,8 +47,8 @@ require("./App/routes/online.routes")(app);
 ////////////////////////////////////////
 //////////////////AUTH//////////////////
 ////////////////////////////////////////
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
+require('./App/routes/auth.routes')(app);
+require('./App/routes/user.routes')(app);
 
 // set port, listen for requests
 //const PORT = process.env.PORT || 8080;
