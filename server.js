@@ -6,7 +6,7 @@ const app = express();
 global.__basedir = __dirname;
 
 
-const db = require("./app/models");
+const db = require("./App/models");
 db.sequelize.sync();
 
 // db.sequelize.sync({ force: true }).then(() => {
@@ -16,7 +16,6 @@ db.sequelize.sync();
 var corsOptions = {
   origin: "http://localhost:8081"
 };
-
 app.use(cors(corsOptions));
  
 // parse requests of content-type - application/json
