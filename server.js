@@ -15,7 +15,7 @@ db.sequelize.sync();
 
 var corsOptions = {
  // origin: ["http://localhost:8081","https://protected-gorge-40768.herokuapp.com/"]
- origin: "https://protected-gorge-40768.herokuapp.com/"
+ origin: "https://protected-gorge-40768.herokuapp.com"
 };
 app.use(cors(corsOptions));
  
