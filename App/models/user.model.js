@@ -15,9 +15,6 @@ module.exports = (sequelize, Sequelize) => {
         ph: {
             type: Sequelize.STRING
         },
-        role: {
-            type: Sequelize.STRING
-        },
         description: {
             type: Sequelize.STRING
         },
