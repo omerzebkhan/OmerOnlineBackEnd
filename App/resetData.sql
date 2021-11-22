@@ -114,7 +114,7 @@ ALTER TABLE public."roleAccess"
 	
 	
 INSERT INTO public."accesses"
-	VALUES (5, 6, 'Add Brand', true, '2021-09-07 20:11:44.559+03','2021-09-07 20:11:44.559+03');
+	VALUES (22, 6, 'Add Expense', true, '2021-09-07 20:11:44.559+03','2021-09-07 20:11:44.559+03');
 	
 	
 	select * from user_roles_id_seq
@@ -122,5 +122,29 @@ INSERT INTO public."accesses"
 	select currval('user_roles_id_seq')
 	
 	select nextval('user_roles_id_seq')
+	
+	
+	
+	
+-------react dynamic element attributes------
+{...selectedUser ? 
+                            {value:name,onChange:handleChange} :
+                            {value:name,onChange:handleChange} 
+                       
+                        }
+	
+
+
+
+
+--------------------------------------------psql commands-------------------------------------------
+-------------------Create Default Roles--------------------
+INSERT INTO public.roles(id, name, "createdAt", "updatedAt")VALUES (1, 'admin', , ?);
+	
+
+
+INSERT INTO public.users(
+	id, name, address, mobile, email, ph,description, totalamount, outstanding, comments, "createdAt", "updatedAt", username, password)
+	VALUES (1,'omerzeb','kuwait',99111074,'omerzeb@hotmail.com', 99111074, 'Admin user', 0, 0, '', '2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03','omerzeb', '$2a$08$Wp4LbTwuxOIfwxf9mrGpROn0Dgf1IX2VvsVV2PXRMejc858DbnmUC');
 	
 	
