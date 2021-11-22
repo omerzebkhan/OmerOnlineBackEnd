@@ -139,12 +139,40 @@ INSERT INTO public."accesses"
 
 --------------------------------------------psql commands-------------------------------------------
 -------------------Create Default Roles--------------------
-INSERT INTO public.roles(id, name, "createdAt", "updatedAt")VALUES (1, 'admin', , ?);
-	
+INSERT INTO roles(id, name, "createdAt", "updatedAt")VALUES (1, 'admin','2021-09-21 21:10:49.882+03', '2021-09-21 21:10:49.882+03');
+INSERT INTO roles(id, name, "createdAt", "updatedAt")VALUES (2, 'saleAgent','2021-09-21 21:10:49.882+03', '2021-09-21 21:10:49.882+03');	
+INSERT INTO roles(id, name, "createdAt", "updatedAt")VALUES (3, 'purchaseAgent','2021-09-21 21:10:49.882+03', '2021-09-21 21:10:49.882+03');
+INSERT INTO roles(id, name, "createdAt", "updatedAt")VALUES (4, 'customer','2021-09-21 21:10:49.882+03', '2021-09-21 21:10:49.882+03');
+INSERT INTO roles(id, name, "createdAt", "updatedAt")VALUES (5, 'onlineCustomer','2021-09-21 21:10:49.882+03', '2021-09-21 21:10:49.882+03');
+INSERT INTO roles(id, name, "createdAt", "updatedAt")VALUES (6, 'supplier','2021-09-21 21:10:49.882+03', '2021-09-21 21:10:49.882+03');
 
-
-INSERT INTO public.users(
+-------------------Create users with default password 123456789------------------------------------
+INSERT INTO users(
 	id, name, address, mobile, email, ph,description, totalamount, outstanding, comments, "createdAt", "updatedAt", username, password)
 	VALUES (1,'omerzeb','kuwait',99111074,'omerzeb@hotmail.com', 99111074, 'Admin user', 0, 0, '', '2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03','omerzeb', '$2a$08$Wp4LbTwuxOIfwxf9mrGpROn0Dgf1IX2VvsVV2PXRMejc858DbnmUC');
 	
+--------------------Assign role to the created user --------------------------------------
+INSERT INTO user_roles(id, "roleId", "userId", "createdAt", "updatedAt") VALUES (1, 1, 1,'2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03');
+
+----------------------------Assign all rights to the user -----------------------------
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (1, 1,'Search item','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (2, 1,'Add item','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (3, 1,'Add Brand','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (4, 1,'Search Brand','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (5, 1,'Add Category','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (6, 1,'Add subCategory','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (7, 1,'Search subCategory','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (8, 1,'Purchase Invoice','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (9, 1,'Move Stock','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (10, 1,'Sale Invoice','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');"
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (11, 1,'Sale Return','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (12, 1,'Pricing','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (13, 1,'Account Receivable','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (14, 1,'Account Payable','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (15, 1,'Add User','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (16, 1,'Update Access','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (17, 1,'Add Role','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (18, 1,'Update Access','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (19, 1,'Add Expense','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+
 	
