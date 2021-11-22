@@ -74,6 +74,7 @@ const getImage = (req,res) => {
 
  // fs.readFile(__basedir + '/App/uploads/brandsImages/1.jpg',function(err,data){
   fs.readFile(`${directoryPath}${fileName}`,function(err,data){
+    console.log(err)
     if (err) throw err; // Fail if the file can't be read.
     res.writeHead(200,{'Content-Type':'image/jpeg'});
     res.end(data); // Send the file data to the browser.
