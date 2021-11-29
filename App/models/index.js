@@ -1,17 +1,34 @@
 const dbConfig = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
+require('dotenv').config();
+//console.log(process.env.REACT_APP_LOCALSERVER);
+var strConfig="";
+if (process.env.REACT_APP_LOCALSERVER==="True"){
+  strConfig = "operatorsAliases: false"
+}
+// else{
+//   strConfig = "operatorsAliases: 0, dialectOptions: { ssl: { require: true, rejectUnauthorized: false }}";
+// }
+
+//console.log(strConfig);
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
+  ////////////////////////local db
   //operatorsAliases: false,
-  operatorsAliases: 0,
-  dialectOptions: {
-    ssl: {
-      require: true, // This will help you. But you will see nwe error
-      rejectUnauthorized: false // This line will fix new error
-    }
-  },
+  strConfig,
+  ////////////////////////////////////////////
+
+  ///////////////////////////Remote heruko db
+  // operatorsAliases: 0,
+  // dialectOptions: {
+  //   ssl: {
+  //     require: true, // This will help you. But you will see nwe error
+  //     rejectUnauthorized: false // This line will fix new error
+  //   }
+  // },
+  //////////////////////////////////////////////
   pool: {
     max: dbConfig.pool.max,
     min: dbConfig.pool.min,

@@ -134,7 +134,12 @@ INSERT INTO public."accesses"
                         }
 	
 
-
+ { ...process.env.REACT_APP_S3 === "True" ?
+      {src:{item.imageUrl},alt:"no data",width=:"100",height:"100"}
+      :
+      {src:{`${process.env.REACT_APP_MIDDLEWARE}/itemsImages/${item.imageUrl}`},alt:"no data",width:"100",height="100"}
+	  }
+                                            }
 
 
 --------------------------------------------psql commands-------------------------------------------

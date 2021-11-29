@@ -311,6 +311,10 @@ module.exports = app => {
 
   // upload file
   router.post("/upload", controller.upload);
+
+  // upload file to Amazon S3
+  router.post("/uploadS3", controller.uploadS3);
+  
   // get all files list
   router.get("/get/files", controller.getListFiles);
   // get specific file

@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
+
 const app = express();
 global.__basedir = __dirname;
 
@@ -52,8 +53,18 @@ require('./App/routes/auth.routes')(app);
 require('./App/routes/user.routes')(app);
 
 // set port, listen for requests
+var PORT=""
+////////////local
+if (process.env.REACT_APP_LOCALSERVER==="True"){
+  PORT = process.env.PORT || 8080;
+}
+else 
+{
+  PORT = process.env.PORT || 5000 ;
+};
 //const PORT = process.env.PORT || 8080;
-const PORT = process.env.PORT || 5000;
+////////////Remote heruko
+//const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
