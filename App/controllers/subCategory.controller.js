@@ -12,10 +12,11 @@ exports.create = (req, res) => {
   //   return;
   // }
 
-  // Create a Brand
+  // Create a Sub Category
   const subCat = {
     name: req.body.name,
     description: req.body.description,
+    category:req.body.category,
     url: req.body.url
   };
 
