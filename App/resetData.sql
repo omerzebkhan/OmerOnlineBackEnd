@@ -143,7 +143,7 @@ INSERT INTO public."accesses"
 
 
 --------------------------------------------psql commands-------------------------------------------
--------------------Create Default Roles--------------------
+----Create Default Roles--------------------
 INSERT INTO roles(id, name, "createdAt", "updatedAt")VALUES (1, 'admin','2021-09-21 21:10:49.882+03', '2021-09-21 21:10:49.882+03');
 INSERT INTO roles(id, name, "createdAt", "updatedAt")VALUES (2, 'saleAgent','2021-09-21 21:10:49.882+03', '2021-09-21 21:10:49.882+03');	
 INSERT INTO roles(id, name, "createdAt", "updatedAt")VALUES (3, 'purchaseAgent','2021-09-21 21:10:49.882+03', '2021-09-21 21:10:49.882+03');
@@ -156,8 +156,9 @@ INSERT INTO users(
 	id, name, address, mobile, email, ph,description, totalamount, outstanding, comments, "createdAt", "updatedAt", username, password)
 	VALUES (1,'omerzeb','kuwait',99111074,'omerzeb@hotmail.com', 99111074, 'Admin user', 0, 0, '', '2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03','omerzeb', '$2a$08$Wp4LbTwuxOIfwxf9mrGpROn0Dgf1IX2VvsVV2PXRMejc858DbnmUC');
 	
---------------------Assign role to the created user --------------------------------------
+--Assign role to the created user admin = 1--------------------------------------
 INSERT INTO user_roles(id, "roleId", "userId", "createdAt", "updatedAt") VALUES (1, 1, 1,'2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03');
+
 
 ----------------------------Assign all rights to the user -----------------------------
 INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (1, 1,'Search item','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
@@ -169,7 +170,7 @@ INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt
 INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (7, 1,'Search subCategory','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
 INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (8, 1,'Purchase Invoice','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
 INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (9, 1,'Move Stock','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
-INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (10, 1,'Sale Invoice','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');"
+INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (10, 1,'Sale Invoice','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
 INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (11, 1,'Sale Return','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
 INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (12, 1,'Pricing','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
 INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (13, 1,'Account Receivable','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
@@ -179,5 +180,33 @@ INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt
 INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (17, 1,'Add Role','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
 INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (18, 1,'Update Access','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
 INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (19, 1,'Add Expense','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
+
+--------------------Create Test customer -------------------------------
+INSERT INTO users(
+	id, name, address, mobile, email, ph,description, totalamount, outstanding, comments, "createdAt", "updatedAt", username, password)
+	VALUES (2,'test customer','kuwait',99111074,'tc@h.com', 99111074, 'Customer ', 0, 0, '', '2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03','testcustomer', '$2a$08$Wp4LbTwuxOIfwxf9mrGpROn0Dgf1IX2VvsVV2PXRMejc858DbnmUC');
+
+--Assign role to the created customer id =4 --------------------------------------
+INSERT INTO user_roles(id, "roleId", "userId", "createdAt", "updatedAt") VALUES (2, 4, 1,'2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03');
+
+
+--------------------Create Test Sale Agent -----------------------------------
+INSERT INTO users(
+	id, name, address, mobile, email, ph,description, totalamount, outstanding, comments, "createdAt", "updatedAt", username, password)
+	VALUES (3,'test Agent','kuwait',99111074,'tsa@h.com', 99111074, 'Agent', 0, 0, '', '2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03','testagent', '$2a$08$Wp4LbTwuxOIfwxf9mrGpROn0Dgf1IX2VvsVV2PXRMejc858DbnmUC');
+
+--Assign role to the created Agent id =2 --------------------------------------
+INSERT INTO user_roles(id, "roleId", "userId", "createdAt", "updatedAt") VALUES (3, 2, 1,'2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03');
+
+
+
+-----------------------Create Test supplier -------------------------------------
+
+INSERT INTO users(
+	id, name, address, mobile, email, ph,description, totalamount, outstanding, comments, "createdAt", "updatedAt", username, password)
+	VALUES (4,'test Supplier','kuwait',99111074,'ts@h.com', 99111074, 'Supplier', 0, 0, '', '2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03','testsupplier', '$2a$08$Wp4LbTwuxOIfwxf9mrGpROn0Dgf1IX2VvsVV2PXRMejc858DbnmUC');
+
+--Assign role to the created Agent id =6 --------------------------------------
+INSERT INTO user_roles(id, "roleId", "userId", "createdAt", "updatedAt") VALUES (3, 6, 1,'2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03');
 
 	

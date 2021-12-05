@@ -44,7 +44,6 @@ exports.create = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8),
     description: req.body.description,
     ph: req.body.ph,
-    role: req.body.role,
     totalamount: req.body.totalamount,
     outstanding: req.body.Outstanding,
     comments: req.body.comments
