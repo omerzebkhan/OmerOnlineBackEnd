@@ -59,6 +59,13 @@ db.cartDetail = require("./cartDetail.model")(sequelize, Sequelize);
 //////////////////////////////////////////////////////////////////
 db.carts.hasMany(db.cartDetail,{as : "cartDetail"})   
 db.cartDetail.belongsTo(db.carts,{foreignKey:"cartid",as :"carts"});
+//////////////////////////////////////////////////////////////////////
+//Creating one to many relationship between purchaseDetails and item//
+//////////////////////////////////////////////////////////////////////
+db.purchaseDetail = require("./purchaseDetail.model")(sequelize, Sequelize);
+//db.saleDetail.hasMany(db.items);
+db.items.hasMany(db.purchaseDetail,{as : "purchaseDetails"})   
+db.purchaseDetail.belongsTo(db.items,{foreignKey:"itemId",as :"items"});
 //////////////////////////////////////////////////////////////////
 //Creating one to many relationship between saleDetails and item//
 //////////////////////////////////////////////////////////////////

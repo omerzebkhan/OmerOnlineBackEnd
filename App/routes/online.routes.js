@@ -192,6 +192,9 @@ module.exports = app => {
   // Create a new Purchase
   router.post("/purchaseDetail/",[authJwt.verifyToken, authJwt.isAdmin], purchasedetail.create);
 
+  // Retrieve all Purchase Details based on the purchase invoice id
+  router.get("/purchaseDetailById/:id", purchasedetail.findById);
+
   // Retrieve all Purchase
   router.get("/purchaseDetail/", purchasedetail.findAll);
 

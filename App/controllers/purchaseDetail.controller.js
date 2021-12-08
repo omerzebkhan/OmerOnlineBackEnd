@@ -57,4 +57,23 @@ exports.findAll = (req, res) => {
       });
   };
 
-  
+// Retrieve all purchase Detail & item table from the database.
+exports.findById = (req, res) => {
+  // const name = req.query.name;
+  // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
+  const id = req.params.id;
+  PurchaseDetail.findAll({
+    include:["items"],
+     where: {purchaseInvoiceId: id}
+  }
+  )
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Sale Detail."
+      });
+    });
+};

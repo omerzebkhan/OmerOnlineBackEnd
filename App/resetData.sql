@@ -116,6 +116,7 @@ ALTER TABLE public."roleAccess"
 INSERT INTO public."accesses"
 	VALUES (22, 6, 'Add Expense', true, '2021-09-07 20:11:44.559+03','2021-09-07 20:11:44.559+03');
 	
+	SELECT * FROM information_schema.sequences;
 	
 	select * from user_roles_id_seq
 	
@@ -123,6 +124,7 @@ INSERT INTO public."accesses"
 	
 	select nextval('user_roles_id_seq')
 	
+	ALTER SEQUENCE user_roles_id_seq RESTART WITH 313;
 	
 	
 	
@@ -187,7 +189,7 @@ INSERT INTO users(
 	VALUES (2,'test customer','kuwait',99111074,'tc@h.com', 99111074, 'Customer ', 0, 0, '', '2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03','testcustomer', '$2a$08$Wp4LbTwuxOIfwxf9mrGpROn0Dgf1IX2VvsVV2PXRMejc858DbnmUC');
 
 --Assign role to the created customer id =4 --------------------------------------
-INSERT INTO user_roles(id, "roleId", "userId", "createdAt", "updatedAt") VALUES (2, 4, 1,'2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03');
+INSERT INTO user_roles(id, "roleId", "userId", "createdAt", "updatedAt") VALUES (2, 4, 2,'2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03');
 
 
 --------------------Create Test Sale Agent -----------------------------------
