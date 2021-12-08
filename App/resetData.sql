@@ -211,4 +211,36 @@ INSERT INTO users(
 --Assign role to the created Agent id =6 --------------------------------------
 INSERT INTO user_roles(id, "roleId", "userId", "createdAt", "updatedAt") VALUES (3, 6, 1,'2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03');
 
+
+
+
+
+heruko hosting plan / Purchasing domain will be seperate
+
+DB hobby basic = 9 $ per month = 2.25 dinar = 2 K 
+app            = 7 $ per month = 1.75 dinar = 1 K
+
+
+
+
+
+
+select * from purchases;
+
+
+select * from "purchaseDetails";
+
+
+select * from "saleDetails";
+
+
+select "createdAt","saleInvoiceId","itemId","quantity","price","cost",(price-cost)*quantity profit from "saleDetails";
+
+
+select * from sales;
+
+select TO_CHAR("createdAt",'dd/mm/yyyy') "date","saleInvoiceId",sum("itemId") TotalItems,sum("quantity") Quantity,sum("price") Price,sum("cost") "Cost",sum((price-cost)*quantity) profit
+from "saleDetails"
+group by TO_CHAR("createdAt",'dd/mm/yyyy'),"saleInvoiceId";
+
 	

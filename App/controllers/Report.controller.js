@@ -13,8 +13,10 @@ exports.findBalanceSheet = async (req, res) => {
     //       where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}}
     // )
 
+
+
     const allDates = [];
-    const sumSale = await db.sequelize.query('SELECT sum(invoicevalue),TO_CHAR("createdAt",\'dd/mm/yyyy\') date FROM "sales" WHERE "createdAt" between (:startDate) and (:endDate) group by TO_CHAR("createdAt",\'dd/mm/yyyy\') ', {
+    const sumSale = await db.sequelize.query('SELECT TO_CHAR("createdAt",\'dd/mm/yyyy\') date,sum(quantity*price) "InvoiceValue",sum((price-cost)*quantity) profit from "saleDetails" WHERE "createdAt" between (:startDate) and (:endDate) group by TO_CHAR("createdAt",\'dd/mm/yyyy\') ', {
         replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
         type: db.sequelize.QueryTypes.SELECT
       });
@@ -24,6 +26,7 @@ exports.findBalanceSheet = async (req, res) => {
           allDates.push(i.date)
       })
 
+      
       const sumPurchase = await db.sequelize.query('SELECT sum(invoicevalue),TO_CHAR("createdAt",\'dd/mm/yyyy\') date FROM "purchases" WHERE "createdAt" between (:startDate) and (:endDate) group by TO_CHAR("createdAt",\'dd/mm/yyyy\') ', {
         replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
         type: db.sequelize.QueryTypes.SELECT
@@ -98,7 +101,8 @@ exports.findBalanceSheet = async (req, res) => {
 
         const ss = sumSale.filter(sale => sale.date === i);
         //console.log(`printing sumSale ${ss}`)
-        obj.totalSale = ss.length>0 ? ss[0].sum:0;
+        obj.totalSale = ss.length>0 ? ss[0].InvoiceValue:0;
+        obj.totalProfit = ss.length>0 ? ss[0].totalProfit:0;
        
         const sp = sumPurchase.filter(purchase => purchase.date === i);
         //console.log(sp)
