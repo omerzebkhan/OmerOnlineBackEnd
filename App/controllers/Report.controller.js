@@ -102,7 +102,7 @@ exports.findBalanceSheet = async (req, res) => {
         const ss = sumSale.filter(sale => sale.date === i);
         //console.log(`printing sumSale ${ss}`)
         obj.totalSale = ss.length>0 ? ss[0].InvoiceValue:0;
-        obj.totalProfit = ss.length>0 ? ss[0].totalProfit:0;
+        obj.totalProfit = ss.length>0 ? ss[0].profit:0;
        
         const sp = sumPurchase.filter(purchase => purchase.date === i);
         //console.log(sp)
