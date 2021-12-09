@@ -63,8 +63,10 @@ exports.findAll = (req, res) => {
   //const endDate = new Date("2021-09-16 00:00:00");
   const startedDate = req.params.sDate;
   const endDate = req.params.eDate;
+  const customerId = req.params.customerId;
+
   Sale.findAll(
-    {where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}}
+    {where : {"createdAt" : {[Op.between] : [startedDate , endDate ] && "customerId"===customerId}}}
   )
     .then(data => {
       res.send(data);
