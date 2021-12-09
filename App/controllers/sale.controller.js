@@ -64,7 +64,10 @@ exports.findAll = (req, res) => {
   const startedDate = req.params.sDate;
   const endDate = req.params.eDate;
   const customerId = req.params.customerId;
-
+  var condition = customerId ? 
+  {where : {"createdAt" : {[Op.between] : [startedDate , endDate ]},"customerId":customerId}} 
+  : {where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}};
+  
   Sale.findAll(
     {where : {"createdAt" : {[Op.between] : [startedDate , endDate ]},"customerId":customerId}}
   )
