@@ -66,7 +66,7 @@ exports.findAll = (req, res) => {
   const customerId = req.params.customerId;
 
   Sale.findAll(
-    {where : {"createdAt" : {[Op.between] : [startedDate , endDate ] && "customerId"===customerId}}}
+    {where : {"createdAt" : {[Op.between] : [startedDate , endDate ]} && "customerId"==customerId}}
   )
     .then(data => {
       res.send(data);
