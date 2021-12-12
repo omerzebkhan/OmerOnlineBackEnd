@@ -243,4 +243,30 @@ select TO_CHAR("createdAt",'dd/mm/yyyy') "date","saleInvoiceId",sum("itemId") To
 from "saleDetails"
 group by TO_CHAR("createdAt",'dd/mm/yyyy'),"saleInvoiceId";
 
+-----------------------to verify the total amount of user, sale ,saleDetails
+select * from (
+select id,sum(totalamount) "userTotalAmount",sum(outstanding) "user Outstanding" from users group by id) a,
+(select "customerId",sum(invoicevalue) "saleInvoiceValue",sum("Outstanding") "salesOutstanding" from sales group by "customerId") b,
+(select "customerId",sum(price*quantity) from "saleDetails","sales" where "saleDetails"."saleInvoiceId" = sales.id group by "customerId") c
+where a.id = b."customerId" and b."customerId"=c."customerId" and c."customerId"=2;
+
+
+
+SELECT sum(invoicevalue),TO_CHAR("createdAt",\'dd/mm/yyyy\') date FROM "sales" WHERE "createdAt" between (:startDate) and (:endDate) group by TO_CHAR("createdAt",\'dd/mm/yyyy\')
+
+SELECT TO_CHAR("createdAt",'\dd/mm/yyyy\') date,sum(quantity*price) "InvoiceValue",sum((price-cost)*quantity) profit from "saleDetails" WHERE "createdAt" between (:startDate) and (:endDate) group by TO_CHAR("createdAt",\'dd/mm/yyyy\')
+
+customer wise sale report
+	
+	
+	
+Reported issues 
+
+1- if pressing enter on sale invoice item  system is not responding(Done)
+2- name field of the items visible should be adjusted (Done)
+3- edit quantity in the sale invoice (need time to work on )
+4- add address in the pdf invoice printing for the customer. (Done)
+5- 	brand image is not showing.
+6- Item giving error while entring from the web (Done)
+7- Sale Invice show be able to edit.
 	

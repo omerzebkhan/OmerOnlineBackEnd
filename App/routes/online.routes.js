@@ -254,6 +254,9 @@ module.exports = app => {
   //UpdateSaleDetailQP
   router.put("/UpdateSaleDetailQ/:id", saledetail.updateQ);
 
+  //UpdateSaleDetail
+  router.put("/UpdateSaleDetail/:id", saledetail.update);
+
   ///////////////////
   ////SALE Return////
   //////////////////
