@@ -53,6 +53,21 @@ exports.findAll = (req, res) => {
     });
 };
 
+// Re calculate the totalitems and invoicevalue
+exports.getSaleRecalculate = (req, res) => {
+  const id = req.params.id;
+
+  db.sequelize.query('update sales set totalitems = (select sum(quantity) from "saleDetails" where "saleInvoiceId" = :id), invoicevalue = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = :id),"Outstanding" = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = :id) where id = :id;'
+  , {replacements: {id: req.params.id},type: db.sequelize.QueryTypes.update}
+  ).spread(function(results,
+  	metadata) {
+      res.send(metadata);
+  // Results will be an empty array and metadata will contain the number of 
+  // affected rows.
+});
+
+};
+
  // Retrieve all purchase from the database.
  exports.findAllByDate = (req, res) => {
   // const name = req.query.name;

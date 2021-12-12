@@ -218,6 +218,9 @@ module.exports = app => {
   // Retrieve all Sale
   router.get("/sale/", sale.findAll);
 
+  // Recalculate the Sale based on the invoice ID
+  router.get("/getSaleRecalculate/:id", sale.findAll);
+
   //Retrive Sale invoice for given customer
   router.get("/saleByCustId/:id", sale.findAllByCustId);
 
