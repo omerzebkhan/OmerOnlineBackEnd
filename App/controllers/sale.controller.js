@@ -54,12 +54,11 @@ exports.findAll = (req, res) => {
 };
 
 // Re calculate the totalitems and invoicevalue
-exports.getSaleRecalculate = (req, res) => {
+exports.getSaleRecalculate = async (req, res) => {
   const id = req.params.id;
 
-  const [results, metadata] = await db.sequelize.query('update sales set totalitems = (select sum(quantity) from "saleDetails" where "saleInvoiceId" = :id), invoicevalue = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = :id),"Outstanding" = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = :id) where id = :id;'
-  , {replacements: {id: req.params.id},type: db.sequelize.QueryTypes.update}
-  );
+  const [results, metadata] = await db.sequelize.query('update sales set totalitems = (select sum(quantity) from "saleDetails" where "saleInvoiceId" = '+id+'), invoicevalue = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = '+id+'),"Outstanding" = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = '+id+') where id = '+id+';'
+    );
   res.send(metadata);
 
 };
