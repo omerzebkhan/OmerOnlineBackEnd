@@ -3,10 +3,10 @@ const dbConfig = require("../config/db.config.js");
 const Sequelize = require("sequelize");
 require('dotenv').config();
 //console.log(process.env.REACT_APP_LOCALSERVER);
-var strConfig="";
-if (process.env.REACT_APP_LOCALSERVER==="True"){
-  strConfig = "operatorsAliases: false"
-}
+//var strConfig="";
+// if (process.env.REACT_APP_LOCALSERVER==="True"){
+//   strConfig = "operatorsAliases: false"
+// }
 // else{
 //   strConfig = "operatorsAliases: 0, dialectOptions: { ssl: { require: true, rejectUnauthorized: false }}";
 // }
@@ -16,7 +16,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
   ////////////////////////local db
-  //operatorsAliases: false,
+ // operatorsAliases: false,
   //strConfig,
   ////////////////////////////////////////////
 

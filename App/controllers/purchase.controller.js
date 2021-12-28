@@ -17,7 +17,7 @@ exports.create = (req, res) => {
     reffInvoice: req.body.reffInvoice,
     supplierId: req.body.supplierId,
     invoicevalue: req.body.invoicevalue,
-    totalitems: req.body.totalitems, 
+    totalitems: req.body.totalitems,
     paid: req.body.paid,
     Returned: req.body.Returned,
     Outstanding: req.body.Outstanding
@@ -38,23 +38,37 @@ exports.create = (req, res) => {
 
 // Retrieve all purchase from the database.
 exports.findAll = (req, res) => {
-    // const name = req.query.name;
-    // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
-  
-    Purchase.findAll()
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving Purchase."
-        });
+  // const name = req.query.name;
+  // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
+
+  Purchase.findAll()
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Purchase."
       });
-  };
+    });
+};
+
+// Retrieve all purchase Account Payable
+exports.findAllAP = async (req, res) => {
+  // const name = req.query.name;
+  // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
+
+  const purchaseAP = await db.sequelize.query('select * from (select "supplierId","name","address",sum(invoicevalue) "purchaseInvoiceValue",sum(purchases."Outstanding") "purchaseOutstanding" from purchases,users where purchases."supplierId" = users.id group by "supplierId","name","address") sa where "purchaseOutstanding" > 0', {
+    type: db.sequelize.QueryTypes.SELECT
+  });
 
 
-  // Retrieve all purchase from the database.
+  return res.status(200).json(purchaseAP)
+
+};
+
+
+// Retrieve all purchase from the database.
 exports.findAllByDate = (req, res) => {
   // const name = req.query.name;
   // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
@@ -65,7 +79,7 @@ exports.findAllByDate = (req, res) => {
   const startedDate = req.params.sDate;
   const endDate = req.params.eDate;
   Purchase.findAll(
-    {where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}}
+    { where: { "createdAt": { [Op.between]: [startedDate, endDate] } } }
   )
     .then(data => {
       res.send(data);
@@ -85,7 +99,7 @@ exports.findAllByCustId = (req, res) => {
   // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
 
   Purchase.findAll({
-    where :{supplierId : id }
+    where: { supplierId: id }
   })
     .then(data => {
       res.send(data);
@@ -98,32 +112,31 @@ exports.findAllByCustId = (req, res) => {
     });
 };
 
-  // Update a Purchase by the id in the request
+// Update a Purchase by the id in the request
 exports.update = (req, res) => {
-  
-    const id = req.params.id;
-    // console.log(`brand update is triggred
-    // id=${id}
-    // imageurl = ${req.body.imageUrl}`);
-    Purchase.update(req.body, {
-      where: { id: id }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Purchase was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update Purchase with id=${id}. Maybe Purchase was not found or req.body is empty!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating Purchase with id=" + id
+
+  const id = req.params.id;
+  // console.log(`brand update is triggred
+  // id=${id}
+  // imageurl = ${req.body.imageUrl}`);
+  Purchase.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Purchase was updated successfully."
         });
+      } else {
+        res.send({
+          message: `Cannot update Purchase with id=${id}. Maybe Purchase was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Purchase with id=" + id
       });
-  };
-  
-  
+    });
+};
+

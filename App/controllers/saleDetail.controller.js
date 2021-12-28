@@ -138,4 +138,29 @@ exports.update = (req, res) => {
       });
     });
 };
+
+// Delete a Sale Detail based on sale invoice id
+exports.deleteBySaleInvoice = (req, res) => {
+  const id = req.params.id;
+
+  SaleDetail.destroy({
+    where: { saleInvoiceId: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Sale Invoice was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Sale Invoice with id=${id}. Maybe Sale Invoice was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message ||"Could not delete Sale Invoice with id=" + id
+      });
+    });
+};
   

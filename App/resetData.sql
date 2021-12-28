@@ -217,8 +217,8 @@ INSERT INTO user_roles(id, "roleId", "userId", "createdAt", "updatedAt") VALUES 
 
 heruko hosting plan / Purchasing domain will be seperate
 
-DB hobby basic = 9 $ per month = 2.25 dinar = 2 K 
-app            = 7 $ per month = 1.75 dinar = 1 K
+DB hobby basic = 9 $ per month = 2.25 dinar = 2 K Rs
+app            = 7 $ per month = 1.75 dinar = 1 K Rs
 
 
 
@@ -243,12 +243,24 @@ select TO_CHAR("createdAt",'dd/mm/yyyy') "date","saleInvoiceId",sum("itemId") To
 from "saleDetails"
 group by TO_CHAR("createdAt",'dd/mm/yyyy'),"saleInvoiceId";
 
+-----------------------Update the sale
+
+update sales set totalitems = (select sum(quantity) from "saleDetails" where "saleInvoiceId" = 1), invoicevalue = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = 1),"Outstanding" = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = 1) where id = 1;
+
+
+
 -----------------------to verify the total amount of user, sale ,saleDetails
 select * from (
 select id,sum(totalamount) "userTotalAmount",sum(outstanding) "user Outstanding" from users group by id) a,
 (select "customerId",sum(invoicevalue) "saleInvoiceValue",sum("Outstanding") "salesOutstanding" from sales group by "customerId") b,
 (select "customerId",sum(price*quantity) from "saleDetails","sales" where "saleDetails"."saleInvoiceId" = sales.id group by "customerId") c
 where a.id = b."customerId" and b."customerId"=c."customerId" and c."customerId"=2;
+
+------------------------customer base view to get the total outstanding amount
+select "customerId","name","address",sum(invoicevalue) "saleInvoiceValue",sum("Outstanding") "salesOutstanding" 
+from sales,users where sales."customerId" = users.id group by "customerId","name","address";
+
+------------------------
 
 
 
@@ -264,9 +276,13 @@ Reported issues
 
 1- if pressing enter on sale invoice item  system is not responding(Done)
 2- name field of the items visible should be adjusted (Done)
-3- edit quantity in the sale invoice (need time to work on )
+3- edit quantity in the sale invoice (Done)
 4- add address in the pdf invoice printing for the customer. (Done)
-5- 	brand image is not showing.
+5- 	brand image is not showing. (Done)
 6- Item giving error while entring from the web (Done)
-7- Sale Invice show be able to edit.
+7- Sale Invoice show be able to edit. (Done)
+8- Delete Sale Invoice.
+9- Edit / Detete Sale Invoice.
+10-
 	
+

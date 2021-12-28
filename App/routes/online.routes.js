@@ -176,6 +176,10 @@ module.exports = app => {
   // Retrieve all Purchase
   router.get("/purchase/", purchase.findAll);
 
+  // Retrieve all Purchase Account Payable
+  router.get("/purchaseAP/", purchase.findAllAP);
+  
+
 // get all Purchase by given date
   router.get("/purchaseByDate/:sDate/:eDate", purchase.findAllByDate);
   
@@ -218,6 +222,12 @@ module.exports = app => {
   // Retrieve all Sale
   router.get("/sale/", sale.findAll);
 
+  // Delete Sale with sale id
+  router.delete("/sale/:id", sale.delete);
+
+// Retrieve all Sale Account Recievable
+  router.get("/saleAR/", sale.findAllAR);
+  
   // Recalculate the Sale based on the invoice ID
   router.put("/getSaleRecalculate/:id", sale.getSaleRecalculate);
 
@@ -250,6 +260,10 @@ module.exports = app => {
 
   // Retrieve all sale
   router.get("/saleDetail/", saledetail.findAll);
+
+  // Delete Sale Detail with sale invoice id
+  router.delete("/saleDetail/:id", saledetail.deleteBySaleInvoice);
+
 
   // Retrieve all SaleDetails based on the sale invoice id
   router.get("/saleDetailById/:id", saledetail.findById);

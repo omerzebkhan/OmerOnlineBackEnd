@@ -53,6 +53,21 @@ exports.findAll = (req, res) => {
     });
 };
 
+// Retrieve all sale from the database.
+exports.findAllAR = async (req, res) => {
+  // const name = req.query.name;
+  // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
+
+  const saleAR = await db.sequelize.query('select * from (select "customerId","name","address",sum(invoicevalue) "saleInvoiceValue",sum(sales."Outstanding") "salesOutstanding" from sales,users where sales."customerId" = users.id group by "customerId","name","address") sa where "salesOutstanding" >0', {
+       type: db.sequelize.QueryTypes.SELECT
+  });
+
+  
+  return res.status(200).json(saleAR)
+  
+};
+
+
 // Re calculate the totalitems and invoicevalue
 exports.getSaleRecalculate = async (req, res) => {
   console.log(`calling get sale Recalculate.....`)
@@ -221,6 +236,31 @@ exports.updateO = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message: "Error updating Item with id=" + id
+      });
+    });
+};
+
+// Delete a Sale based on sale invoice id
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Sale.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Sale Invoice was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Sale Invoice with id=${id}. Maybe Sale Invoice was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message ||"Could not delete Sale Invoice with id=" + id
       });
     });
 };

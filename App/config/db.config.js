@@ -33,11 +33,11 @@ module.exports = {
   DB: "da9hhbf5iglnut",
   dialect: "postgres",
   ////////////////local DB
-  // HOST: Host,
-  // USER: User,
-  // PASSWORD: Pass,
-  // DB: Db ,
-  // dialect: Dialet ,
+  // HOST : "localhost",
+  // USER : "postgres",
+  // PASSWORD : "omer",
+  // DB : "testdb",
+  // dialect : "postgres", 
   pool: {
     max: 5, //max: maximum number of connection in pool
     min: 0, //min: minimum number of connection in pool
