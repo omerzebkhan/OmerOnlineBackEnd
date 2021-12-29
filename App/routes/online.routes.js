@@ -262,7 +262,7 @@ module.exports = app => {
   router.get("/saleDetail/", saledetail.findAll);
 
   // Delete Sale Detail with sale invoice id
-  router.delete("/saleDetail/:id", saledetail.deleteBySaleInvoice);
+  router.delete("/SaleDetailBySaleId/:id", saledetail.deleteBySaleInvoice);
 
 
   // Retrieve all SaleDetails based on the sale invoice id
