@@ -16,6 +16,7 @@ delete from "purchaseDetails"
 
 
 
+
 	ALTER TABLE users
 ADD COLUMN password character varying(255);
 
@@ -286,3 +287,6 @@ Reported issues
 10-
 	
 
+
+create editabel table in react
+https://www.geeksforgeeks.org/how-to-create-an-editable-table-with-add-delete-and-search-filter-using-reactjs/
