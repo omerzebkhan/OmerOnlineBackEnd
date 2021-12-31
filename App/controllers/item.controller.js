@@ -18,6 +18,7 @@ exports.create = (req, res) => {
     name: req.body.name,
     code: req.body.code,
     description: req.body.description,
+    imageUrl:'',
     brandId: req.body.brandId,
     categoryId: req.body.categoryId,
     subCategoryId: req.body.subCategoryId,
