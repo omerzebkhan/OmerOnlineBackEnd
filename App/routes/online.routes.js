@@ -261,6 +261,9 @@ module.exports = app => {
   // Retrieve all sale
   router.get("/saleDetail/", saledetail.findAll);
 
+  // Delete Sale Detail with sale detail id
+  router.delete("/saleDetail/:id", saledetail.delete);
+
   // Delete Sale Detail with sale invoice id
   router.delete("/SaleDetailBySaleId/:id", saledetail.deleteBySaleInvoice);
 

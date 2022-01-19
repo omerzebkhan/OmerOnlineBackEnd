@@ -16,7 +16,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
   ////////////////////////local db
-  //operatorsAliases: false,
+ // operatorsAliases: false,
   //strConfig,
   ////////////////////////////////////////////
 
@@ -54,6 +54,15 @@ db.expense = require("./expense.model")(sequelize, Sequelize);
 db.sales = require("./sale.model")(sequelize, Sequelize);
 db.carts = require("./cart.model")(sequelize, Sequelize);
 db.cartDetail = require("./cartDetail.model")(sequelize, Sequelize);
+
+db.users = require("./user.model")(sequelize, Sequelize);
+db.role = require("./role.model.js")(sequelize, Sequelize);
+///////////////////////////////////////////////////////////////////
+//Creating one to many relationship between sale and customer//
+//////////////////////////////////////////////////////////////////
+//db.users.hasMany(db.sales,{as : "userDetails"})   
+db.sales.belongsTo(db.users,{foreignKey:"customerId",as :"customers"});
+//////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
 //Creating one to many relationship between cart and cartDetails//
 //////////////////////////////////////////////////////////////////
@@ -98,8 +107,7 @@ db.saleReturn = require("./saleReturn.model")(sequelize, Sequelize);
 db.saleInvoicePayment = require("./saleInvoicePayment.model")(sequelize, Sequelize);
 db.purchaseInvoicePayment = require("./purchaseInvoicePayment.model")(sequelize, Sequelize);
 
-db.users = require("./user.model")(sequelize, Sequelize);
-db.role = require("./role.model.js")(sequelize, Sequelize);
+
 
 db.role.belongsToMany(db.users, {through: "user_roles",foreignKey: "roleId",otherKey: "userId"});
 db.users.belongsToMany(db.role, {through: "user_roles",foreignKey: "userId",otherKey: "roleId"});

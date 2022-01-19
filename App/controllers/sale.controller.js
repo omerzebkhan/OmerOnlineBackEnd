@@ -98,8 +98,10 @@ exports.getSaleRecalculate = async (req, res) => {
   {where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}}
   :{where : {"createdAt" : {[Op.between] : [startedDate , endDate ]},"customerId":customerId}} ;
   
-  Sale.findAll(
+  Sale.findAll({
+    include:["customers"],
     condition
+  }
   )
     .then(data => {
       res.send(data);

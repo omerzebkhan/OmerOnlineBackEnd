@@ -121,7 +121,7 @@ INSERT INTO public."accesses"
 	
 	select * from user_roles_id_seq
 	
-	select currval('user_roles_id_seq')
+	select currval('items_id_seq')
 	
 	select nextval('user_roles_id_seq')
 	
@@ -282,9 +282,15 @@ Reported issues
 5- 	brand image is not showing. (Done)
 6- Item giving error while entring from the web (Done)
 7- Sale Invoice show be able to edit. (Done)
-8- Delete Sale Invoice.
-9- Edit / Detete Sale Invoice.
-10-
+8- Delete Sale Invoice. (Done)
+9- Edit / Detete Sale Invoice. (Done)
+10-Remove row from the sale Invoice while edit sale.
+11-update Quantity while making invoice. (Done need to be tested)
+12- Edit / Delete Purchse Invoice.
+13- Search in the stock Report Screen.
+14- Sale Report should show the name of the customer. (Done need to be tested)
+15- Sale Return should show Quantity instead of Invoice to return an item.
+16-
 	
 
 
