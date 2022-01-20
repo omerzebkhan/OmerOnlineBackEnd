@@ -94,24 +94,40 @@ exports.getSaleRecalculate = async (req, res) => {
   const startedDate = req.params.sDate;
   const endDate = req.params.eDate;
   const customerId = req.params.customerId;
-  var condition = customerId==="0" ? 
-  {where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}}
-  :{where : {"createdAt" : {[Op.between] : [startedDate , endDate ]},"customerId":customerId}} ;
-  
+  customerId==="0" ? 
   Sale.findAll({
-    include:["customers"],
-    condition
-  }
-  )
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving Sale."
-      });
-    });
+    where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}
+   //condition
+   ,include:["customers"]}
+ 
+ )
+   .then(data => {
+     res.send(data);
+   })
+   .catch(err => {
+     res.status(500).send({
+       message:
+         err.message || "Some error occurred while retrieving Sale."
+     });
+   })
+  :
+  Sale.findAll({
+    where : {"createdAt" : {[Op.between] : [startedDate , endDate ]},"customerId":customerId}
+   //condition
+   ,include:["customers"]}
+ )
+   .then(data => {
+     res.send(data);
+   })
+   .catch(err => {
+     res.status(500).send({
+       message:
+         err.message || "Some error occurred while retrieving Sale."
+     });
+   });
+  
+
+  
 };
 
 // Retrieve all sale from the database.
