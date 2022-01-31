@@ -67,6 +67,19 @@ exports.findAllAP = async (req, res) => {
 
 };
 
+// Re calculate the totalitems and invoicevalue
+exports.getPurchaseRecalculate = async (req, res) => {
+  console.log(`calling get purchase Recalculate.....`)
+  const id = req.params.id;
+  const [results, metadata] = await db.sequelize.query('update purchases set totalitems = (select sum(quantity) from "purchaseDetails" where "purchaseInvoiceId" = '+id+'), invoicevalue = (select sum(price*quantity) from "purchaseDetails" where "purchaseInvoiceId" = '+id+'),"Outstanding" = (select sum(price*quantity) from "purchaseDetails" where "purchaseInvoiceId" = '+id+') where id = '+id+';'
+    );
+
+  console.log(metadata  
+    )
+  res.send(metadata);
+
+};
+
 
 // Retrieve all purchase from the database.
 exports.findAllByDate = (req, res) => {
@@ -136,6 +149,31 @@ exports.update = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message: "Error updating Purchase with id=" + id
+      });
+    });
+};
+
+// Delete a Purchase based on purchase invoice id
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Purchase.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Purchase Invoice was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Purchase Invoice with id=${id}. Maybe Purchase Invoice was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message ||"Could not delete Purchase Invoice with id=" + id
       });
     });
 };

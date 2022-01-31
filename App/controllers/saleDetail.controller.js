@@ -111,7 +111,7 @@ exports.updateQ = (req, res) => {
     });
 };
 
-// Update a Sale Detail with Quantity and profit 
+// Update a Sale Detail  
 exports.update = (req, res) => {
 
   const id = req.params.id;
@@ -124,17 +124,17 @@ exports.update = (req, res) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Item was updated successfully."
+          message: "Sale Detail was updated successfully."
         });
       } else {
         res.send({
-          message: `Cannot update Item with id=${id}. Maybe Item was not found or req.body is empty!`
+          message: `Cannot update Sale Detail with id=${id}. Maybe Sale Detail was not found or req.body is empty!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Item with id=" + id
+        message: "Error updating Sale Detail with id=" + id
       });
     });
 };
@@ -163,8 +163,6 @@ exports.delete = (req, res) => {
       });
     });
 };
-
-
 
 // Delete a Sale Detail based on sale invoice id
 exports.deleteBySaleInvoice = (req, res) => {

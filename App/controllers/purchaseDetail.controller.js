@@ -40,6 +40,34 @@ exports.create = (req, res) => {
     });
 };
 
+// Update purchase Details  
+exports.update = (req, res) => {
+
+  const id = req.params.id;
+  // console.log(`brand update is triggred
+  // id=${id}
+  // imageurl = ${req.body.imageUrl}`);
+  PurchaseDetail.update(req.body
+  ,{where: { id: id }}
+  )
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Purchase Detail was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update purchase Details with id=${id}. Maybe purchase Detils was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating purchase Details with id=" + id
+      });
+    });
+};
+
 // Retrieve all purchase Detail from the database.
 exports.findAll = (req, res) => {
     // const name = req.query.name;
@@ -77,3 +105,54 @@ exports.findById = (req, res) => {
       });
     });
 };
+
+// Delete a Purchase Detail based on purchase Detail id
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  PurchaseDetail.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Purchase Detail Invoice was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Purchase Detail Invoice with id=${id}. Maybe Purchase Detail Invoice was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message ||"Could not delete Purchase Detail Invoice with id=" + id
+      });
+    });
+};
+
+// Delete a Purchase Detail based on purchase invoice id
+exports.deleteByPurchaseInvoice = (req, res) => {
+  const id = req.params.id;
+
+  PurchaseDetail.destroy({
+    where: { purchaseInvoiceId: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Purchase Detail Invoice was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Purchase Detail Invoice with id=${id}. Maybe Purchase Detail Invoice was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message ||"Could not delete Purchase Detail Invoice with id=" + id
+      });
+    });
+};
+

@@ -178,6 +178,9 @@ module.exports = app => {
 
   // Retrieve all Purchase Account Payable
   router.get("/purchaseAP/", purchase.findAllAP);
+
+  // Delete Purchase with purchase id
+  router.delete("/purchase/:id", purchase.delete);
   
 
 // get all Purchase by given date
@@ -190,6 +193,9 @@ module.exports = app => {
   // Update a Purchase with id
   router.put("/updatePurchase/:id", purchase.update);
 
+   // Recalculate the Sale based on the invoice ID
+   router.put("/getPurchaseRecalculate/:id", purchase.getPurchaseRecalculate);
+
   ///////////////////////
   ////PURCHASE DETAIL////
   //////////////////////
@@ -201,6 +207,15 @@ module.exports = app => {
 
   // Retrieve all Purchase
   router.get("/purchaseDetail/", purchasedetail.findAll);
+
+  //UpdatePurchaseDetail
+  router.put("/UpdatePurchaseDetail/:id", purchasedetail.update);
+
+  // Delete purchase Detail with purchase invoice id
+  router.delete("/PurchaseDetailByPurchaseId/:id", purchasedetail.deleteByPurchaseInvoice);
+
+  // Delete Purchase Detail with sale detail id
+  router.delete("/purchaseDetail/:id", purchasedetail.delete);
 
   ////////////////////////////////
   ////Purchase Invoice Payment////
