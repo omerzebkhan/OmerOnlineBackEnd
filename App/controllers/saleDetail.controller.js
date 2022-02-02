@@ -169,7 +169,8 @@ exports.deleteBySaleInvoice = (req, res) => {
   const id = req.params.id;
 
   SaleDetail.destroy({
-    where: { saleInvoiceId: id }
+    where: { saleInvoiceId: id },
+    order: ['id', 'DESC']
   })
     .then(num => {
       if (num == 1) {
