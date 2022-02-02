@@ -256,8 +256,8 @@ module.exports = app => {
   // Retrieve sale by its ID
   router.get("/sale/:id", sale.findOne);
 
-  //updateSaleRIvOTi
-  router.put("/updateSaleRIvOTi/:id", sale.updateRIvOTi);
+  // //updateSaleRIvOTi
+  // router.put("/updateSaleRIvOTi/:id", sale.update);
 
   //updateSaleRIvOTi
   router.put("/updateSale/:id", sale.update);

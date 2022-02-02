@@ -27,17 +27,17 @@ module.exports = {
 
 
   //////////// Remote heruko DB
-  HOST: "ec2-67-202-21-6.compute-1.amazonaws.com",
-  USER: "axenkmmmnrffnc",
-  PASSWORD: "d6549961c432a46605c023c80903b7ccac70040091059484708dbe29ea1534ba",
-  DB: "da9hhbf5iglnut",
-  dialect: "postgres",
+  // HOST: "ec2-67-202-21-6.compute-1.amazonaws.com",
+  // USER: "axenkmmmnrffnc",
+  // PASSWORD: "d6549961c432a46605c023c80903b7ccac70040091059484708dbe29ea1534ba",
+  // DB: "da9hhbf5iglnut",
+  // dialect: "postgres",
   ////////////////local DB
-  // HOST : "localhost",
-  // USER : "postgres",
-  // PASSWORD : "omer",
-  // DB : "testdb",
-  // dialect : "postgres", 
+  HOST : "localhost",
+  USER : "postgres",
+  PASSWORD : "omer",
+  DB : "testdb",
+  dialect : "postgres", 
   pool: {
     max: 5, //max: maximum number of connection in pool
     min: 0, //min: minimum number of connection in pool

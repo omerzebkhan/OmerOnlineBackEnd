@@ -91,8 +91,9 @@ exports.findAllByDate = (req, res) => {
   //const endDate = new Date("2021-09-16 00:00:00");
   const startedDate = req.params.sDate;
   const endDate = req.params.eDate;
-  Purchase.findAll(
-    { where: { "createdAt": { [Op.between]: [startedDate, endDate] } } }
+  Purchase.findAll({
+    where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}
+    ,include:["suppliers"]} 
   )
     .then(data => {
       res.send(data);

@@ -96,10 +96,8 @@ exports.getSaleRecalculate = async (req, res) => {
   const customerId = req.params.customerId;
   customerId==="0" ? 
   Sale.findAll({
-    where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}
-   //condition
-   ,include:["customers"]}
- 
+   where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}
+   ,include:["customers"]} 
  )
    .then(data => {
      res.send(data);
@@ -193,70 +191,7 @@ exports.update = (req, res) => {
     });
 };
 
-// Update sale Returned, Invoce value, Outstanding ,Total Item
-exports.updateRIvOTi = (req, res) => {
 
-  const id = req.params.id;
-  // console.log(`brand update is triggred
-  // id=${id}
-  // imageurl = ${req.body.imageUrl}`);
-  Sale.update({
-    //quantity: req.body.quantity,
-    Returned: req.body.Returned,
-    invoicevalue: req.body.invoicevalue,
-    Outstanding: req.body.Outstanding,
-    totalitems: req.body.totalitems
-  }
-    , { where: { id: id } }
-  )
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Item was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Item with id=${id}. Maybe Item was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating Item with id=" + id
-      });
-    });
-};
-
-// Update sale Outstanding
-exports.updateO = (req, res) => {
-
-  const id = req.params.id;
-  // console.log(`brand update is triggred
-  // id=${id}
-  // imageurl = ${req.body.imageUrl}`);
-  Sale.update({
-    //quantity: req.body.quantity,
-    Outstanding: req.body.Outstanding
-  }
-    , { where: { id: id } }
-  )
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Item was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Item with id=${id}. Maybe Item was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating Item with id=" + id
-      });
-    });
-};
 
 // Delete a Sale based on sale invoice id
 exports.delete = (req, res) => {
