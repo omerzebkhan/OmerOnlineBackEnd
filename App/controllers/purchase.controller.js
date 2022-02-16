@@ -92,9 +92,10 @@ exports.findAllByDate = (req, res) => {
   const startedDate = req.params.sDate;
   const endDate = req.params.eDate;
   Purchase.findAll({
-    where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}
-    ,include:["suppliers"]} 
-  )
+    where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}},
+    include:["suppliers"],
+    order: ['id', 'DESC']
+  })
     .then(data => {
       res.send(data);
     })
@@ -113,7 +114,9 @@ exports.findAllByCustId = (req, res) => {
   // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
 
   Purchase.findAll({
-    where: { supplierId: id }
+    where: { supplierId: id },
+    include:["suppliers"],
+    order: [['id', 'ASC'],]
   })
     .then(data => {
       res.send(data);

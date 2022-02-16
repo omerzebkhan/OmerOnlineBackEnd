@@ -273,26 +273,4 @@ customer wise sale report
 	
 	
 	
-Reported issues 
 
-1- if pressing enter on sale invoice item  system is not responding(Done)
-2- name field of the items visible should be adjusted (Done)
-3- edit quantity in the sale invoice (Done)
-4- add address in the pdf invoice printing for the customer. (Done)
-5- 	brand image is not showing. (Done)
-6- Item giving error while entring from the web (Done)
-7- Sale Invoice show be able to edit. (Done)
-8- Delete Sale Invoice. (Done)
-9- Edit / Detete Sale Invoice. (Done)
-10-Remove row from the sale Invoice while edit sale.
-11-update Quantity while making invoice. (Done need to be tested)
-12- Edit / Delete Purchse Invoice.
-13- Search in the stock Report Screen.
-14- Sale Report should show the name of the customer. (Done need to be tested)
-15- Sale Return should show Quantity instead of Invoice to return an item.
-16-
-	
-
-
-create editabel table in react
-https://www.geeksforgeeks.org/how-to-create-an-editable-table-with-add-delete-and-search-filter-using-reactjs/

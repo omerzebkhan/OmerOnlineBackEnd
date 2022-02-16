@@ -96,8 +96,9 @@ exports.getSaleRecalculate = async (req, res) => {
   const customerId = req.params.customerId;
   customerId==="0" ? 
   Sale.findAll({
-   where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}
-   ,include:["customers"]} 
+   where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}},
+   include:["customers"],
+   order: ['id', 'DESC']} 
  )
    .then(data => {
      res.send(data);
@@ -112,7 +113,8 @@ exports.getSaleRecalculate = async (req, res) => {
   Sale.findAll({
     where : {"createdAt" : {[Op.between] : [startedDate , endDate ]},"customerId":customerId}
    //condition
-   ,include:["customers"]}
+   ,include:["customers"],
+   order: ['id', 'DESC']} 
  )
    .then(data => {
      res.send(data);
@@ -135,7 +137,9 @@ exports.findAllByCustId = (req, res) => {
   // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
 
   Sale.findAll({
-    where :{customerId : id }
+    where :{customerId : id },
+    include:["customers"],
+    order: [['id', 'ASC'],]
   })
     .then(data => {
       res.send(data);
