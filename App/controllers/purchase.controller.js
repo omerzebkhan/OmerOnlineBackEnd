@@ -94,7 +94,7 @@ exports.findAllByDate = (req, res) => {
   Purchase.findAll({
     where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}},
     include:["suppliers"],
-    order: ['id', 'DESC']
+    order: [['id', 'ASC'],]
   })
     .then(data => {
       res.send(data);
