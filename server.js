@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //app.use(express.static('uploads'));  
 const path = require('path')
 //app.use(express.static('uploads')); 
-app.use('/images', express.static('App/uploads')); 
+app.use('/images', express.static(path.join(__dirname,'App/uploads'))); 
 app.use('/img',express.static(path.join(__dirname, 'App/uploads/brandsImages')));
 //app.use('/', router);
 //app.use('/static', express.static(path.join(__dirname, 'uploads')))

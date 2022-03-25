@@ -111,6 +111,12 @@ module.exports = app => {
   // Retrieve all Item
   router.get("/item/", item.findAll);
 
+  // Retrieve all Item
+  router.get("/itemPurchaseHistory/:itemId", item.purchaseHistory); 
+
+  // Retrieve all Item
+  router.get("/itemSaleHistory/:itemId", item.saleHistory); 
+
   // Retrieve all Item with specific category
   router.get("/itemByCat/:id", item.findAllByCat);
 

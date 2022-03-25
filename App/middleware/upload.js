@@ -4,10 +4,10 @@ const maxSize = 2 * 1024 * 1024;
 
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // console.log(`path should be ${__basedir}${req.body.path}`);
-    // cb(null, __basedir + req.body.path);
-    console.log(`path should be ${req.body.path}`);
-    cb(null, req.body.path);
+    console.log(`path should be ${__basedir}${req.body.path}`);
+    cb(null, __basedir + req.body.path);
+   // console.log(`path should be ${req.body.path}`);
+   // cb(null, req.body.path);
   },
   filename: (req, file, cb) => {
     //console.log("checking parameters");

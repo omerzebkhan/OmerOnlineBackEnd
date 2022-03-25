@@ -101,6 +101,37 @@ exports.findAllByCat = (req, res) => {
     });
 };
 
+// Get purchase History for the given item
+exports.purchaseHistory = async (req,res) => {
+
+  const finalRes = await db.sequelize.query(`
+  select purchases.id,users.name as "supplierName","items".name as "itemName","purchaseDetails"."id" as "InvPurId","purchaseDetails"."price","purchaseDetails"."quantity","purchaseDetails"."createdAt" from "purchaseDetails","purchases","users","items" 
+ where purchases.id ="purchaseDetails"."purchaseInvoiceId" 
+ and users.id = purchases."supplierId"
+ and "purchaseDetails"."itemId" = "items".id
+  and "purchaseDetails"."itemId" = :itemId;`, {
+    replacements: {itemId: req.params.itemId},
+    type: db.sequelize.QueryTypes.SELECT
+  });
+  console.log(finalRes)
+  return res.status(200).json(finalRes)
+}
+
+// Get sale History for the given item
+exports.saleHistory = async (req,res) => {
+
+  const finalRes = await db.sequelize.query(`
+  select sales.id,users.name as "customerName","items".name as "itemName","saleDetails"."id" as "InvSaleId","saleDetails"."price","saleDetails"."quantity","saleDetails"."createdAt" from "saleDetails","sales","users","items" 
+ where sales.id ="saleDetails"."saleInvoiceId" 
+ and users.id = sales."customerId"
+ and "saleDetails"."itemId" = "items".id
+ and "saleDetails"."itemId" = :itemId;`, {
+    replacements: {itemId: req.params.itemId},
+    type: db.sequelize.QueryTypes.SELECT
+  });
+  console.log(finalRes)
+  return res.status(200).json(finalRes)
+}
 
 
 // Update a Item by the id in the request
