@@ -91,7 +91,7 @@ exports.getSaleRecalculate = async (req, res) => {
   const customerId = req.params.customerId;
   var saleProfit ="";
   customerId==="0" ? 
-  saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity-cost) "profit" ,
+  saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity*cost) "profit" ,
   TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name"  from "saleDetails","sales","users" 
   where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id and ("sales"."createdAt" between '${startedDate}' and '${endDate}')
   group by "sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy')
@@ -107,7 +107,7 @@ exports.getSaleRecalculate = async (req, res) => {
     });
   })
   :
-  saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity-cost) "profit" ,
+  saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity*cost) "profit" ,
   TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name"  from "saleDetails","sales","users" 
   where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id and "sales"."customerId" = ${customerId}
   group by "sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy')
