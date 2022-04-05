@@ -83,6 +83,50 @@ exports.getSaleRecalculate = async (req, res) => {
 
 };
 
+ // Retrieve all sales with profit
+ exports.findAllByDateProfit = async(req,res) =>
+ {
+  const startedDate = req.params.sDate;
+  const endDate = req.params.eDate;
+  const customerId = req.params.customerId;
+  var saleProfit ="";
+  customerId==="0" ? 
+  saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity-cost) "profit" ,
+  TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name"  from "saleDetails","sales","users" 
+  where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id and ("sales"."createdAt" between '${startedDate}' and '${endDate}')
+  group by "sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy')
+  order by "saleInvoiceId" DESC;`, {
+   // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+    type: db.sequelize.QueryTypes.SELECT
+  })
+  .catch(err => {
+    console.log(err.message || "Some error Executing sale profit query with date")
+    res.status(500).send({
+      message:
+        err.message || "Some error Executing sale profit query"
+    });
+  })
+  :
+  saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity-cost) "profit" ,
+  TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name"  from "saleDetails","sales","users" 
+  where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id and "sales"."customerId" = ${customerId}
+  group by "sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy')
+  order by "saleInvoiceId" DESC;`, {
+    replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+    type: db.sequelize.QueryTypes.SELECT
+  })
+  .catch(err => {
+    console.log(err.message || "Some error Executing sale profit query with customer")
+    res.status(500).send({
+      message:
+        err.message || "Some error Executing sale profit query with customer"
+    });
+  })
+
+  return res.status(200).json(saleProfit)
+ }
+
+
  // Retrieve all purchase from the database.
  exports.findAllByDate = (req, res) => {
   // const name = req.query.name;
