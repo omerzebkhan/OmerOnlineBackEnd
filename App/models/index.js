@@ -16,7 +16,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
   ////////////////////////local db
-  //operatorsAliases: false,
+ // operatorsAliases: false,
   //strConfig,
   ////////////////////////////////////////////
 
@@ -27,7 +27,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
       require: true, // This will help you. But you will see nwe error
       rejectUnauthorized: false // This line will fix new error
     }
-  },
+ },
   //////////////////////////////////////////////
   pool: {
     max: dbConfig.pool.max,

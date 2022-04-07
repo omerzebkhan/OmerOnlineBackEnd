@@ -18,11 +18,11 @@ else {
   // Pass = "d6549961c432a46605c023c80903b7ccac70040091059484708dbe29ea1534ba";
   // Db = "da9hhbf5iglnut";
   // Dialet = "postgres"; 
-  Host = "ec2-52-3-60-53.compute-1.amazonaws.com";
-  User = "vhfrkametazjdk";
-  Pass = "772da0e515b0829fc25faca16d0bc17ee91095e793e57ffba930a797ed54fb8b";
-  Db = "d40cas9scuggao";
-  Dialet = "postgres"; 
+  // Host = "ec2-52-3-60-53.compute-1.amazonaws.com";
+  // User = "vhfrkametazjdk";
+  // Pass = "772da0e515b0829fc25faca16d0bc17ee91095e793e57ffba930a797ed54fb8b";
+  // Db = "d40cas9scuggao";
+  // Dialet = "postgres"; 
 
 }
 ;

@@ -200,7 +200,7 @@ exports.findAllByCustId = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Sale.findByPk(id)
+  Sale.findByPk(id,{include:["customers"]})
     .then(data => {
       res.send(data);
     })
