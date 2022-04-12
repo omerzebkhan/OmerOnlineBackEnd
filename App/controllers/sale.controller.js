@@ -83,6 +83,33 @@ exports.getSaleRecalculate = async (req, res) => {
 
 };
 
+//Summary by date 
+exports.findAllByDateSummary = async (req,res) =>{
+
+  const startedDate = req.params.sDate;
+  const endDate = req.params.eDate;
+  const customerId = req.params.customerId;
+  var data ="";
+  //customerId==="0" ? 
+  data = await db.sequelize.query(`select "name",sum("saleDetails"."quantity") from "saleDetails","items" 
+  where "saleDetails"."itemId" = items.id and   ("saleDetails"."createdAt" between '${startedDate}' and '${endDate}') 
+  group by "name" order by "name";`, {
+   // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+    type: db.sequelize.QueryTypes.SELECT
+  })
+  .catch(err => {
+    console.log(err.message || "Some error Executing sale summary query with date")
+    res.status(500).send({
+      message:
+        err.message || "Some error Executing sale summary query"
+    });
+  })
+  
+
+  return res.status(200).json(data)
+ }
+
+
  // Retrieve all sales with profit
  exports.findAllByDateProfit = async(req,res) =>
  {

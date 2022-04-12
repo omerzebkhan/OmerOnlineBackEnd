@@ -258,6 +258,8 @@ module.exports = app => {
   // get all Sale by given date
   router.get("/SaleByDate/:sDate/:eDate/:customerId", sale.findAllByDateProfit);
 
+  // get all Sale by given date summary
+  router.get("/saleByDateSummary/:sDate/:eDate", sale.findAllByDateSummary);
 
   // Retrieve sale by its ID
   router.get("/sale/:id", sale.findOne);
