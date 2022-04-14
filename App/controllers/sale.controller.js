@@ -83,7 +83,7 @@ exports.getSaleRecalculate = async (req, res) => {
 
 };
 
-//Summary by date 
+//Summary by date get all items sold within the given date
 exports.findAllByDateSummary = async (req,res) =>{
 
   const startedDate = req.params.sDate;
@@ -94,6 +94,34 @@ exports.findAllByDateSummary = async (req,res) =>{
   data = await db.sequelize.query(`select "name",sum("saleDetails"."quantity") from "saleDetails","items" 
   where "saleDetails"."itemId" = items.id and   ("saleDetails"."createdAt" between '${startedDate}' and '${endDate}') 
   group by "name" order by "name";`, {
+   // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+    type: db.sequelize.QueryTypes.SELECT
+  })
+  .catch(err => {
+    console.log(err.message || "Some error Executing sale summary query with date")
+    res.status(500).send({
+      message:
+        err.message || "Some error Executing sale summary query"
+    });
+  })
+  
+
+  return res.status(200).json(data)
+ }
+
+ //get latest two sale item of the customer
+exports.findlatestSale = async (req,res) =>{
+
+  const itemId = req.params.itemId;
+  const customerId = req.params.customerId;
+  var data ="";
+  //customerId==="0" ? 
+  data = await db.sequelize.query(`select "users"."name","items"."name","saleDetails"."price","saleDetails"."createdAt" from "saleDetails","sales","users","items"
+  where sales.id = "saleDetails"."saleInvoiceId" and "sales"."customerId" = "users".id and "saleDetails"."itemId"="items"."id"
+  and sales."customerId" = ${customerId}
+  and "saleDetails"."itemId" = ${itemId}
+  order by "saleDetails"."createdAt" desc
+  limit 2`, {
    // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
     type: db.sequelize.QueryTypes.SELECT
   })

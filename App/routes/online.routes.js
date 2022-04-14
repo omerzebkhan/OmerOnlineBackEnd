@@ -261,6 +261,9 @@ module.exports = app => {
   // get all Sale by given date summary
   router.get("/saleByDateSummary/:sDate/:eDate", sale.findAllByDateSummary);
 
+  // get latest sale for the customer by item id
+  router.get("/saleByLatestDate/:itemId/:customerId", sale.findlatestSale);
+
   // Retrieve sale by its ID
   router.get("/sale/:id", sale.findOne);
 

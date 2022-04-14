@@ -261,16 +261,22 @@ where a.id = b."customerId" and b."customerId"=c."customerId" and c."customerId"
 select "customerId","name","address",sum(invoicevalue) "saleInvoiceValue",sum("Outstanding") "salesOutstanding" 
 from sales,users where sales."customerId" = users.id group by "customerId","name","address";
 
-------------------------
+---to get the purchase invoice details 
+select * from purchases where id = 107;
+
+
+--compare it withe the purchase invce details
+select sum(quantity * price) from "purchaseDetails" where "purchaseInvoiceId"=107;
+
+--if any difference found then update the valus in the following fields
+update purchases set invoicevalue = 93036 where id = 107;
+
+-------item query
+select quantity,showroom from items where id=479;
+
+update items set quantity =300 ,showroom=300 where id =479;
 
 
 
-SELECT sum(invoicevalue),TO_CHAR("createdAt",\'dd/mm/yyyy\') date FROM "sales" WHERE "createdAt" between (:startDate) and (:endDate) group by TO_CHAR("createdAt",\'dd/mm/yyyy\')
-
-SELECT TO_CHAR("createdAt",'\dd/mm/yyyy\') date,sum(quantity*price) "InvoiceValue",sum((price-cost)*quantity) profit from "saleDetails" WHERE "createdAt" between (:startDate) and (:endDate) group by TO_CHAR("createdAt",\'dd/mm/yyyy\')
-
-customer wise sale report
-	
-	
 	
 
