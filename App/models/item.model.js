@@ -44,6 +44,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         imageUrl: {
             type: Sequelize.STRING
+        },
+        higherlimit: {
+            type: Sequelize.INTEGER
+        },
+        lowerlimit: {
+            type: Sequelize.INTEGER
         }
     });
 

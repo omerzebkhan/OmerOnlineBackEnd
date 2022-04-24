@@ -17,7 +17,7 @@ delete from "purchaseDetails"
 
 
 
-	ALTER TABLE users
+ALTER TABLE users
 ADD COLUMN password character varying(255);
 
 
@@ -275,6 +275,14 @@ update purchases set invoicevalue = 93036 where id = 107;
 select quantity,showroom from items where id=479;
 
 update items set quantity =300 ,showroom=300 where id =479;
+
+
+
+ALTER TABLE items
+ADD COLUMN higherlimit character varying(255),
+ADD COLUMN lowerlimit character varying(255),
+;
+
 
 
 
