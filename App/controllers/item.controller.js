@@ -29,7 +29,9 @@ exports.create = (req, res) => {
     onlineprice: req.body.onlineprice,
     onlinediscount: req.body.onlinediscount,
     showroomprice: req.body.showroomprice,
-    averageprice: req.body.averageprice
+    averageprice: req.body.averageprice,
+    higherlimit:req.body.higherlimit,
+    lowerlimit : req.body.lowerlimit
   };
 
   // Save Tutorial in the database

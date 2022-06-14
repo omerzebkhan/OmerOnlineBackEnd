@@ -85,6 +85,34 @@ exports.findAll = (req, res) => {
       });
   };
 
+  //get latest two sale item of the customer
+exports.findlatestPurchse = async (req,res) =>{
+
+  const itemId = req.params.itemId;
+  
+  var data ="";
+  //customerId==="0" ? 
+  data = await db.sequelize.query(`select items.id,items.name,"purchaseDetails".price,"purchaseDetails"."createdAt" from "purchaseDetails",items where "purchaseDetails"."itemId"=items.id and 
+  "purchaseDetails".id = (
+  select max("id") from "purchaseDetails"
+  where "itemId"= ${itemId}
+  group by "itemId")`, {
+   // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+    type: db.sequelize.QueryTypes.SELECT
+  })
+  .catch(err => {
+    console.log(err.message || "Some error Executing findlatestPurchse query with date")
+    res.status(500).send({
+      message:
+        err.message || "Some error Executing findlatestPurchse query"
+    });
+  })
+  
+
+  return res.status(200).json(data)
+ }
+
+
 // Retrieve all purchase Detail & item table from the database.
 exports.findById = (req, res) => {
   // const name = req.query.name;

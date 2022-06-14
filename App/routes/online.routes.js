@@ -214,6 +214,9 @@ module.exports = app => {
   // Retrieve all Purchase
   router.get("/purchaseDetail/", purchasedetail.findAll);
 
+   // get latest purchse by item id
+   router.get("/purchaseByLatestDate/:itemId", purchasedetail.findlatestPurchse);
+
   //UpdatePurchaseDetail
   router.put("/UpdatePurchaseDetail/:id", purchasedetail.update);
 

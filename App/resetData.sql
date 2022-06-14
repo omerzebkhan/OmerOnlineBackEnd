@@ -1,6 +1,6 @@
 -----------------------------------item reset------------------------------
 select * from items;
-update items set quantity =0,online=0,showroom=0,warehouse=0,averageprice=0;
+update items set quantity =0,online=0,showroom=0,warehouse=0,averageprice=0,onlineprice=0,showroomprice=0,onlinediscount=0;
 
 ----------------------------------User reset-------------------------------
 update users set totalamount =0,outstanding=0;
@@ -121,11 +121,7 @@ INSERT INTO public."accesses"
 	
 	select * from user_roles_id_seq
 	
-	select currval('items_id_seq')
 	
-	select nextval('user_roles_id_seq')
-	
-	ALTER SEQUENCE user_roles_id_seq RESTART WITH 313;
 	
 	
 	
@@ -213,8 +209,16 @@ INSERT INTO users(
 INSERT INTO user_roles(id, "roleId", "userId", "createdAt", "updatedAt") VALUES (3, 6, 1,'2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03');
 
 
-
-
+--------------------------------view and update sequence----------------------------------
+select currval('items_id_seq')
+	
+	select nextval('user_roles_id_seq')
+	
+	ALTER SEQUENCE user_roles_id_seq RESTART WITH 313;
+	
+	
+	
+---------------------------------heruko plan-------------------------------------------	
 
 heruko hosting plan / Purchasing domain will be seperate
 

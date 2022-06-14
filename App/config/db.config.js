@@ -41,8 +41,16 @@ module.exports = {
   // HOST : "localhost",
   // USER : "postgres",
   // PASSWORD : "omer",
+  // DB : "pakBusinessDB",
+  // dialect : "postgres",
+  
+  ////////////////local DB
+  // HOST : "localhost",
+  // USER : "postgres",
+  // PASSWORD : "omer",
   // DB : "testdb",
-  // dialect : "postgres", 
+  // dialect : "postgres",
+
   pool: {
     max: 5, //max: maximum number of connection in pool
     min: 0, //min: minimum number of connection in pool
