@@ -190,7 +190,7 @@ module.exports = app => {
   
 
 // get all Purchase by given date
-  router.get("/purchaseByDate/:sDate/:eDate", purchase.findAllByDate);
+  router.get("/purchaseByDate/:sDate/:eDate/:customerId", purchase.findAllByDate);
   
 
   //Retrive Purchase invoice for given customer

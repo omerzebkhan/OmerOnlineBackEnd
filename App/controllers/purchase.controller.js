@@ -91,20 +91,28 @@ exports.findAllByDate = (req, res) => {
   //const endDate = new Date("2021-09-16 00:00:00");
   const startedDate = req.params.sDate;
   const endDate = req.params.eDate;
+  const customerId = req.params.customerId;
+  customerId==="0" ? 
   Purchase.findAll({
     where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}},
     include:["suppliers"],
     order: [['id', 'ASC'],]
   })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving Purchase."
-      });
-    });
+    .then(data => {res.send(data); })
+    .catch(err => {res.status(500).send({
+       message:err.message || "Some error occurred while retrieving Purchase."
+      });   })
+      :
+  Purchase.findAll({
+    where : {"createdAt" : {[Op.between] : [startedDate , endDate ]},"supplierId":customerId}
+   //condition
+   ,include:["suppliers"],
+   order: [['id', 'ASC'],]
+  } )
+   .then(data => {res.send(data); })
+   .catch(err => {res.status(500).send({
+       message:         err.message || "Some error occurred while retrieving Sale."
+     });   });
 };
 
 // Retrieve all purchase by customer id  from the database.

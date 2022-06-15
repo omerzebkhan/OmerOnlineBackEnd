@@ -199,15 +199,10 @@ exports.findlatestSale = async (req,res) =>{
    include:["customers"],
    order: [['id', 'ASC'],]
   } )
-   .then(data => {
-     res.send(data);
-   })
-   .catch(err => {
-     res.status(500).send({
-       message:
-         err.message || "Some error occurred while retrieving Sale."
-     });
-   })
+   .then(data => {res.send(data);})
+   .catch(err => {res.status(500).send({
+       message:err.message || "Some error occurred while retrieving Sale."
+     }); })
   :
   Sale.findAll({
     where : {"createdAt" : {[Op.between] : [startedDate , endDate ]},"customerId":customerId}
@@ -215,15 +210,10 @@ exports.findlatestSale = async (req,res) =>{
    ,include:["customers"],
    order: [['id', 'ASC'],]
   } )
-   .then(data => {
-     res.send(data);
-   })
-   .catch(err => {
-     res.status(500).send({
-       message:
-         err.message || "Some error occurred while retrieving Sale."
-     });
-   });
+   .then(data => {res.send(data); })
+   .catch(err => {res.status(500).send({
+       message:         err.message || "Some error occurred while retrieving Sale."
+     });   });
   
 
   
