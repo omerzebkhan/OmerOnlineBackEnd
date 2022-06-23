@@ -319,8 +319,12 @@ module.exports = app => {
   // Create a new sale
   router.post("/createSaleInvPay/", salePayment.create);
 
-  // Retrieve purchase invoice payment based on the sale invoice id
+  // Retrieve sale invoice payment based on the sale invoice id
   router.get("/saleInvPay/:id", salePayment.findAllByReffId);
+
+  // Retrieve sale payment history of the customer
+  router.get("/salePayHist/:id", salePayment.findPayHist);
+
 
   ////////////////////////////
   ////Expense////

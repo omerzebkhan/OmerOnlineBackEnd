@@ -50,3 +50,25 @@ exports.findAllByReffId = (req, res) => {
       });
     });
 };
+
+// Retrieve all purchase invoice payment from the database.
+exports.findPayHist = async (req, res) => {
+  const id = req.params.id;
+  // const name = req.query.name;
+  // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
+  var saleProfit ="";
+  saleProfit = await db.sequelize.query(`select users.id as userId,users.name,sales.id as sid,"saleInvoicePayments".id as sipid,"saleInvoicePayments"."createdAt","saleInvoicePayments"."cashPayment","saleInvoicePayments"."bankPayment" from "saleInvoicePayments","users","sales"
+  where "saleInvoicePayments"."reffInvoice" = "sales".id and "sales"."customerId" = "users".id
+  and users.id = ${id}
+  order by "saleInvoicePayments"."createdAt" desc;`, {
+    type: db.sequelize.QueryTypes.SELECT
+  })
+  .catch(err => {
+    console.log(err.message || "Some error Executing sale profit query with customer")
+    res.status(500).send({
+      message:
+        err.message || "Some error Executing sale profit query with customer"
+    });
+  })
+  return res.status(200).json(saleProfit)
+};
