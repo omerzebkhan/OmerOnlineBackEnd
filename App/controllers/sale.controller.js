@@ -11,11 +11,12 @@ exports.create = (req, res) => {
   //   });
   //   return;
   // }
-
+ //console.log(req.body.agentid)
   // Create a Sale
   const sale = {
     reffInvoice: req.body.reffInvoice,
     customerId: req.body.customerId,
+    agentid : req.body.agentid,
     invoicevalue: req.body.invoicevalue,
     totalitems: req.body.totalitems,
     paid: req.body.paid,

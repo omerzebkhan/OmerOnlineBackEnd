@@ -6,6 +6,9 @@ module.exports = (sequelize, Sequelize) => {
         customerId: {
             type: Sequelize.INTEGER
         },
+        agentid: {
+            type: Sequelize.INTEGER
+        },
         invoicevalue: {
             type: Sequelize.DOUBLE
         },
