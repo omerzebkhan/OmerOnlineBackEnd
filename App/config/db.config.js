@@ -37,14 +37,15 @@ module.exports = {
   PASSWORD: "772da0e515b0829fc25faca16d0bc17ee91095e793e57ffba930a797ed54fb8b",
   DB: "d40cas9scuggao",
   dialect: "postgres",
-  ////////////////local DB
+
+  ////////////////local DB  N&A Traders
   // HOST : "localhost",
   // USER : "postgres",
   // PASSWORD : "omer",
   // DB : "pakBusinessDB",
   // dialect : "postgres",
   
-  ////////////////local DB
+  ////////////////local DB Test
   // HOST : "localhost",
   // USER : "postgres",
   // PASSWORD : "omer",

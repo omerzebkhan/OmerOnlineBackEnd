@@ -127,7 +127,8 @@ exports.saleHistory = async (req,res) => {
  where sales.id ="saleDetails"."saleInvoiceId" 
  and users.id = sales."customerId"
  and "saleDetails"."itemId" = "items".id
- and "saleDetails"."itemId" = :itemId;`, {
+ and "saleDetails"."itemId" = :itemId
+ order by sales.id DESC;`, {
     replacements: {itemId: req.params.itemId},
     type: db.sequelize.QueryTypes.SELECT
   });

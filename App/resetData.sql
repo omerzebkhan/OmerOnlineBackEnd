@@ -49,7 +49,8 @@ INSERT INTO public.users(
 insert into user_roles values ('2021-09-21 21:10:49.924+03','2021-09-21 21:10:49.924+03',7,9)
 
 
-
+-----------------------------------------Passwords---------
+$2a$08$szIjLpoTvzl9gtCJ0bB1iuCEOtO.xms3t2F9wMC5bzpWtDu1nfXFG  =1
 
 
 
@@ -216,6 +217,8 @@ select currval('items_id_seq')
 	
 	ALTER SEQUENCE user_roles_id_seq RESTART WITH 313;
 	
+	SELECT SETVAL('users_id_seq', (SELECT MAX(id) FROM users));
+	
 	
 	
 ---------------------------------heruko plan-------------------------------------------	
@@ -286,6 +289,170 @@ ALTER TABLE items
 ADD COLUMN higherlimit character varying(255),
 ADD COLUMN lowerlimit character varying(255),
 ;
+
+ALTER TABLE sales
+ADD COLUMN agentid character varying(255);
+
+
+ALTER TABLE sales
+ALTER COLUMN agentid TYPE INT 
+USING agentid::integer;
+
+--------------------------------------------------STOCK value with last purchase-----------------------------
+	select items.id,items.name,items.code,items.description,items.quantity,items.showroom,items.averageprice,lp.price as lastpurchase
+		from items,(
+		select * from "purchaseDetails",(
+	 select max("id") as id ,"itemId" as item from "purchaseDetails"
+  group by "itemId") m
+  where "purchaseDetails".id = m.id) lp
+		where items.id = lp."itemId"
+		and items.name like '%test%'
+
+
+
+
+-----------------------------------------------Sale invoice profit with the last purchase value -----------------------
+
+select "saleDetails".id,"saleDetails"."saleInvoiceId","saleDetails"."itemId","saleDetails".quantity,"saleDetails".price,"saleDetails".cost,
+lp.price,
+(("saleDetails".price-"saleDetails".cost)*"saleDetails".quantity) as "AvgProfit",
+((lp.price-"saleDetails".cost)*"saleDetails".quantity) as "LastPurchaseProfit"
+from "saleDetails",(select * from "purchaseDetails",(
+	 select max("id") as id ,"itemId" as item from "purchaseDetails"
+  group by "itemId") m
+  where "purchaseDetails".id = m.id) lp
+  where "saleDetails"."itemId" = lp."itemId"
+  and "saleDetails"."saleInvoiceId"=29
+
+
+
+---------------------------------------------------plsql----------------------------------------------------
+
+do 
+$$
+declare
+   film_count integer;
+begin 
+   select count(*) into film_count
+   from users;
+   raise notice 'The number of films: %', film_count;
+end;
+$$
+
+
+
+do $$ 
+declare
+   created_at time := now();
+begin 
+   raise notice '%', created_at;
+   perform pg_sleep(10);
+   raise notice '%', created_at;
+end $$;
+
+
+
+do $$ 
+declare
+	titles text default '';
+	rec_users  record;
+	cur_users cursor 
+		 for select id, name,address
+		 from users;
+begin 
+    -- open the cursor
+   open cur_users;
+	
+   loop
+    -- fetch row into the film
+      fetch cur_users into rec_users;
+    -- exit when no more row to fetch
+      exit when not found;
+
+    -- build the output
+      if rec_users.title like '%ful%' then 
+         titles := titles || ',' || rec_users.name || ':' || rec_users.address;
+      end if;
+   end loop;
+   --print the records
+   raise notice 'The recoreds: %', titles;
+  
+   -- close the cursor
+   close cur_films;
+end $$;
+
+
+
+
+
+do $$ 
+declare
+	titles text default '';
+	rec_users  record;
+	cur_users cursor 
+		 for select name,address
+		 from users where address is not null;
+begin 
+    -- open the cursor
+   open cur_users;
+	
+   loop
+    -- fetch row into the film
+      fetch cur_users into rec_users;
+    -- exit when no more row to fetch
+     exit when not found;
+
+    -- build the output
+      --if rec_users.name like '%o%' then 
+         titles := titles || ',' || rec_users.name || ':' || NULLIF(rec_users.address,' ');
+      --end if;
+   end loop;
+   --print the records
+   raise notice 'The recoreds: %', titles;
+  
+   -- close the cursor
+   close cur_users;
+end $$;
+
+
+
+
+do $$ 
+declare
+	titles text default '';
+	rec_users  record;
+	current_stock = 100;
+	cost = 0;
+	qty = 0;
+	cur_users cursor 
+		 for select *
+		 from "purchaseDetails" where "itemId"=1;
+begin 
+    -- open the cursor
+   open cur_users;
+	
+   loop
+    -- fetch row into the film
+      fetch cur_users into rec_users;
+    -- exit when no more row to fetch
+     exit when not found;
+
+    -- build the output
+      --if rec_users.name like '%o%' then 
+         titles := titles || e'\n' || rec_users."purchaseInvoiceId" || ':' || rec_users.quantity;
+      --end if;
+   end loop;
+   --print the records
+   raise notice 'The recoreds: %', titles;
+  
+   -- close the cursor
+   close cur_users;
+end $$;
+
+
+
+
+
 
 
 
