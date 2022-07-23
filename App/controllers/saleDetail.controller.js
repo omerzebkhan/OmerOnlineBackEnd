@@ -18,7 +18,8 @@ exports.create = (req, res) => {
     itemId: req.body.itemName,
     quantity: req.body.quantity,
     price: req.body.price,
-    cost: req.body.cost 
+    cost: req.body.cost,
+    srno:req.body.srno 
   };
   console.log(`
   sale invoice id = ${req.body.saleInvoiceId}
@@ -26,7 +27,8 @@ exports.create = (req, res) => {
   item id = ${saleDetail.itemId}
   quantity =${saleDetail.quantity} 
   price  = ${saleDetail.price}
-  cost = ${saleDetail.cost}`
+  cost = ${saleDetail.cost}
+  srno = ${saleDetail.srno}`
   )
 
   // Save sale Detail in the database
@@ -67,7 +69,10 @@ exports.findById = (req, res) => {
   const id = req.params.id;
   SaleDetail.findAll({
     include:["items"],
-     where: {saleInvoiceId: id}
+     where: {saleInvoiceId: id},
+     order: [
+      ['srno', 'ASC'],
+  ],
   }
   )
     .then(data => {

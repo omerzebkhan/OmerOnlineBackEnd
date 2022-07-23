@@ -19,6 +19,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         cost:{
             type :Sequelize.DOUBLE
+        },
+        srno: { 
+            type: Sequelize.INTEGER
         }
         
     });
