@@ -136,6 +136,21 @@ exports.saleHistory = async (req,res) => {
   return res.status(200).json(finalRes)
 }
 
+// Get sale Return for the given item
+exports.returnHistory = async (req,res) => {
+
+  const finalRes = await db.sequelize.query(`
+  select "saleInvoiceId","saleReturns".id,name,"saleReturns".quantity,"saleReturns"."createdAt"
+from "saleReturns","items"
+where "saleReturns"."itemId" = items.id
+and "saleReturns"."itemId" = :itemId
+order by "saleInvoiceId" DESC;`, {
+    replacements: {itemId: req.params.itemId},
+    type: db.sequelize.QueryTypes.SELECT
+  });
+  console.log(finalRes)
+  return res.status(200).json(finalRes)
+}
 
 // Update a Item by the id in the request
 exports.update = (req, res) => {
