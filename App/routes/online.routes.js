@@ -120,6 +120,9 @@ module.exports = app => {
   // Retive all return Item
   router.get("/itemReturnHistory/:itemId", item.returnHistory); 
 
+  // Retive all Item within higher and lower limit
+  router.get("/itemLimitReport/", item.limitReport); 
+
 
   // Retrieve all Item with specific category
   router.get("/itemByCat/:id", item.findAllByCat);

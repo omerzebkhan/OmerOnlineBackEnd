@@ -298,6 +298,11 @@ ALTER TABLE sales
 ALTER COLUMN agentid TYPE INT 
 USING agentid::integer;
 
+
+ALTER TABLE saleDetails
+ADD COLUMN srno integer;
+
+
 --------------------------------------------------STOCK value with last purchase-----------------------------
 	select items.id,items.name,items.code,items.description,items.quantity,items.showroom,items.averageprice,lp.price as lastpurchase
 		from items,(
@@ -323,6 +328,13 @@ from "saleDetails",(select * from "purchaseDetails",(
   where "purchaseDetails".id = m.id) lp
   where "saleDetails"."itemId" = lp."itemId"
   and "saleDetails"."saleInvoiceId"=29
+  
+  
+  
+------------------------------lower limit report------------------------------
+select a.id,a.name,a.quantity,a.lowerlimit,a.higerlimit from items a,items b 
+	where a.id = b.id
+	and (a.quantity >= b.lowerlimit and a.quantity <= b.higherlimit)
 
 
 
@@ -452,6 +464,137 @@ end $$;
 
 
 
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+check the N&M sale details and find where the profit is zero.
+these invoices will have issue because there sale was entered before purchase.
+purchase invoice was edited after the sale 
+
+
+there is a bug in sale / purchase invoice where u change the item code.
+
+add agentid in the sales db
+AR screen should show the details of all the payment made by the user
+change the average cost formula in the purchase invoice ............waiting for nabeels feedback (09-July-2022)
+sale return in the stock report
+
+Done
+
+
+
+
+
+
+
+account recievable if edited whole amount is comming back in outstanding   .....need to simulate this case in local setup
+edit the existing AP / AR invoices.
+AP screen should show the details of all the payment made by the user   .
+AR/Ap screen should show the invoice details also .................
+Restricted Access for the sale agent.
+add summary in the purchase report view.
+return item is updating the outsting to the same invoice value .................... test is working fine as per local test.
+add agent wise report report in gui.
+add last purchase to the stock report
+monthly sale report trend with the graph
+Order generation report based on the low and high value of the product		..................... Done not uploaded
+add errors of the api to the db.    --------In progress (on hold)
+agent filter in sale report.
+area wise filter in sale report.
+A/R sale return of the specific invoice.   --- In progress (on hold)
+summary of purchase history / Sale History / return history in Stock view.
+summary of purchase report 
+total return report In progress()
+total edit report  (need to check what to show in this how to know how much amount is changed)
+Add total return/return item qty/ purchase item qty/sale item qty in the balance sheet 
+
+
+
+
+apperrors
+id,userid,screenName,function,description,comments
+
+
+
+
+
+   
+
+
+
+Sales 
+
+golden perl cream new  invest1 
+
+
+
+
+
+
+to calculate the cost of an item
+1- check the current stock value for the given date by sale - purchase till that day.
+2- check the total of the invoice before the given day till it reach the stock value range calculate above and calculate the average cost by 
+sum of the invoices cost / sum of the 
+
+
+
+-------------------------------------------------------N&A Trading fixing --------------------------------------------------
+
+N&M 
+
+147	227	invest 1	84	26100	2022-06-25T15:28:15.245Z
+
+N&A
+
+14	N&M Traders	60	19620	621.840	01/07/2022
+
+
+
+
+
+29	N&M Traders	12	6660	258.000	14/07/2022  Del 
+126	2022-07-14T16:33:16.502Z	29	tresme shampoo keratin 700ml	555	qty = 12	533.5	258.000
+before deletion
+quantity = 192
+after deletion 
+quantity = 204
+
+Stock value before deletion 
+Total Item Quantity = 9804
+Total Records = 653
+Inventory Value = 2458225.224
+
+Stock value after deletion
+Total Item Quantity = 9816
+Total Records = 653
+Inventory Value = 2464627.224
+
+
+
+28	N&M Traders	48	20160	768.000	14/07/2022  Del
+125	2022-07-14T16:31:37.469Z	28	sunsilk shampoo black thiland 320ml	420	48	404	768.000
+before deletion
+quantity = -24
+after deletion 
+quantity = 
+
+stock value before deletion
+Total Item Quantity = 9816
+Total Records = 653
+Inventory Value = 2464627.224
+
+stock value after deletion
+Total Item Quantity = 9864
+Total Records = 653
+Inventory Value = 2484019.224
+
+
+27	N&M Traders	12	6660	258.000	09/07/2022
+26	N&M Traders	48	20160	768.000	09/07/2022
+
+
+**********************************************************************************
+update items set quantity = 24 where id = 409;
 
 
 

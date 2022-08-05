@@ -152,6 +152,22 @@ order by "saleInvoiceId" DESC;`, {
   return res.status(200).json(finalRes)
 }
 
+// Get items for the higer and lower limits
+exports.limitReport = async (req,res) => {
+
+  const finalRes = await db.sequelize.query(`
+  select a.id,a.name,a.quantity,a.lowerlimit,a.higherlimit from items a,items b 
+	where a.id = b.id
+	and (a.quantity >= CAST (b.lowerlimit AS INTEGER) and a.quantity <= CAST (b.higherlimit AS INTEGER))
+  order by a.id asc;`, {
+    replacements: {itemId: req.params.itemId},
+    type: db.sequelize.QueryTypes.SELECT
+  });
+  console.log(finalRes)
+  return res.status(200).json(finalRes)
+}
+
+
 // Update a Item by the id in the request
 exports.update = (req, res) => {
 
