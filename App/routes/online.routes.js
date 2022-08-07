@@ -21,13 +21,13 @@ const expense = require("../controllers/expense.controller");
 const cart = require("../controllers/cart.controller");
 const cartDetail = require("../controllers/cartDetail.controller");
 
-const {authJwt} = require("../middleware");
+const { authJwt } = require("../middleware");
 const controller1 = require("../controllers/auth.controller");
 const { verifySignUp } = require("../middleware");
 
 module.exports = app => {
 
-  app.use(function(req, res, next) {
+  app.use(function (req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
       "x-access-token, Origin, Content-Type, Accept"
@@ -42,18 +42,18 @@ module.exports = app => {
   /////CART//////
   ////////////////
   // Create a new Cart
-  router.post("/cart/",[authJwt.verifyToken, authJwt.isAdmin], cart.create);
+  router.post("/cart/", [authJwt.verifyToken, authJwt.isAdmin], cart.create);
 
   // Retrieve all Brand
   router.get("/brand/", brand.findAll);
 
-  
+
   ////////////////
   /////CART DETAIL//////
   ////////////////
   // Create a new Cart Detail
-  
-  router.get("/cartDetailByCust/:id",cartDetail.findCartDetailByCust);
+
+  router.get("/cartDetailByCust/:id", cartDetail.findCartDetailByCust);
 
   // Update a cart Detail with id
   router.put("/cartDetail/:id", cartDetail.update);
@@ -63,7 +63,7 @@ module.exports = app => {
   /////BRNAD//////
   ////////////////
   // Create a new Brand
-  router.post("/brand/",[authJwt.verifyToken, authJwt.isAdmin], brand.create);
+  router.post("/brand/", [authJwt.verifyToken, authJwt.isAdmin], brand.create);
 
   // Retrieve all Brand
   router.get("/brand/", brand.findAll);
@@ -75,7 +75,7 @@ module.exports = app => {
   ////CATEGORY////
   ////////////////
   // Create a new Category
-  router.post("/Category/",[authJwt.verifyToken, authJwt.isAdmin], category.create);
+  router.post("/Category/", [authJwt.verifyToken, authJwt.isAdmin], category.create);
 
   // Retrieve all Category
   router.get("/Category/", category.findAll);
@@ -87,7 +87,7 @@ module.exports = app => {
   //SUB CATEGORY//
   ////////////////
   // Create a new SubCategory
-  router.post("/subCategory/",[authJwt.verifyToken, authJwt.isAdmin],subcategory.create);
+  router.post("/subCategory/", [authJwt.verifyToken, authJwt.isAdmin], subcategory.create);
 
   // Retrieve all SubCategory
   router.get("/subCategory/", subcategory.findAll);
@@ -103,7 +103,7 @@ module.exports = app => {
   //////ITEM//////
   ////////////////
   // Create a new Item
-  router.post("/item/",[authJwt.verifyToken, authJwt.isAdmin], item.create);
+  router.post("/item/", [authJwt.verifyToken, authJwt.isAdmin], item.create);
 
   // Retrieve specific Item
   router.get("/item/:id", item.findOne);
@@ -112,16 +112,16 @@ module.exports = app => {
   router.get("/item/", item.findAll);
 
   // Retrieve all Purchase Item
-  router.get("/itemPurchaseHistory/:itemId", item.purchaseHistory); 
+  router.get("/itemPurchaseHistory/:itemId", item.purchaseHistory);
 
   // Retrieve all Sale Item
-  router.get("/itemSaleHistory/:itemId", item.saleHistory); 
+  router.get("/itemSaleHistory/:itemId", item.saleHistory);
 
   // Retive all return Item
-  router.get("/itemReturnHistory/:itemId", item.returnHistory); 
+  router.get("/itemReturnHistory/:itemId", item.returnHistory);
 
   // Retive all Item within higher and lower limit
-  router.get("/itemLimitReport/", item.limitReport); 
+  router.get("/itemLimitReport/", item.limitReport);
 
 
   // Retrieve all Item with specific category
@@ -131,30 +131,25 @@ module.exports = app => {
   // Update a Item with id
   router.put("/item/:id", item.update);
 
- 
-  // Update Item purchase invoice values
- // router.put("/itemUpdateStock/:id", item.updateStock);
 
- 
+  // Update Item purchase invoice values
+  // router.put("/itemUpdateStock/:id", item.updateStock);
+
+
 
   // Update Item Stock a Item for stock values
   router.put("/itemUpdateStockValue/:id", item.updateStockValue);
-
-  
-
-
-
 
   ////////////////
   //////USER//////
   ////////////////
   // Create a new User
-  router.post("/user/",[
+  router.post("/user/", [
     verifySignUp.checkDuplicateUsernameOrEmail,
     verifySignUp.checkRolesExisted,
-    authJwt.verifyToken, 
+    authJwt.verifyToken,
     authJwt.isAdmin], user.create);
-  
+
   // Retrieve all Item
   router.get("/user/", user.findAll);
 
@@ -165,13 +160,13 @@ module.exports = app => {
   router.put("/user/:id", user.update);
 
   // Create a new Role
-  router.post("/role/",[authJwt.verifyToken, authJwt.isAdmin], role.create);
-  
+  router.post("/role/", [authJwt.verifyToken, authJwt.isAdmin], role.create);
+
   // Retrieve all Role
   router.get("/role/", role.findAll);
 
   // Create a new Role
-  router.post("/userRole/",[authJwt.verifyToken, authJwt.isAdmin], userRole.create);
+  router.post("/userRole/", [authJwt.verifyToken, authJwt.isAdmin], userRole.create);
 
   // Update user Role
   router.put("/userRole/:id", userRole.update);
@@ -179,12 +174,12 @@ module.exports = app => {
 
 
 
-  
+
   ////////////////
   ////PURCHASE////
   ////////////////
   // Create a new Purchase
-  router.post("/purchase/",[authJwt.verifyToken, authJwt.isAdminOrPurchaseAgent],purchase.create);
+  router.post("/purchase/", [authJwt.verifyToken, authJwt.isAdminOrPurchaseAgent], purchase.create);
 
   // Retrieve all Purchase
   router.get("/purchase/", purchase.findAll);
@@ -194,11 +189,11 @@ module.exports = app => {
 
   // Delete Purchase with purchase id
   router.delete("/purchase/:id", purchase.delete);
-  
 
-// get all Purchase by given date
+
+  // get all Purchase by given date
   router.get("/purchaseByDate/:sDate/:eDate/:customerId", purchase.findAllByDate);
-  
+
 
   //Retrive Purchase invoice for given customer
   router.get("/purchaseByCustId/:id", purchase.findAllByCustId);
@@ -206,14 +201,14 @@ module.exports = app => {
   // Update a Purchase with id
   router.put("/updatePurchase/:id", purchase.update);
 
-   // Recalculate the Sale based on the invoice ID
-   router.put("/getPurchaseRecalculate/:id", purchase.getPurchaseRecalculate);
+  // Recalculate the Sale based on the invoice ID
+  router.put("/getPurchaseRecalculate/:id", purchase.getPurchaseRecalculate);
 
   ///////////////////////
   ////PURCHASE DETAIL////
   //////////////////////
   // Create a new Purchase
-  router.post("/purchaseDetail/",[authJwt.verifyToken, authJwt.isAdmin], purchasedetail.create);
+  router.post("/purchaseDetail/", [authJwt.verifyToken, authJwt.isAdmin], purchasedetail.create);
 
   // Retrieve all Purchase Details based on the purchase invoice id
   router.get("/purchaseDetailById/:id", purchasedetail.findById);
@@ -221,8 +216,8 @@ module.exports = app => {
   // Retrieve all Purchase
   router.get("/purchaseDetail/", purchasedetail.findAll);
 
-   // get latest purchse by item id
-   router.get("/purchaseByLatestDate/:itemId", purchasedetail.findlatestPurchse);
+  // get latest purchse by item id
+  router.get("/purchaseByLatestDate/:itemId", purchasedetail.findlatestPurchse);
 
   //UpdatePurchaseDetail
   router.put("/UpdatePurchaseDetail/:id", purchasedetail.update);
@@ -248,7 +243,7 @@ module.exports = app => {
   ////Sale Inovice////
   ///////////////////
   // Create a new Sale
-  router.post("/sale/",[authJwt.verifyToken, authJwt.isAdmin], sale.create);
+  router.post("/sale/", [authJwt.verifyToken, authJwt.isAdmin], sale.create);
 
   // Retrieve all Sale
   router.get("/sale/", sale.findAll);
@@ -256,9 +251,9 @@ module.exports = app => {
   // Delete Sale with sale id
   router.delete("/sale/:id", sale.delete);
 
-// Retrieve all Sale Account Recievable
+  // Retrieve all Sale Account Recievable
   router.get("/saleAR/", sale.findAllAR);
-  
+
   // Recalculate the Sale based on the invoice ID
   router.put("/getSaleRecalculate/:id", sale.getSaleRecalculate);
 
@@ -286,13 +281,13 @@ module.exports = app => {
   // Update a Sale with id
   router.put("/sale/:id", sale.update);
 
-  
+
 
   ///////////////////
   ////SALE DETAIL////
   //////////////////
   // Create a new sale
-  router.post("/saleDetail/",[authJwt.verifyToken, authJwt.isAdmin], saledetail.create);
+  router.post("/saleDetail/", [authJwt.verifyToken, authJwt.isAdmin], saledetail.create);
 
   // Retrieve all sale
   router.get("/saleDetail/", saledetail.findAll);
@@ -317,7 +312,13 @@ module.exports = app => {
   ////SALE Return////
   //////////////////
   // Create a new sale
-  router.post("/saleReturn/",[authJwt.verifyToken, authJwt.isAdmin], saleReturn.create);
+  router.post("/saleReturn/", [authJwt.verifyToken, authJwt.isAdmin], saleReturn.create);
+
+  // get all Sale Return by given date
+  router.get("/saleReturnByDate/:sDate/:eDate", saleReturn.findSaleReturnByDate);
+
+//getSaleReturnDetailByInvoice
+router.get("/saleReturnDetailByInvoice/:id", saleReturn.findSaleReturnDetailByInvoice);
 
   ////////////////////////////
   ////SALE Invoice Payment////
@@ -346,7 +347,7 @@ module.exports = app => {
   ////////////////
 
   // get Balance Sheet
-  router.get("/BalanceSheetByDate/:sDate/:eDate", report.findBalanceSheet);  
+  router.get("/BalanceSheetByDate/:sDate/:eDate", report.findBalanceSheet);
 
 
   ////////////////
@@ -380,7 +381,7 @@ module.exports = app => {
 
   // upload file to Amazon S3
   router.post("/uploadS3", controller.uploadS3);
-  
+
   // get all files list
   router.get("/get/files", controller.getListFiles);
   // get specific file
@@ -388,9 +389,9 @@ module.exports = app => {
   // get single file 
   router.post("/get/image", controller.getImage);
 
-  
+
   app.use('/online/', router);
 
 
-  
+
 };

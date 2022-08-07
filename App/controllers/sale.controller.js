@@ -183,7 +183,7 @@ exports.findlatestSale = async (req,res) =>{
  }
 
 
- // Retrieve all purchase from the database.
+ // Retrieve all sale from the database.
  exports.findAllByDate = (req, res) => {
   // const name = req.query.name;
   // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
