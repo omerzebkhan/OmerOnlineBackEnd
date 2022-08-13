@@ -59,7 +59,13 @@ exports.findAllAR = async (req, res) => {
   // const name = req.query.name;
   // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
 
-  const saleAR = await db.sequelize.query('select * from (select "customerId","name","address",sum(invoicevalue) "saleInvoiceValue",sum(sales."Outstanding") "salesOutstanding" from sales,users where sales."customerId" = users.id group by "customerId","name","address") sa where "salesOutstanding" >0', {
+  const saleAR = await db.sequelize.query(
+    `select * from (select "customerId",users."name",users."address",agent.name as agentname,sum(invoicevalue) "saleInvoiceValue",sum(sales."Outstanding") "salesOutstanding" 
+    from sales,users,users as agent
+    where sales."customerId" = users.id and agentid = agent.id 
+    group by "customerId",users."name",users."address",agent.name,"agentid") sa 
+    where "salesOutstanding" >0;`
+    , {
     type: db.sequelize.QueryTypes.SELECT
   });
 

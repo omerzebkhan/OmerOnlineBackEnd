@@ -474,16 +474,8 @@ purchase invoice was edited after the sale
 
 there is a bug in sale / purchase invoice where u change the item code.
 
-add agentid in the sales db
-AR screen should show the details of all the payment made by the user
-change the average cost formula in the purchase invoice ............waiting for nabeels feedback (09-July-2022)
-sale return in the stock report
-
+summary of purchase report  
 Done
-
-
-
-
 
 
 
@@ -492,21 +484,21 @@ edit the existing AP / AR invoices.
 AP screen should show the details of all the payment made by the user   .
 AR/Ap screen should show the invoice details also .................
 Restricted Access for the sale agent.
-add summary in the purchase report view.
 return item is updating the outsting to the same invoice value .................... test is working fine as per local test.
 add agent wise report report in gui.
 add last purchase to the stock report
 monthly sale report trend with the graph
-Order generation report based on the low and high value of the product		..................... Done not uploaded
 add errors of the api to the db.    --------In progress (on hold)
-agent filter in sale report.
 area wise filter in sale report.
 A/R sale return of the specific invoice.   --- In progress (on hold)
-summary of purchase history / Sale History / return history in Stock view.
-summary of purchase report 
-total return report In progress()
-total edit report  (need to check what to show in this how to know how much amount is changed)
+A/R outstanding invoice should be order by createdAt desc ------In progress
+summary of purchase history / Sale History / return history in Stock view.     ----------------------------------In progress (on hold)
+total edit report  (need to check what to show in this how to know how much amount is changed) (store old and new values in the edit table)
 Add total return/return item qty/ purchase item qty/sale item qty in the balance sheet 
+Add old history screen for the payments -----(Nabeel will provide wireframe)
+add connect error message on the screens
+check error in the console when clicking payment details on AR screen
+
 
 
 
