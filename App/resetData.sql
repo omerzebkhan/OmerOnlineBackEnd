@@ -337,6 +337,27 @@ select a.id,a.name,a.quantity,a.lowerlimit,a.higerlimit from items a,items b
 	and (a.quantity >= b.lowerlimit and a.quantity <= b.higherlimit)
 
 
+---------------------------------top selling item -------------------------------
+
+select coalesce(p.totalpurchase,null,0) as totalpurchase,
+coalesce(s.totalsale,null,0) as totalsale,coalesce(s.saleprice,null,0) as saleprice,coalesce(s.cost,null,0) as cost,coalesce(s.profit,null,0) as profit,name,averageprice from 
+--select count(*) from 
+items
+left outer join 
+(select sum("saleDetails".quantity) as totalsale,sum(price)/count(*) as saleprice,sum(cost)/count(*) as cost ,sum(price)/count(*)-sum(cost)/count(*) as profit, "itemId"
+from "saleDetails"
+--where  "saleDetails"."createdAt" between '2022-04-20' and '2022-04-23'
+group by "itemId"
+) as s
+on items.id = s."itemId"
+left outer join 
+(select sum("purchaseDetails".quantity) as totalpurchase,"itemId"
+from "purchaseDetails"
+--where  "purchaseDetails"."createdAt" between '2022-04-20' and '2022-04-23'
+group by "itemId"
+) as p on items.id = p."itemId"
+order by s.totalsale asc;
+
 
 ---------------------------------------------------plsql----------------------------------------------------
 
@@ -475,6 +496,9 @@ purchase invoice was edited after the sale
 there is a bug in sale / purchase invoice where u change the item code.
 
 summary of purchase report  
+AR screen will have agent name and filter to search with agent name.
+summary of purchase history / Sale History / return history in Stock view.    
+A/R add Summary for the selected filter 
 Done
 
 
@@ -491,8 +515,8 @@ monthly sale report trend with the graph
 add errors of the api to the db.    --------In progress (on hold)
 area wise filter in sale report.
 A/R sale return of the specific invoice.   --- In progress (on hold)
+A/R add Summary for the selected filter ------ In progress 
 A/R outstanding invoice should be order by createdAt desc ------In progress
-summary of purchase history / Sale History / return history in Stock view.     ----------------------------------In progress (on hold)
 total edit report  (need to check what to show in this how to know how much amount is changed) (store old and new values in the edit table)
 Add total return/return item qty/ purchase item qty/sale item qty in the balance sheet 
 Add old history screen for the payments -----(Nabeel will provide wireframe)
