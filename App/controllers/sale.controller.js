@@ -63,8 +63,8 @@ exports.findAllAR = async (req, res) => {
     `select * from (select "customerId",users."name",users."address",agent.name as agentname,sum(invoicevalue) "saleInvoiceValue",sum(sales."Outstanding") "salesOutstanding" 
     from sales,users,users as agent
     where sales."customerId" = users.id and agentid = agent.id 
-    and salesOutstanding >0
-    group by "customerId",users."name",users."address",agent.name,"agentid") sa;`
+    group by "customerId",users."name",users."address",agent.name,"agentid") sa
+    where "salesOutstanding" >0;`
     , {
     type: db.sequelize.QueryTypes.SELECT
   });
