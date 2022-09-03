@@ -50,6 +50,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         lowerlimit: {
             type: Sequelize.INTEGER
+        },
+        investone: {
+            type: Sequelize.INTEGER
         }
     });
 
