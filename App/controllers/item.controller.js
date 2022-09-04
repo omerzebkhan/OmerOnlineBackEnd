@@ -175,7 +175,7 @@ exports.sellingItemTrend = async (req, res) => {
   var data = "";
   //customerId==="0" ? 
   data = await db.sequelize.query(`select coalesce(p.totalpurchase,null,0) as totalpurchase,
-  coalesce(s.totalsale,null,0) as totalsale,coalesce(s.saleprice,null,0) as saleprice,coalesce(s.cost,null,0) as cost,coalesce(s.profit,null,0) as profit,name,averageprice from 
+  coalesce(s.totalsale,null,0) as totalsale,coalesce(s.saleprice,null,0) as saleprice,coalesce(s.cost,null,0) as cost,coalesce(s.profit,null,0) as profit,name,averageprice,quantity from 
   items
   left outer join 
   (select sum("saleDetails".quantity) as totalsale,sum(price)/count(*) as saleprice,sum(cost)/count(*) as cost ,sum(price)/count(*)-sum(cost)/count(*) as profit, "itemId"
