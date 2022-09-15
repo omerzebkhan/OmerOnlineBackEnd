@@ -155,11 +155,45 @@ order by "saleInvoiceId" DESC;`, {
 // Get items for the higer and lower limits
 exports.limitReport = async (req, res) => {
 
+  // const finalRes = await db.sequelize.query(`
+  // select a.id,a.name,a.quantity,a.lowerlimit,a.higherlimit from items a,items b 
+  // where a.id = b.id
+  // and (a.quantity <= CAST (b.lowerlimit AS INTEGER) or a.quantity >= CAST (b.higherlimit AS INTEGER))
+  // order by a.id asc;`
   const finalRes = await db.sequelize.query(`
-  select a.id,a.name,a.quantity,a.lowerlimit,a.higherlimit from items a,items b 
-	where a.id = b.id
-	and (a.quantity <= CAST (b.lowerlimit AS INTEGER) or a.quantity >= CAST (b.higherlimit AS INTEGER))
-  order by a.id asc;`, {
+  select items.id,items.name,items.quantity,ts.sum as totalsale,ts30days.sum as totalsale30days,ts90days.sum as totalsale90days,ts180days.sum as totalsale180days,ts365days.sum as totalsale365days
+--select items.name,items.quantity,ts.sum as totalsale,ts90days.sum as totalsale90days
+from items
+left outer join 
+(select sum("saleDetails".quantity),"itemId" 
+from "saleDetails"
+group by "itemId") ts
+on items.id=ts."itemId"
+left outer join 
+(select sum("saleDetails".quantity),"itemId" 
+from "saleDetails"
+where "createdAt" > CURRENT_DATE - INTERVAL '30' day
+group by "itemId") ts30days
+on items.id=ts30days."itemId"
+left outer join 
+(select sum("saleDetails".quantity),"itemId" 
+from "saleDetails"
+where "createdAt" > CURRENT_DATE - INTERVAL '90' day
+group by "itemId") ts90days
+on items.id=ts90days."itemId"
+left outer join 
+(select sum("saleDetails".quantity),"itemId" 
+from "saleDetails"
+where "createdAt" > CURRENT_DATE - INTERVAL '180' day
+group by "itemId") ts180days
+on items.id=ts180days."itemId"
+left outer join 
+(select sum("saleDetails".quantity),"itemId" 
+from "saleDetails"
+where "createdAt" > CURRENT_DATE - INTERVAL '365' day
+group by "itemId") ts365days
+on items.id=ts365days."itemId"
+;`, {
     replacements: { itemId: req.params.itemId },
     type: db.sequelize.QueryTypes.SELECT
   });
@@ -171,7 +205,7 @@ exports.limitReport = async (req, res) => {
 exports.sellingItemTrend = async (req, res) => {
   const startedDate = req.params.sDate;
   const endDate = req.params.eDate;
- 
+
   var data = "";
   //customerId==="0" ? 
   data = await db.sequelize.query(`select coalesce(p.totalpurchase,null,0) as totalpurchase,

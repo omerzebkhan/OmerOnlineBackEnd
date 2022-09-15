@@ -302,6 +302,8 @@ USING agentid::integer;
 ALTER TABLE saleDetails
 ADD COLUMN srno integer;
 
+ALTER TABLE items
+ADD COLUMN investone integer;
 
 --------------------------------------------------STOCK value with last purchase-----------------------------
 	select items.id,items.name,items.code,items.description,items.quantity,items.showroom,items.averageprice,lp.price as lastpurchase
@@ -495,10 +497,7 @@ purchase invoice was edited after the sale
 
 there is a bug in sale / purchase invoice where u change the item code.
 
-summary of purchase report  
-AR screen will have agent name and filter to search with agent name.
-summary of purchase history / Sale History / return history in Stock view.    
-A/R add Summary for the selected filter 
+
 Done
 
 
@@ -511,17 +510,24 @@ Restricted Access for the sale agent.
 return item is updating the outsting to the same invoice value .................... test is working fine as per local test.
 add agent wise report report in gui.
 add last purchase to the stock report
-monthly sale report trend with the graph
-add errors of the api to the db.    --------In progress (on hold)
+monthly sale report trend with the graph --In progress
+add errors of the api to the db if debug flag is true.    
 area wise filter in sale report.
-A/R sale return of the specific invoice.   --- In progress (on hold)
-A/R add Summary for the selected filter ------ In progress 
+A/R sale return of the specific invoice.   
 A/R outstanding invoice should be order by createdAt desc ------In progress
 total edit report  (need to check what to show in this how to know how much amount is changed) (store old and new values in the edit table)
 Add total return/return item qty/ purchase item qty/sale item qty in the balance sheet 
-Add old history screen for the payments -----(Nabeel will provide wireframe)
+
 add connect error message on the screens
 check error in the console when clicking payment details on AR screen
+
+--------------------------------Pending on Nabeel-------------------------------------------
+Add old history screen for the payments
+Decide which item to put on the portal.
+pic. of those item.
+category of those item.
+what should be look of our landing page (fist page customer will view)
+how to manage payment e.g. cash on delivery ?
 
 
 
@@ -611,6 +617,11 @@ Inventory Value = 2484019.224
 
 **********************************************************************************
 update items set quantity = 24 where id = 409;
+
+
+
+----------------------------------------update invest one stock in N&M account-------------------
+select concat('update items set investone=',quantity,' where id =',id,';') from items;
 
 
 

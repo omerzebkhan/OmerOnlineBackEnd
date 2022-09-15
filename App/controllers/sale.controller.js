@@ -153,9 +153,11 @@ exports.getMonthlySale = async (req,res) =>{
   const customerId = req.params.customerId;
   var data = "";
   //customerId==="0" ? 
-  data = await db.sequelize.query(`select "name",sum("saleDetails"."quantity") from "saleDetails","items" 
-  where "saleDetails"."itemId" = items.id and   ("saleDetails"."createdAt" between '${startedDate}' and '${endDate}') 
-  group by "name" order by "name";`, {
+  data = await db.sequelize.query(`select ROUND(CAST(FLOAT8 (sum(invoicevalue)) AS NUMERIC),2),TO_CHAR("createdAt",'mm/yyyy')
+  from sales where
+  "createdAt" between '${startedDate}' and '${endDate}'
+  group by TO_CHAR("createdAt",'mm/yyyy')
+  order by TO_CHAR("createdAt",'mm/yyyy') desc;`, {
     // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
     type: db.sequelize.QueryTypes.SELECT
   })
