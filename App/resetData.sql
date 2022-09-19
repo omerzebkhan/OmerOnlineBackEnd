@@ -521,6 +521,9 @@ Add total return/return item qty/ purchase item qty/sale item qty in the balance
 add connect error message on the screens
 check error in the console when clicking payment details on AR screen
 
+-------------------------------Done By Nabeel----------------------------------------------
+registery for the shop bahari colony
+
 --------------------------------Pending on Nabeel-------------------------------------------
 Add old history screen for the payments
 Decide which item to put on the portal.
@@ -528,6 +531,13 @@ pic. of those item.
 category of those item.
 what should be look of our landing page (fist page customer will view)
 how to manage payment e.g. cash on delivery ?
+check with lawyer to make omer filer ?
+
+H#3 st# 14  Qabrastan road Wala transfer letter update
+H#2 st#15 Apia wala (farooq bahi) transfer letter update
+Estimation of the Shop of H#3 st# 14  Qabrastan road Wala.
+DHA plot finalization.
+Ahamed bahi payment.
 
 
 
@@ -537,10 +547,6 @@ apperrors
 id,userid,screenName,function,description,comments
 
 
-
-
-
-   
 
 
 

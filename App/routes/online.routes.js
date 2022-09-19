@@ -270,7 +270,11 @@ module.exports = app => {
   // get all Sale by given date summary
   router.get("/saleByDateSummary/:sDate/:eDate", sale.findAllByDateSummary);
 
-  
+   // get monthly sale
+   router.get("/saleMonthly/:sDate/:eDate", sale.getMonthlySale);
+
+   // get sale agent trend
+   router.get("/saleAgentTrend/:sDate/:eDate", sale.getSaleAgentTrend);
 
   // get latest sale for the customer by item id
   router.get("/saleByLatestDate/:itemId/:customerId", sale.findlatestSale);
