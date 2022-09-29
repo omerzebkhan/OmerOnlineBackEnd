@@ -161,7 +161,7 @@ exports.limitReport = async (req, res) => {
   // and (a.quantity <= CAST (b.lowerlimit AS INTEGER) or a.quantity >= CAST (b.higherlimit AS INTEGER))
   // order by a.id asc;`
   const finalRes = await db.sequelize.query(`
-  select items.id,items.name,items.quantity,ts.sum as totalsale,ts30days.sum as totalsale30days,ts90days.sum as totalsale90days,ts180days.sum as totalsale180days,ts365days.sum as totalsale365days
+  select items.id,items.name,coalesce(items.quantity,null,0) as quantity,coalesce(ts.sum,null,0) as totalsale,coalesce(ts30days.sum,null,0) as totalsale30days,coalesce(ts90days.sum,null,0) as totalsale90days,coalesce(ts180days.sum,null,0) as totalsale180days,coalesce(ts365days.sum,null,0) as totalsale365days
 --select items.name,items.quantity,ts.sum as totalsale,ts90days.sum as totalsale90days
 from items
 left outer join 

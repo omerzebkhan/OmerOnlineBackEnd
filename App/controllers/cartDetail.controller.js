@@ -7,7 +7,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Brand
 exports.create = (req, res) => {
  
-  // Create a Brand
+  // Create a Cart data
   const data = {
     cartid: req.body.cartid,
     itemid: req.body.itemid,
@@ -38,11 +38,11 @@ exports.findCartDetailByCust = async (req, res) => {
   
   console.log(req.params.id)
 
-    const data = await db.sequelize.query(`select carts.id,carts.userid,items.name,items.description,items."imageUrl","cartDetails"."id" as cartid,"cartDetails"."quantity","cartDetails"."createdAt" 
+    const data = await db.sequelize.query(`select carts.id,carts.userid,"cartDetails".itemid,items.name,items.description,items."imageUrl","cartDetails"."id" as cartid,"cartDetails"."quantity","cartDetails"."createdAt" 
     from "cartDetails"
     join carts on "cartDetails".cartid = carts.id
     join items on "cartDetails".itemid = items.id
-    where carts.userid = 1 and carts.status = 'InProgress' and "cartDetails".status='Add'`, {
+    where carts.userid = ${req.params.id} and carts.status = 'InProgress' and "cartDetails".status='Add'`, {
       // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
       type: db.sequelize.QueryTypes.SELECT
     })
@@ -64,9 +64,7 @@ exports.findCartDetailByCust = async (req, res) => {
 exports.update = (req, res) => {
 
   const id = req.params.id;
-  // console.log(`brand update is triggred
-  // id=${id}
-  // imageurl = ${req.body.imageUrl}`);
+ console.log(req.body.quantity)
   cartDetail.update(req.body, {
     where: { id: id }
   })

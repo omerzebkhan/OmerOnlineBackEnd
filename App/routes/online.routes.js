@@ -55,6 +55,9 @@ module.exports = app => {
 
   router.get("/cartDetailByCust/:id", cartDetail.findCartDetailByCust);
 
+  // Create a new Cart Detail
+  router.post("/cartDetail/", [authJwt.verifyToken, authJwt.isAdmin],cartDetail.create);
+
   // Update a cart Detail with id
   router.put("/cartDetail/:id", cartDetail.update);
 

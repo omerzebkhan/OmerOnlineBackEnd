@@ -13,15 +13,11 @@ exports.create = (req, res) => {
     };
 
 
+      console.log(`cart user id = ${cart.userid} 
+      status : ${cart.status}
+      `)
 
-
-
-    //   console.log(`brand data = 
-    //   name : ${req.body.name},
-    //   description: ${req.body.description},
-    //   url: ${req.body.url}`)
-
-    // Save Tutorial in the database
+    // Create Master Cart
     Cart.create(cart)
         .then(data => {
             ///////////////////////Create Cart Details////////////////////////////

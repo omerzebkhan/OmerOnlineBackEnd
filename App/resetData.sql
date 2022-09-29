@@ -630,7 +630,8 @@ update items set quantity = 24 where id = 409;
 select concat('update items set investone=',quantity,' where id =',id,';') from items;
 
 
-
+--------------------------------------responsive dynamic styled side bar------------------------------
+https://dev.to/jealousgx/build-a-responsive-sidebar-with-react-and-styled-components-4e9e
 
 
 	
