@@ -11,7 +11,7 @@ exports.create = (req, res) => {
   //   });
   //   return;
   // }
-  //console.log(req.body.agentid)
+  console.log(req.body.reffInvoice)
   // Create a Sale
   const sale = {
     reffInvoice: req.body.reffInvoice,
@@ -153,9 +153,9 @@ exports.getMonthlySale = async (req,res) =>{
   const customerId = req.params.customerId;
   var data = "";
   //customerId==="0" ? 
-  data = await db.sequelize.query(`select ROUND(CAST(FLOAT8 (sum(invoicevalue)) AS NUMERIC),2) as totalSale,TO_CHAR("createdAt",'mm/yyyy') as month
-  from sales where
-  "createdAt" between '${startedDate}' and '${endDate}'
+  data = await db.sequelize.query(`select ROUND(CAST(FLOAT8 (sum(price*quantity)) AS NUMERIC),2) as totalSale,ROUND(CAST(FLOAT8 (sum(quantity)) AS NUMERIC),2) as totalItem,ROUND(CAST(FLOAT8 (sum((price-cost)*quantity)) AS NUMERIC),2) as profit,TO_CHAR("createdAt",'mm/yyyy') as month
+  from "saleDetails"
+  where   "createdAt" between '${startedDate}' and '${endDate}'
   group by TO_CHAR("createdAt",'mm/yyyy')
   order by TO_CHAR("createdAt",'mm/yyyy') desc;`, {
     // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
@@ -200,6 +200,36 @@ exports.getSaleAgentTrend = async (req,res) =>{
   return res.status(200).json(data)
  
 }
+
+//get agent wise closed invoice report (AR recieved)
+exports.getSaleAgentClosedInvoices = async (req,res) =>{
+  const startedDate = req.params.sDate;
+  const endDate = req.params.eDate;
+  const customerId = req.params.customerId;
+  var data = "";
+  //customerId==="0" ? 
+  data = await db.sequelize.query(`  
+  select users.name,sum(invoicevalue) from sales,users 
+where Outstanding = 0
+and sales.agentid = users.id
+and "sales"."updatedAt" between '${startedDate}' and '${endDate}'
+group by users.name `, {
+    // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+    type: db.sequelize.QueryTypes.SELECT
+  })
+    .catch(err => {
+      console.log(err.message || "Some error Executing sale summary query with date")
+      res.status(500).send({
+        message:
+          err.message || "Some error Executing sale summary query"
+      });
+    })
+
+
+  return res.status(200).json(data)
+ 
+}
+
 
 // Retrieve all sales with profit
 exports.findAllByDateProfit = async (req, res) => {

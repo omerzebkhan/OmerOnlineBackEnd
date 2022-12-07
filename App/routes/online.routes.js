@@ -1,4 +1,4 @@
-const { saleDetail } = require("../models/index.js");
+// const { saleDetail } = require("../models/index.js");
 const tutorials = require("../controllers/tutorial.controller.js");
 const controller = require("../controllers/file.controller");
 const brand = require("../controllers/brand.controller");
@@ -44,9 +44,8 @@ module.exports = app => {
   // Create a new Cart
   router.post("/cart/", [authJwt.verifyToken, authJwt.isAdmin], cart.create);
 
-  // Retrieve all Brand
-  router.get("/brand/", brand.findAll);
-
+  //update cart
+  router.put("/cart/:id", cart.update);
 
   ////////////////
   /////CART DETAIL//////
@@ -279,6 +278,10 @@ module.exports = app => {
    // get sale agent trend
    router.get("/saleAgentTrend/:sDate/:eDate", sale.getSaleAgentTrend);
 
+    // get sale agent closed invoices 
+    router.get("/saleAgentClosedInvoices/:sDate/:eDate", sale.getSaleAgentClosedInvoices);
+
+
   // get latest sale for the customer by item id
   router.get("/saleByLatestDate/:itemId/:customerId", sale.findlatestSale);
 
@@ -301,9 +304,9 @@ module.exports = app => {
   //////////////////
   // Create a new sale
   router.post("/saleDetail/", [authJwt.verifyToken, authJwt.isAdmin], saledetail.create);
-
+  //router.post("/saleDetail/:id", saledetail.create);
   // Retrieve all sale
-  router.get("/saleDetail/", saledetail.findAll);
+  router.get("/saleDetail/:id", saledetail.findAll);
 
   // Delete Sale Detail with sale detail id
   router.delete("/saleDetail/:id", saledetail.delete);

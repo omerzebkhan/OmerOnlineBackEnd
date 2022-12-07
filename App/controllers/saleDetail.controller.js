@@ -11,7 +11,9 @@ exports.create = (req, res) => {
   //   });
   //   return;
   // }
-
+  //const id = req.params.id;
+  console.log(req.params.id)
+  //console.log(req)
   // Create a Sale
   const saleDetail = {
     saleInvoiceId: req.body.saleInvoiceId,

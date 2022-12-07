@@ -15,16 +15,20 @@ db.sequelize.sync();
 // });
 
 var corsOptions = {
- origin: ["http://localhost:8081","https://protected-gorge-40768.herokuapp.com"]
+ origin: ["http://localhost:90","http://localhost:3000","http://localhost:8081","https://protected-gorge-40768.herokuapp.com"]
  //origin: "https://protected-gorge-40768.herokuapp.com"
 };
 app.use(cors(corsOptions));
  
-// parse requests of content-type - application/json
+// // parse requests of content-type - application/json
 app.use(bodyParser.json());
+//app.use(express.json());
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+// // parse requests of content-type - application/x-www-form-urlencoded
+ app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(express.urlencoded({ extended: true }));
+
+//app.use(bodyParser.text({type: 'text/xml'}));
 
 // Function to serve all static files
 // inside public directory.
@@ -38,11 +42,17 @@ app.use('/img',express.static(path.join(__dirname, 'App/uploads/brandsImages')))
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to omer application server." });
 });
 // app.use(function (req, res) {
 //   res.status(404).render('error');
 // });
+
+app.use((req, res, next) => { 
+  console.log("App request");
+  console.log(req.method, req.url,req.body.saleInvoiceId);
+   next() })
+
 
 require("./App/routes/online.routes")(app);
 

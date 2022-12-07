@@ -1,6 +1,7 @@
 -----------------------------------item reset------------------------------
 select * from items;
-update items set quantity =0,online=0,showroom=0,warehouse=0,averageprice=0,onlineprice=0,showroomprice=0,onlinediscount=0;
+
+update items set quantity =0,online=0,showroom=0,warehouse=0,averageprice=0,onlineprice=0,showroomprice=0,onlinediscount=0 where id > 744;
 
 ----------------------------------User reset-------------------------------
 update users set totalamount =0,outstanding=0;
@@ -13,14 +14,8 @@ delete from "saleInvoicePayments"
 delete from "purchases"
 delete from "purchaseDetails"
 
-
-
-
-
 ALTER TABLE users
 ADD COLUMN password character varying(255);
-
-
 --------------------------------------Roles-------------------------------------
 
 
@@ -52,79 +47,12 @@ insert into user_roles values ('2021-09-21 21:10:49.924+03','2021-09-21 21:10:49
 -----------------------------------------Passwords---------
 $2a$08$szIjLpoTvzl9gtCJ0bB1iuCEOtO.xms3t2F9wMC5bzpWtDu1nfXFG  =1
 
-
-
--- Table: public.user_roles
-
--- DROP TABLE public.user_roles;
-
-CREATE TABLE public.user_roles
-(
-    "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL,
-    "roleId" integer NOT NULL,
-    "userId" integer NOT NULL,
-    CONSTRAINT user_roles_pkey PRIMARY KEY ("roleId", "userId"),
-    CONSTRAINT "user_roles_roleId_fkey" FOREIGN KEY ("roleId")
-        REFERENCES public.roles (id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT "user_roles_userId_fkey" FOREIGN KEY ("userId")
-        REFERENCES public.users (id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE public.user_roles
-    OWNER to postgres;
-	
-	
-	
-	
-	-- Table: public.roles
-
--- DROP TABLE public.roles;
-
-CREATE TABLE public.roles
-(
-    id integer NOT NULL,
-    name character varying(255) COLLATE pg_catalog."default",
-    "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL,
-    CONSTRAINT roles_pkey PRIMARY KEY (id)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE public.roles
-    OWNER to postgres;
-
-
-
-CREATE TABLE public."roleAccess"
-(
-    id integer,
-    "roleId" integer,
-    "screenName" character(255),
-    status boolean
-);
-
-ALTER TABLE public."roleAccess"
-    OWNER to postgres;
-	
-	
 INSERT INTO public."accesses"
 	VALUES (22, 6, 'Add Expense', true, '2021-09-07 20:11:44.559+03','2021-09-07 20:11:44.559+03');
 	
 	SELECT * FROM information_schema.sequences;
 	
 	select * from user_roles_id_seq
-	
-	
-	
-	
 	
 -------react dynamic element attributes------
 {...selectedUser ? 
@@ -198,8 +126,6 @@ INSERT INTO users(
 --Assign role to the created Agent id =2 --------------------------------------
 INSERT INTO user_roles(id, "roleId", "userId", "createdAt", "updatedAt") VALUES (3, 2, 1,'2021-09-21 21:10:49.882+03','2021-09-21 21:10:49.882+03');
 
-
-
 -----------------------Create Test supplier -------------------------------------
 
 INSERT INTO users(
@@ -219,8 +145,6 @@ select currval('items_id_seq')
 	
 	SELECT SETVAL('users_id_seq', (SELECT MAX(id) FROM users));
 	
-	
-	
 ---------------------------------heruko plan-------------------------------------------	
 
 heruko hosting plan / Purchasing domain will be seperate
@@ -230,22 +154,6 @@ app            = 7 $ per month = 1.75 dinar = 1 K Rs
 
 
 
-
-
-
-select * from purchases;
-
-
-select * from "purchaseDetails";
-
-
-select * from "saleDetails";
-
-
-select "createdAt","saleInvoiceId","itemId","quantity","price","cost",(price-cost)*quantity profit from "saleDetails";
-
-
-select * from sales;
 
 select TO_CHAR("createdAt",'dd/mm/yyyy') "date","saleInvoiceId",sum("itemId") TotalItems,sum("quantity") Quantity,sum("price") Price,sum("cost") "Cost",sum((price-cost)*quantity) profit
 from "saleDetails"
@@ -304,6 +212,14 @@ ADD COLUMN srno integer;
 
 ALTER TABLE items
 ADD COLUMN investone integer;
+
+
+alter table carts 
+add column confirmtime  timestamp without time zone,
+add column rtdtime timestamp without time zone,
+add column deliveredtime timestamp without time zone,
+add column feedback character varying(255);
+
 
 --------------------------------------------------STOCK value with last purchase-----------------------------
 	select items.id,items.name,items.code,items.description,items.quantity,items.showroom,items.averageprice,lp.price as lastpurchase
@@ -500,8 +416,6 @@ there is a bug in sale / purchase invoice where u change the item code.
 
 Done
 
-
-
 account recievable if edited whole amount is comming back in outstanding   .....need to simulate this case in local setup
 edit the existing AP / AR invoices.
 AP screen should show the details of all the payment made by the user   .
@@ -521,6 +435,17 @@ Add total return/return item qty/ purchase item qty/sale item qty in the balance
 add connect error message on the screens
 check error in the console when clicking payment details on AR screen
 
+when adding new item in the purchase invoice edit option total invoice value is not getting updated.
+
+Making amritsare shopping center online system so that we will be able to make more branches ....?
+agent access restriction.
+deal calculation automatically
+rates of products accuracy
+change shop keeper name (double)
+check why usually sum of ??
+Daily actions does not match with 
+
+
 -------------------------------Done By Nabeel----------------------------------------------
 registery for the shop bahari colony
 
@@ -533,11 +458,14 @@ what should be look of our landing page (fist page customer will view)
 how to manage payment e.g. cash on delivery ?
 check with lawyer to make omer filer ?
 
+
+
+lawyer update for the account
 H#3 st# 14  Qabrastan road Wala transfer letter update
 H#2 st#15 Apia wala (farooq bahi) transfer letter update
-Estimation of the Shop of H#3 st# 14  Qabrastan road Wala.
 DHA plot finalization.
-Ahamed bahi payment.
+Ahamed bahi payment. (5 Lack left)
+
 
 
 
@@ -566,65 +494,6 @@ sum of the invoices cost / sum of the
 
 
 
--------------------------------------------------------N&A Trading fixing --------------------------------------------------
-
-N&M 
-
-147	227	invest 1	84	26100	2022-06-25T15:28:15.245Z
-
-N&A
-
-14	N&M Traders	60	19620	621.840	01/07/2022
-
-
-
-
-
-29	N&M Traders	12	6660	258.000	14/07/2022  Del 
-126	2022-07-14T16:33:16.502Z	29	tresme shampoo keratin 700ml	555	qty = 12	533.5	258.000
-before deletion
-quantity = 192
-after deletion 
-quantity = 204
-
-Stock value before deletion 
-Total Item Quantity = 9804
-Total Records = 653
-Inventory Value = 2458225.224
-
-Stock value after deletion
-Total Item Quantity = 9816
-Total Records = 653
-Inventory Value = 2464627.224
-
-
-
-28	N&M Traders	48	20160	768.000	14/07/2022  Del
-125	2022-07-14T16:31:37.469Z	28	sunsilk shampoo black thiland 320ml	420	48	404	768.000
-before deletion
-quantity = -24
-after deletion 
-quantity = 
-
-stock value before deletion
-Total Item Quantity = 9816
-Total Records = 653
-Inventory Value = 2464627.224
-
-stock value after deletion
-Total Item Quantity = 9864
-Total Records = 653
-Inventory Value = 2484019.224
-
-
-27	N&M Traders	12	6660	258.000	09/07/2022
-26	N&M Traders	48	20160	768.000	09/07/2022
-
-
-**********************************************************************************
-update items set quantity = 24 where id = 409;
-
-
 
 ----------------------------------------update invest one stock in N&M account-------------------
 select concat('update items set investone=',quantity,' where id =',id,';') from items;
@@ -633,6 +502,22 @@ select concat('update items set investone=',quantity,' where id =',id,';') from 
 --------------------------------------responsive dynamic styled side bar------------------------------
 https://dev.to/jealousgx/build-a-responsive-sidebar-with-react-and-styled-components-4e9e
 
+------react shoping cart design
+https://www.youtube.com/results?search_query=lama+dev
 
+
+https://www.youtube.com/watch?v=c1xTDSIXit8
+6:20
+
+
+
+https://www.helpmegeek.com/deploy-reactjs-nodejs-app-windows/
+
+
+--whats up message through the 
+https://stackoverflow.com/questions/47243154/how-to-send-whatsapp-message-via-javascript
+
+--docker container
+https://semaphoreci.com/community/tutorials/dockerizing-a-node-js-web-application
 	
 

@@ -105,24 +105,24 @@ exports.findOne = (req, res) => {
         });
 };
 
-// Update a Brand by the id in the request
+// Update a Cart by the id in the request
 exports.update = (req, res) => {
 
     const id = req.params.id;
     // console.log(`brand update is triggred
     // id=${id}
     // imageurl = ${req.body.imageUrl}`);
-    Brand.update(req.body, {
+    Cart.update(req.body, {
         where: { id: id }
     })
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Brand was updated successfully."
+                    message: "Cart was updated successfully."
                 });
             } else {
                 res.send({
-                    message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`
+                    message: `Cannot update Cart with id=${id}. Maybe Cart was not found or req.body is empty!`
                 });
             }
         })
