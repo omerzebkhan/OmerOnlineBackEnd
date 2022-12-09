@@ -74,6 +74,27 @@ exports.findAllAR = async (req, res) => {
 
 };
 
+// Retrive account recievable by invoice id
+exports.findARByInvoiceId = async (req,res) =>{
+  const id = req.params.id;
+
+  const saleAR = await db.sequelize.query(
+    `select * from 
+    (select sales.id,"customerId",users.name,invoicevalue,totalitems,"Outstanding" from sales,users
+    where sales.id = ${id}
+    and "customerId" = users.id) s,
+    (select "customerId",users.name,sum(invoicevalue) totalinvoice,sum(outstanding) totaloutstanding from sales,users
+    where  "customerId" = users.id
+    group by "customerId",users.name) as ssum
+    where s."customerId" = ssum."customerId";`
+    , {
+    type: db.sequelize.QueryTypes.SELECT
+  });
+
+
+  return res.status(200).json(saleAR)
+}
+
 
 
 

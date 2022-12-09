@@ -260,6 +260,9 @@ module.exports = app => {
   // Retrieve all Sale Account Recievable
   router.get("/saleAR/", sale.findAllAR);
 
+  // Retrieve Sale Account Recievable By InvoiceId
+  router.get("/saleARByInvoiceId/:id", sale.findARByInvoiceId);
+
   // Recalculate the Sale based on the invoice ID
   router.put("/getSaleRecalculate/:id", sale.getSaleRecalculate);
 
