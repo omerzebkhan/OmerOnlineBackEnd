@@ -123,7 +123,7 @@ db.access = require("./access.model")(sequelize, Sequelize);
 db.ROLES = ["user", "admin", "moderator"];
 
 db.userRole = require("./userRole.model")(sequelize, Sequelize);
-
-
+db.cashFlow = require("./cashFlow.model")(sequelize, Sequelize);
+db.cashFlowPayment = require("./cashFlowPayment.model")(sequelize, Sequelize);
 
 module.exports = db;

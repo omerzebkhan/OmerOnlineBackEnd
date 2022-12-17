@@ -20,10 +20,13 @@ const report = require("../controllers/Report.controller")
 const expense = require("../controllers/expense.controller");
 const cart = require("../controllers/cart.controller");
 const cartDetail = require("../controllers/cartDetail.controller");
+const cashFlow = require("../controllers/cashFlow.controller");
+const cashFlowPayment = require("../controllers/cashFlowPayment.controller");
 
 const { authJwt } = require("../middleware");
 const controller1 = require("../controllers/auth.controller");
 const { verifySignUp } = require("../middleware");
+
 
 module.exports = app => {
 
@@ -343,7 +346,7 @@ router.get("/saleReturnDetailByInvoice/:id", saleReturn.findSaleReturnDetailByIn
   ////SALE Invoice Payment////
   ///////////////////////////
 
-  // Create a new sale
+  // Create a new sale payment
   router.post("/createSaleInvPay/", salePayment.create);
 
   // Retrieve sale invoice payment based on the sale invoice id
@@ -361,6 +364,9 @@ router.get("/saleReturnDetailByInvoice/:id", saleReturn.findSaleReturnDetailByIn
   router.post("/expense/", expense.create);
 
 
+
+
+
   ////////////////
   //Other Reports//
   ////////////////
@@ -368,12 +374,32 @@ router.get("/saleReturnDetailByInvoice/:id", saleReturn.findSaleReturnDetailByIn
   // get Balance Sheet
   router.get("/BalanceSheetByDate/:sDate/:eDate", report.findBalanceSheet);
 
+  ////////////////
+  //CashFlow//
+  ////////////////
+  // Create a new Cash flow entry
+  router.post("/createCashFlow", cashFlow.create);
+
+   // Retrieve all cash flow Account Recievable
+   router.get("/cashFlow/:mode", cashFlow.findAll);
+
+   // Create payment for the cash Flow record
+   router.post("/createCashFlowPay/", cashFlowPayment.create);
+
+   // Update a Cash Flow with id
+  router.put("/updateCashFlow/:id", cashFlow.update);
+
+  // Retrieve cash flow payment based on the cash flow id
+  router.get("/cashFlowPay/:id", cashFlowPayment.findAllByReffId);
+
+
 
   ////////////////
   //Tutorails//
   ////////////////
   // Create a new Tutorial
   router.post("/", tutorials.create);
+
 
 
 
