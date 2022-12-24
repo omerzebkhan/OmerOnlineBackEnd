@@ -16,7 +16,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
   ////////////////////////local db
-  // operatorsAliases: false,
+   //operatorsAliases: false,
   //strConfig,
   ////////////////////////////////////////////
 
@@ -125,5 +125,6 @@ db.ROLES = ["user", "admin", "moderator"];
 db.userRole = require("./userRole.model")(sequelize, Sequelize);
 db.cashFlow = require("./cashFlow.model")(sequelize, Sequelize);
 db.cashFlowPayment = require("./cashFlowPayment.model")(sequelize, Sequelize);
+db.invDebug = require("./invDebug.model")(sequelize, Sequelize);
 
 module.exports = db;

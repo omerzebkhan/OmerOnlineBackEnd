@@ -80,13 +80,16 @@ exports.findARByInvoiceId = async (req,res) =>{
 
   const saleAR = await db.sequelize.query(
     `select * from 
-    (select sales.id,"customerId",users.name,invoicevalue,totalitems,"Outstanding" from sales,users
+    (select sales.id,"customerId",users.name,invoicevalue,totalitems,"Outstanding",users.address,a.id as agentid,a.name as agentname
+    from sales,users,users as a
     where sales.id = ${id}
-    and "customerId" = users.id) s,
+    and "customerId" = users.id
+    and agentid=a.id) s,
     (select "customerId",users.name,sum(invoicevalue) totalinvoice,sum(outstanding) totaloutstanding from sales,users
     where  "customerId" = users.id
     group by "customerId",users.name) as ssum
-    where s."customerId" = ssum."customerId";`
+    where s."customerId" = ssum."customerId"
+";`
     , {
     type: db.sequelize.QueryTypes.SELECT
   });

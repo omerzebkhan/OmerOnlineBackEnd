@@ -140,3 +140,14 @@ exports.findBalanceSheet = async (req, res) => {
 
       
   };
+
+exports.getInv = async (req,res)=>{
+  const totalInv = await db.sequelize.query(
+    `select sum(quantity) from items;`
+    , {
+    type: db.sequelize.QueryTypes.SELECT
+  });
+
+
+  return res.status(200).json(totalInv)
+}

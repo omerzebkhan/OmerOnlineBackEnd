@@ -22,6 +22,7 @@ const cart = require("../controllers/cart.controller");
 const cartDetail = require("../controllers/cartDetail.controller");
 const cashFlow = require("../controllers/cashFlow.controller");
 const cashFlowPayment = require("../controllers/cashFlowPayment.controller");
+const invDebug = require("../controllers/invDebug.controller");
 
 const { authJwt } = require("../middleware");
 const controller1 = require("../controllers/auth.controller");
@@ -374,6 +375,10 @@ router.get("/saleReturnDetailByInvoice/:id", saleReturn.findSaleReturnDetailByIn
   // get Balance Sheet
   router.get("/BalanceSheetByDate/:sDate/:eDate", report.findBalanceSheet);
 
+  // get Total Inventory value
+  router.get("/getTotalInv/", report.getInv);
+
+
   ////////////////
   //CashFlow//
   ////////////////
@@ -393,6 +398,11 @@ router.get("/saleReturnDetailByInvoice/:id", saleReturn.findSaleReturnDetailByIn
   router.get("/cashFlowPay/:id", cashFlowPayment.findAllByReffId);
 
 
+  ////////////////
+  //InvDegub/////
+  ////////////////
+  // Create a new Inv Debug entry
+  router.post("/createInvDebug", invDebug.create);
 
   ////////////////
   //Tutorails//
