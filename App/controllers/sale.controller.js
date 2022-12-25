@@ -232,11 +232,17 @@ exports.getSaleAgentClosedInvoices = async (req,res) =>{
   var data = "";
   //customerId==="0" ? 
   data = await db.sequelize.query(`  
-  select users.name,sum(invoicevalue) from sales,users 
-where Outstanding = 0
-and sales.agentid = users.id
-and "sales"."updatedAt" between '${startedDate}' and '${endDate}'
-group by users.name `, {
+  select agent as name,sum(invoicevalue) as invoicevalue,sum(total) as invoicedetailvalue,sum(profit) as profit from (
+    select users.name as agent,"Outstanding",invoicevalue,sum(price*quantity) as total,sum((price-cost)*quantity) as profit
+    from sales,"saleDetails",users 
+    where sales."Outstanding" = 0
+    and sales.agentid = users.id
+    and sales.id = "saleDetails"."saleInvoiceId"
+    and "sales"."updatedAt" between '${startedDate}' and '${endDate}'
+    --and "sales"."updatedAt" >= '2022-12-24 00:00:00' and "sales"."updatedAt" <= '2022-12-25 20:00:00'
+    group by users.id,"Outstanding",invoicevalue) as tbl
+    group by agent
+`, {
     // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
     type: db.sequelize.QueryTypes.SELECT
   })
