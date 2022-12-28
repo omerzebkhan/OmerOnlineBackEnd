@@ -64,29 +64,62 @@ exports.findAll = (req, res) => {
       });
   };
 
+//   // Retrieve all sale Detail & item table from the database.
+// exports.findById = (req, res) => {
+//   // const name = req.query.name;
+//   // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
+//   const id = req.params.id;
+//   SaleDetail.findAll({
+//     include:["items"],
+//      where: {saleInvoiceId: id},
+//      order: [
+//       ['srno', 'ASC'],
+//   ],
+//   }
+//   )
+//     .then(data => {
+//       res.send(data);
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred while retrieving Sale Detail."
+//       });
+//     });
+// };
+
   // Retrieve all sale Detail & item table from the database.
-exports.findById = (req, res) => {
-  // const name = req.query.name;
-  // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
-  const id = req.params.id;
-  SaleDetail.findAll({
-    include:["items"],
-     where: {saleInvoiceId: id},
-     order: [
-      ['srno', 'ASC'],
-  ],
-  }
-  )
-    .then(data => {
-      res.send(data);
+  exports.findById = async (req, res) => {
+    // const name = req.query.name;
+    // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
+    const id = req.params.id;
+    const data = await db.sequelize.query(`select "saleDetails".id as id,"saleDetails"."createdAt" as "createdAt",
+    "saleDetails"."saleInvoiceId" as "saleInvoiceId",items.id as itemid,items.name as itemname,"saleDetails".price as price,
+    "saleDetails".quantity as quantity,"saleDetails".cost as cost,srno,customer.name as customername,
+    customer.address as customeraddress,agent.name as agentname 
+    from "saleDetails",sales,users as customer,users as agent,items
+    where "saleDetails"."saleInvoiceId" = sales.id
+    and sales."customerId"=customer.id
+    and sales.agentid = agent.id
+    and "saleDetails"."itemId"=items.id
+    and sales.id = ${id};`, {
+      // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+      type: db.sequelize.QueryTypes.SELECT
     })
     .catch(err => {
+      console.log(err.message || "Some error occurred while retrieving Items.")
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving Sale Detail."
+          err.message || "Some error occurred while retrieving Items."
       });
-    });
-};
+    }); 
+   // cartDetail.findAll({include:["carts"]})
+   // Cart.findAll({include:["cartDetails"]})
+    
+   return res.status(200).json(data)
+  };
+  
+
 
 // Update a Sale Detail with Quantity and profit 
 exports.updateQ = (req, res) => {
