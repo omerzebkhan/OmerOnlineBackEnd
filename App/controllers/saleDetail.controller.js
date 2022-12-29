@@ -102,7 +102,8 @@ exports.findAll = (req, res) => {
     and sales."customerId"=customer.id
     and sales.agentid = agent.id
     and "saleDetails"."itemId"=items.id
-    and sales.id = ${id};`, {
+    and sales.id = ${id}
+    order by srno asc;`, {
       // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
       type: db.sequelize.QueryTypes.SELECT
     })
