@@ -94,7 +94,7 @@ exports.findAll = (req, res) => {
     // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
     const id = req.params.id;
     const data = await db.sequelize.query(`select "saleDetails".id as id,"saleDetails"."createdAt" as "createdAt",
-    "saleDetails"."saleInvoiceId" as "saleInvoiceId",items.id as itemid,items.name as itemname,"saleDetails".price as price,
+    "saleDetails"."saleInvoiceId" as "saleInvoiceId",items.id as itemid,items.name as itemname,items.description as itemdescription,items.id as "itemId","saleDetails".price as price,
     "saleDetails".quantity as quantity,"saleDetails".cost as cost,srno,customer.name as customername,
     customer.address as customeraddress,agent.name as agentname 
     from "saleDetails",sales,users as customer,users as agent,items
