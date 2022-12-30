@@ -203,9 +203,10 @@ exports.getSaleAgentTrend = async (req,res) =>{
   const customerId = req.params.customerId;
   var data = "";
   //customerId==="0" ? 
-  data = await db.sequelize.query(`select count(*),"name" from sales,users
+  data = await db.sequelize.query(`select count(*),sum(invoicevalue) as invoicevalue,"name" from sales,users
   where "agentid" = users.id and
   "sales"."createdAt" between '${startedDate}' and '${endDate}'
+  --("sales"."createdAt" >= '${startedDate}' and "sales"."createdAt" < '${endDate}')
   group by "name"`, {
     // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
     type: db.sequelize.QueryTypes.SELECT
@@ -231,16 +232,25 @@ exports.getSaleAgentClosedInvoices = async (req,res) =>{
   var data = "";
   //customerId==="0" ? 
   data = await db.sequelize.query(`  
-  select agent as name,sum(invoicevalue) as invoicevalue,sum(total) as invoicedetailvalue,sum(profit) as profit from (
+  select agent as name,monthlysale.invoicevalue as totalsale,sum(tbl.invoicevalue) as invoicevalue,sum(total) as invoicedetailvalue,sum(profit) as profit from (
     select users.name as agent,"Outstanding",invoicevalue,sum(price*quantity) as total,sum((price-cost)*quantity) as profit
     from sales,"saleDetails",users 
     where sales."Outstanding" = 0
     and sales.agentid = users.id
     and sales.id = "saleDetails"."saleInvoiceId"
-    and "sales"."updatedAt" between '${startedDate}' and '${endDate}'
-    --and "sales"."updatedAt" >= '2022-12-24 00:00:00' and "sales"."updatedAt" <= '2022-12-25 20:00:00'
+    and ("sales"."updatedAt" between '${startedDate}' and '${endDate}')
+--    and "sales"."updatedAt" >= '2022-12-24 00:00:00' and "sales"."updatedAt" <= '2022-12-25 20:00:00'
     group by users.id,"Outstanding",invoicevalue) as tbl
-    group by agent
+    full join 
+    (select users.name,sum(invoicevalue) as invoicevalue
+from sales,users
+where sales.agentid= users.id
+    and ("sales"."createdAt" between '${startedDate}' and '${endDate}')
+-- and ("sales"."createdAt" >= '2022-12-24 00:00:00' and "sales"."createdAt" <= '2022-12-25 20:00:00')
+group by users.name
+) as monthlysale
+on tbl.agent = monthlysale.name
+ group by agent,monthlysale.invoicevalue
 `, {
     // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
     type: db.sequelize.QueryTypes.SELECT
