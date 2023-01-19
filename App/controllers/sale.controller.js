@@ -96,15 +96,19 @@ exports.findARByInvoiceId = async (req,res) =>{
   return res.status(200).json(saleAR)
 }
 
-
-
-
 // Re calculate the totalitems and invoicevalue
 exports.getSaleRecalculate = async (req, res) => {
   console.log(`calling get sale Recalculate.....`)
   const id = req.params.id;
-
-  const [results, metadata] = await db.sequelize.query('update sales set totalitems = (select sum(quantity) from "saleDetails" where "saleInvoiceId" = ' + id + '), invoicevalue = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = ' + id + '),"Outstanding" = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = ' + id + ') where id = ' + id + ';'
+//"Outstanding" = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = '${id}') 
+  const [results, metadata] = await db.sequelize.query(`
+  update sales set 
+  totalitems = (select sum(quantity) from "saleDetails" where "saleInvoiceId" = '${id}'),
+   invoicevalue = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = '${id}'),
+   "Outstanding" = (select s.totalinvoice - p.paid from 
+    (select sum(price*quantity) as totalinvoice from "saleDetails" where "saleInvoiceId" = '${id}') s,
+    (select sum("cashPayment")+sum("bankPayment") as paid from "saleInvoicePayments" where "reffInvoice" = '${id}') p) 
+   where id = '${id}';`
   );
 
   console.log(metadata
@@ -212,10 +216,10 @@ exports.getSaleAgentTrend = async (req,res) =>{
     type: db.sequelize.QueryTypes.SELECT
   })
     .catch(err => {
-      console.log(err.message || "Some error Executing sale summary query with date")
+      console.log(err.message || "Some error sale agent trend")
       res.status(500).send({
         message:
-          err.message || "Some error Executing sale summary query"
+          err.message || "Some error sale agent trend"
       });
     })
 
