@@ -107,7 +107,7 @@ exports.getSaleRecalculate = async (req, res) => {
    invoicevalue = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = '${id}'),
    "Outstanding" = (select COALESCE(s.totalinvoice - p.paid,0) from 
     (select sum(price*quantity) as totalinvoice from "saleDetails" where "saleInvoiceId" = '${id}') s,
-    (select sum("cashPayment")+sum("bankPayment") as paid from "saleInvoicePayments" where "reffInvoice" = '${id}') p) 
+    (select COALESCE(sum("cashPayment")+sum("bankPayment"),0) as paid from "saleInvoicePayments" where "reffInvoice" = '${id}') p) 
    where id = '${id}';`
   );
 
