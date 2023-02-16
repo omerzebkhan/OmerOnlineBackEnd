@@ -9,7 +9,8 @@ exports.create = (req, res) => {
   const data = {
     reffInvoice: req.body.reffInvoice,
     cashPayment: req.body.cashPayment,
-    bankPayment: req.body.bankPayment
+    bankPayment: req.body.bankPayment,
+    comments:req.body.comments
   };
   // console.log(`
   // sale invoice id = ${req.body.reffInvoice}

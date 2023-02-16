@@ -129,9 +129,11 @@ module.exports = app => {
   // Retive all Item within higher and lower limit
   router.get("/itemLimitReport/", item.limitReport);
 
-  // get all  item trend by given date summary
+  // get all  item sale trend by given date summary
   router.get("/itemTrend/:sDate/:eDate", item.sellingItemTrend);
 
+  // get all  item sale purchase by given date
+  router.get("/itemSalePurchaseDateWise/:sDate/:eDate", item.ItemSalePurchaseDateWise);
 
 
   // Retrieve all Item with specific category

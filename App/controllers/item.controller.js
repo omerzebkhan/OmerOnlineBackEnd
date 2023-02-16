@@ -246,6 +246,40 @@ s.totalsale desc;`, {
 
 }
 
+//get item wise sale and purchase base on date
+exports.ItemSalePurchaseDateWise = async (req, res) => {
+  const startedDate = req.params.sDate;
+  const endDate = req.params.eDate;
+
+  var data = "";
+  //customerId==="0" ? 
+  data = await db.sequelize.query(`
+  select id,name,code,description,quantity,coalesce(p.pquantity,null,0) as pquantity,coalesce(p.pvalue,null,0) as pvalue,coalesce(s.squantity,null,0) as squantity,coalesce(s.svalue,null,0) as svalue,coalesce(s.sprofit,null,0) as sprofit from items
+  left join (select "itemId",sum(quantity) as pquantity,sum(quantity*price) as pvalue from "purchaseDetails"
+  where "createdAt" between '${startedDate}' and '${endDate}'
+  group by "itemId")p
+  on 
+  items.id =  p."itemId"    
+  left join (select "itemId" as sitemid,sum(quantity) as squantity,sum(quantity*price) as svalue,sum((price-cost)*quantity) as sprofit from "saleDetails"
+  where "createdAt" between '${startedDate}' and '${endDate}'
+  group by "itemId")s 
+  on items.id =s.sitemid;`, {
+    // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+    type: db.sequelize.QueryTypes.SELECT
+  })
+    .catch(err => {
+      console.log(err.message || "Some error Executing sellingItemTrend with date")
+      res.status(500).send({
+        message:
+          err.message || "Some error Executing sellingItemTrend query"
+      });
+    })
+
+
+  return res.status(200).json(data)
+
+
+}
 
 // Update a Item by the id in the request
 exports.update = (req, res) => {

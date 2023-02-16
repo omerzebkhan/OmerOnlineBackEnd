@@ -8,7 +8,10 @@ module.exports = (sequelize, Sequelize) => {
         },
         bankPayment: {
             type: Sequelize.DOUBLE
-        }
+        },
+        comments: {
+            type: Sequelize.STRING
+          }
     });
 
     return SaleInvoicePayment;

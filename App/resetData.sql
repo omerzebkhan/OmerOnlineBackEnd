@@ -201,6 +201,11 @@ ADD COLUMN lowerlimit character varying(255),
 ALTER TABLE sales
 ADD COLUMN agentid character varying(255);
 
+ALTER TABLE "saleInvoicePayments"
+ADD COLUMN comments character varying(255);
+
+ALTER TABLE cashFlow
+ADD COLUMN outstanding Double;
 
 ALTER TABLE sales
 ALTER COLUMN agentid TYPE INT 
@@ -230,9 +235,31 @@ add column feedback character varying(255);
   where "purchaseDetails".id = m.id) lp
 		where items.id = lp."itemId"
 		and items.name like '%test%'
+-------------------------------------------------------REPORTS
+select ROUND(CAST(FLOAT8 (sum(invoicevalue)) AS NUMERIC),2) as totalSale,TO_CHAR("createdAt",'mm/yyyy') as month
+  from sales 
+  --"createdAt" between '${startedDate}' and '${endDate}'
+  group by TO_CHAR("createdAt",'mm/yyyy')
+  order by TO_CHAR("createdAt",'mm/yyyy') desc
+  
+  
+  select * from sales
+  
+  select ROUND(CAST(FLOAT8 (sum(price*quantity)) AS NUMERIC),2) as totalSale,ROUND(CAST(FLOAT8 (sum(quantity)) AS NUMERIC),2) as totalItem,ROUND(CAST(FLOAT8 (sum((price-cost)*quantity)) AS NUMERIC),2) as profit,TO_CHAR("createdAt",'mm/yyyy') as month
+  from "saleDetails"
+  --"createdAt" between '${startedDate}' and '${endDate}'
+  group by TO_CHAR("createdAt",'mm/yyyy')
+  order by TO_CHAR("createdAt",'mm/yyyy') desc
+  
+  
+  select ROUND(CAST(FLOAT8 (sum(price*quantity)) AS NUMERIC),2) as totalSale,ROUND(CAST(FLOAT8 (sum(quantity)) AS NUMERIC),2) as totalItem,ROUND(CAST(FLOAT8 (sum((price-cost)*quantity)) AS NUMERIC),2) as profit,TO_CHAR("createdAt",'mm/yyyy') as month
+  from "saleDetails"
+  "createdAt" between '${startedDate}' and '${endDate}'
+  group by TO_CHAR("createdAt",'mm/yyyy')
+  order by TO_CHAR("createdAt",'mm/yyyy') desc
+  
 
-
-
+-------------------------------------------------Acount recievable between two dates
 
 -----------------------------------------------Sale invoice profit with the last purchase value -----------------------
 
@@ -413,22 +440,27 @@ purchase invoice was edited after the sale
 
 there is a bug in sale / purchase invoice where u change the item code.
 
-
+sale agent start end closing invoices outstanding if the total amount is cleared.
+Sale invoice get halted when enter is pressed on the item selection.  
+Edit purchase it should the vendor instead of customer.
+add agent wise report report in gui
+monthly sale report trend with the graph --In progress
+add invoice wise search in the AR screen
+create cash management table
+	--Perosnal AR -- through cash or bank
+	--Personal AP -- through cash or bank
+AP screen should show the details of all the payment made by the user   .
 Done
 
 account recievable if edited whole amount is comming back in outstanding   .....need to simulate this case in local setup
 edit the existing AP / AR invoices.
-AP screen should show the details of all the payment made by the user   .
 AR/Ap screen should show the invoice details also .................
 Restricted Access for the sale agent.
 return item is updating the outsting to the same invoice value .................... test is working fine as per local test.
-add agent wise report report in gui.
 add last purchase to the stock report
-monthly sale report trend with the graph --In progress
 add errors of the api to the db if debug flag is true.    
 area wise filter in sale report.
 A/R sale return of the specific invoice.   
-A/R outstanding invoice should be order by createdAt desc ------In progress
 total edit report  (need to check what to show in this how to know how much amount is changed) (store old and new values in the edit table)
 Add total return/return item qty/ purchase item qty/sale item qty in the balance sheet 
 
@@ -436,6 +468,8 @@ add connect error message on the screens
 check error in the console when clicking payment details on AR screen
 
 when adding new item in the purchase invoice edit option total invoice value is not getting updated.
+add option which reviving payment if amount is neative (means has to pay it to the customer) list of invoice haivng outstanding so can be adjusted in one of them.
+
 
 Making amritsare shopping center online system so that we will be able to make more branches ....?
 agent access restriction.
@@ -444,6 +478,44 @@ rates of products accuracy
 change shop keeper name (double)
 check why usually sum of ??
 Daily actions does not match with 
+
+expense should be added to the purchase invoice so builty expense can be added to the indivisual products cost.
+balance sheet to manage the additional money which is paid to anyone (recieved + paided advance)
+
+sale return product search.
+AC /AP after refresh all invoice but it should show the same search of the customer.
+
+
+
+
+
+
+
+
+
+[7:24 pm, 04/12/2022] Bro Inlaw Nabeel Shop: I’d 742 144 - 136  -- these  are variant of the same product no issues
+[7:24 pm, 04/12/2022] Bro Inlaw Nabeel Shop: I’d 743 40 - 48    -- these  are variant of the same product no issues
+
+[7:25 pm, 04/12/2022] Bro Inlaw Nabeel Shop: Dabar amla oil indian 100ml  --need to update in the item quantity 0 - 60 done
+I’d 646  6 - 0  make the quantity 0  -- fixed
+
+
+
+invoice id 531             change from inventory adjustment to invest 1  it is having multiple vaues add this in the N&A traders ()
+invoice id 543             old return  to invest 1						 it is having multiple values add this in the N&A traders ()
+
+
+
+
+15 suba 7:30   lhr 1:00
+8 jan 2:00 suba 11 baja    4:30 kwt 
+
+
+N&M
+sale invoice id =1275   				cost of livon hair serum ind 50ml id = 
+sale invoice id =1262 sd id =18523 				livon hair serum ind 50ml
+
+
 
 
 -------------------------------Done By Nabeel----------------------------------------------
