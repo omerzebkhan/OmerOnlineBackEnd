@@ -58,7 +58,7 @@ exports.findPayHist = async (req, res) => {
   // const name = req.query.name;
   // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
   var saleProfit ="";
-  saleProfit = await db.sequelize.query(`select users.id as userId,users.name,sales.id as sid,"saleInvoicePayments".id as sipid,"saleInvoicePayments"."createdAt","saleInvoicePayments"."cashPayment","saleInvoicePayments"."bankPayment" 
+  saleProfit = await db.sequelize.query(`select users.id as userId,users.name,sales.id as sid,"saleInvoicePayments".id as sipid,"saleInvoicePayments"."createdAt","saleInvoicePayments"."cashPayment","saleInvoicePayments"."bankPayment","saleInvoicePayments"."comments" 
   from "saleInvoicePayments","users","sales"
   where "saleInvoicePayments"."reffInvoice" = "sales".id and "sales"."customerId" = "users".id
   and users.id = ${id}
