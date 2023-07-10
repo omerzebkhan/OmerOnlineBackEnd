@@ -46,6 +46,8 @@ insert into user_roles values ('2021-09-21 21:10:49.924+03','2021-09-21 21:10:49
 
 -----------------------------------------Passwords---------
 $2a$08$szIjLpoTvzl9gtCJ0bB1iuCEOtO.xms3t2F9wMC5bzpWtDu1nfXFG  =1
+$2a$08$Y1oMrgOfnnCKlfufCi4znOOwa5L8u4uKl5mL6XjfLY1He9/GwAkv.  =NabeelB@hi
+$2a$08$9Lq4bvZQaozpC0I2/M2r3egehTKNWGuDu9D1hlx9/5W8/yfTyl0l2  = (Nabeel Rasheed old password)
 
 INSERT INTO public."accesses"
 	VALUES (22, 6, 'Add Expense', true, '2021-09-07 20:11:44.559+03','2021-09-07 20:11:44.559+03');
@@ -205,7 +207,10 @@ ALTER TABLE "saleInvoicePayments"
 ADD COLUMN comments character varying(255);
 
 ALTER TABLE cashFlow
-ADD COLUMN outstanding Double;
+ADD COLUMN outstanding FLOAT;
+
+ALTER TABLE "cartDetails"
+ADD COLUMN price FLOAT;
 
 ALTER TABLE sales
 ALTER COLUMN agentid TYPE INT 
@@ -450,13 +455,13 @@ create cash management table
 	--Perosnal AR -- through cash or bank
 	--Personal AP -- through cash or bank
 AP screen should show the details of all the payment made by the user   .
+account recievable if edited whole amount is comming back in outstanding   .....need to simulate this case in local setup
+return item is updating the outsting to the same invoice value .................... test is working fine as per local test.
 Done
 
-account recievable if edited whole amount is comming back in outstanding   .....need to simulate this case in local setup
 edit the existing AP / AR invoices.
 AR/Ap screen should show the invoice details also .................
 Restricted Access for the sale agent.
-return item is updating the outsting to the same invoice value .................... test is working fine as per local test.
 add last purchase to the stock report
 add errors of the api to the db if debug flag is true.    
 area wise filter in sale report.
@@ -468,6 +473,8 @@ add connect error message on the screens
 check error in the console when clicking payment details on AR screen
 
 when adding new item in the purchase invoice edit option total invoice value is not getting updated.
+need to find the issue in the edit purchase of the products.
+
 add option which reviving payment if amount is neative (means has to pay it to the customer) list of invoice haivng outstanding so can be adjusted in one of them.
 
 
@@ -484,37 +491,7 @@ balance sheet to manage the additional money which is paid to anyone (recieved +
 
 sale return product search.
 AC /AP after refresh all invoice but it should show the same search of the customer.
-
-
-
-
-
-
-
-
-
-[7:24 pm, 04/12/2022] Bro Inlaw Nabeel Shop: I’d 742 144 - 136  -- these  are variant of the same product no issues
-[7:24 pm, 04/12/2022] Bro Inlaw Nabeel Shop: I’d 743 40 - 48    -- these  are variant of the same product no issues
-
-[7:25 pm, 04/12/2022] Bro Inlaw Nabeel Shop: Dabar amla oil indian 100ml  --need to update in the item quantity 0 - 60 done
-I’d 646  6 - 0  make the quantity 0  -- fixed
-
-
-
-invoice id 531             change from inventory adjustment to invest 1  it is having multiple vaues add this in the N&A traders ()
-invoice id 543             old return  to invest 1						 it is having multiple values add this in the N&A traders ()
-
-
-
-
-15 suba 7:30   lhr 1:00
-8 jan 2:00 suba 11 baja    4:30 kwt 
-
-
-N&M
-sale invoice id =1275   				cost of livon hair serum ind 50ml id = 
-sale invoice id =1262 sd id =18523 				livon hair serum ind 50ml
-
+customer details with credit & debit in one screen
 
 
 
@@ -535,8 +512,7 @@ check with lawyer to make omer filer ?
 lawyer update for the account
 H#3 st# 14  Qabrastan road Wala transfer letter update
 H#2 st#15 Apia wala (farooq bahi) transfer letter update
-DHA plot finalization.
-Ahamed bahi payment. (5 Lack left)
+Ahamed bahi payment. (1 Lack left)
 
 
 
@@ -591,5 +567,16 @@ https://stackoverflow.com/questions/47243154/how-to-send-whatsapp-message-via-ja
 
 --docker container
 https://semaphoreci.com/community/tutorials/dockerizing-a-node-js-web-application
+
+--Send email through gmail account
+https://jay315.medium.com/sending-email-using-express-js-with-nodemailer-in-heroku-71741f29463c
+
+https://ciunkos.com/creating-contact-forms-with-nodemailer-and-react
+
+https://javascript.plainenglish.io/create-otp-based-user-sign-up-using-node-js-cc4defc54123
+
+https://stackoverflow.com/questions/25693280/nodemailer-with-gmail-service-not-working-on-heroku  --heroku for nodemailer-and-react
+
+
 	
 

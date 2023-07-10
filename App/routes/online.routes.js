@@ -51,6 +51,9 @@ module.exports = app => {
   //update cart
   router.put("/cart/:id", cart.update);
 
+  //get all carts by the date
+  router.get("/cartByDate/", cart.findCartsByDate);
+
   ////////////////
   /////CART DETAIL//////
   ////////////////
@@ -340,7 +343,7 @@ module.exports = app => {
   router.post("/saleReturn/", [authJwt.verifyToken, authJwt.isAdmin], saleReturn.create);
 
   // get all Sale Return by given date
-  router.get("/saleReturnByDate/:sDate/:eDate", saleReturn.findSaleReturnByDate);
+  router.get("/saleReturnByDate/:custName/:sDate/:eDate", saleReturn.findSaleReturnByDate);
 
 //getSaleReturnDetailByInvoice
 router.get("/saleReturnDetailByInvoice/:id", saleReturn.findSaleReturnDetailByInvoice);

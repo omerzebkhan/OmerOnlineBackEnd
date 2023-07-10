@@ -11,6 +11,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       status: {
         type: Sequelize.STRING
+      },
+      price: {
+        type: Sequelize.DECIMAL(10,3)
       }
     });
   

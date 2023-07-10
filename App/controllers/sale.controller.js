@@ -59,12 +59,24 @@ exports.findAllAR = async (req, res) => {
   // const name = req.query.name;
   // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
 
+  // const saleAR = await db.sequelize.query(
+  //   `select * from (select "customerId",users."name",users."address",agent.name as agentname,sum(invoicevalue) "saleInvoiceValue",sum(sales."Outstanding") "salesOutstanding" 
+  //   from sales,users,users as agent
+  //   where sales."customerId" = users.id and agentid = agent.id 
+  //   group by "customerId",users."name",users."address",agent.name,"agentid") sa;`
+  //   , {
+  //   type: db.sequelize.QueryTypes.SELECT
+  // });
+
   const saleAR = await db.sequelize.query(
-    `select * from (select "customerId",users."name",users."address",agent.name as agentname,sum(invoicevalue) "saleInvoiceValue",sum(sales."Outstanding") "salesOutstanding" 
-    from sales,users,users as agent
-    where sales."customerId" = users.id and agentid = agent.id 
-    group by "customerId",users."name",users."address",agent.name,"agentid") sa;`
-    , {
+    `select * from (select sales."customerId",users."name",users."address",agent.name as agentname,sum(invoicevalue) "saleInvoiceValue",sum(sales."Outstanding") "salesOutstanding",age.diff
+    from sales,users,users as agent,(
+    select "customerId",min("createdAt"),CURRENT_DATE,(CURRENT_DATE-min("createdAt")) AS "diff"  
+    from sales 
+    where "Outstanding">0
+   group by "customerId") "age"
+    where sales."customerId" = users.id and agentid = agent.id and age."customerId"= users.id
+    group by sales."customerId",users."name",users."address",agent.name,"agentid",age.diff) sa;`, {
     type: db.sequelize.QueryTypes.SELECT
   });
 

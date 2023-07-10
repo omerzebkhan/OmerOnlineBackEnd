@@ -9,7 +9,7 @@ exports.create = (req, res) => {
     // Create a Cart
     const cart = {
         userid: req.body.userid,
-        status: 'InProgress'
+        status: 'INPROGRESS'
     };
 
 
@@ -27,7 +27,8 @@ exports.create = (req, res) => {
                 cartid:data.id,
                 itemid: req.body.itemid,
                 quantity: req.body.quantity,
-                status: req.body.cartstatus
+                status: req.body.cartstatus,
+                price:req.body.price
             };
             CartDetail.create(cartDetail)
                 .then(data1 => {
@@ -71,7 +72,34 @@ exports.findAllByUserNStatus = (req, res) => {
         });
 };
 
+//get carts by date  
+exports.findCartsByDate = async (req, res) => {
+  const startedDate = req.params.sDate;
+  const endDate = req.params.eDate;
 
+  var data = "";
+  //customerId==="0" ? 
+  data = await db.sequelize.query(`select carts.id,carts.userid,carts.status,carts."createdAt",users.name,"sumCart".totalqty,"sumCart".totalamount
+  from carts,users,(select cartid,sum(quantity) as totalqty,sum(quantity * price) as totalamount from "cartDetails" group by cartid) as "sumCart"
+  where carts.userid=users.id
+  and carts.id = "sumCart".cartid
+  order by "carts".id;`, {
+    // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+    type: db.sequelize.QueryTypes.SELECT
+  })
+    .catch(err => {
+      console.log(err.message || "Some error Executing cart with date")
+      res.status(500).send({
+        message:
+          err.message || "Some error Executing cart query"
+      });
+    })
+
+
+  return res.status(200).json(data)
+
+
+}
 
 // Retrieve all Brand from the database.
 exports.findAll = (req, res) => {

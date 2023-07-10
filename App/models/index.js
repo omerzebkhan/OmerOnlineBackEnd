@@ -20,6 +20,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   //strConfig,
   ////////////////////////////////////////////
 
+
   ///////////////////////////Remote heruko db
   operatorsAliases: 0,
   dialectOptions: {

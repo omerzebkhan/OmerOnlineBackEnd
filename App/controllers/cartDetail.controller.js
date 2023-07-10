@@ -38,11 +38,12 @@ exports.findCartDetailByCust = async (req, res) => {
   
   console.log(req.params.id)
 
-    const data = await db.sequelize.query(`select carts.id,carts.userid,"cartDetails".itemid,items.name,items.description,items.onlineprice,items."imageUrl","cartDetails"."id" as cartid,"cartDetails"."quantity","cartDetails"."createdAt" 
+    const data = await db.sequelize.query(`
+    select carts.id,carts.userid,"cartDetails".itemid,items.name,items.description,items.onlineprice,items."imageUrl","cartDetails"."id" as cartid,"cartDetails"."quantity","cartDetails"."createdAt" 
     from "cartDetails"
     join carts on "cartDetails".cartid = carts.id
     join items on "cartDetails".itemid = items.id
-    where carts.userid = ${req.params.id} and carts.status = 'InProgress' and "cartDetails".status='Add'
+    where carts.userid = ${req.params.id} and carts.status = 'INPROGRESS' and "cartDetails".status='Add'
     order by "cartDetails".id desc`, {
       // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
       type: db.sequelize.QueryTypes.SELECT
