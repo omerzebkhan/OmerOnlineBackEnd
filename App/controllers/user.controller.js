@@ -3,6 +3,8 @@ const User = db.users;
 const UserRole = db.userRole;
 const Role = db.role;
 const Op = db.Sequelize.Op;
+const { generateOTP } = require('../services/opt');
+const { sendMail } = require('../services/emailService');
 
 
 const getPagination = (page, size) => {
@@ -46,7 +48,8 @@ exports.create = (req, res) => {
     ph: req.body.ph,
     totalamount: req.body.totalamount,
     outstanding: req.body.Outstanding,
-    comments: req.body.comments
+    comments: req.body.comments,
+    otp:otpGenerated
 
   };
   console.log(`data entered = ${user.username}`)
@@ -54,9 +57,13 @@ exports.create = (req, res) => {
 
   User.create(user)
     .then(data => {
-
+      ////////////////////SEND email for the user with OTP
+      // try {
+      //   await sendMail({
+      //     to: user.email,
+      //     OTP: otpGenerated,
+      //   });
       res.send(data)
-
     })
     .catch(err => {
       res.status(500).send({

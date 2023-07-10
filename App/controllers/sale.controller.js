@@ -70,13 +70,15 @@ exports.findAllAR = async (req, res) => {
 
   const saleAR = await db.sequelize.query(
     `select * from (select sales."customerId",users."name",users."address",agent.name as agentname,sum(invoicevalue) "saleInvoiceValue",sum(sales."Outstanding") "salesOutstanding",age.diff
-    from sales,users,users as agent,(
+    from sales,users as agent,users 
+    left outer join(
     select "customerId",min("createdAt"),CURRENT_DATE,(CURRENT_DATE-min("createdAt")) AS "diff"  
     from sales 
     where "Outstanding">0
    group by "customerId") "age"
-    where sales."customerId" = users.id and agentid = agent.id and age."customerId"= users.id
-    group by sales."customerId",users."name",users."address",agent.name,"agentid",age.diff) sa;`, {
+   on  users.id=age."customerId"
+    where sales."customerId" = users.id and agentid = agent.id
+    group by sales."customerId",users."name",users."address",agent.name,"agentid",age.diff) sa`, {
     type: db.sequelize.QueryTypes.SELECT
   });
 
