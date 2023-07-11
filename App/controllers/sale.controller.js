@@ -100,8 +100,13 @@ exports.findARByInvoiceId = async (req,res) =>{
     and agentid=a.id) s,
     (select "customerId",users.name,sum(invoicevalue) totalinvoice,sum(outstanding) totaloutstanding from sales,users
     where  "customerId" = users.id
-    group by "customerId",users.name) as ssum
-    where s."customerId" = ssum."customerId";`
+    group by "customerId",users.name) as ssum 
+    left outer join(
+    select "customerId" as "custId",min("createdAt"),CURRENT_DATE,(CURRENT_DATE-min("createdAt")) AS "diff"  
+    from sales 
+    where "Outstanding">0
+   group by "customerId") "age"
+   on  ssum."customerId"=age."custId";`
     , {
     type: db.sequelize.QueryTypes.SELECT
   });

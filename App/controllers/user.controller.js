@@ -49,10 +49,10 @@ exports.create = (req, res) => {
     totalamount: req.body.totalamount,
     outstanding: req.body.Outstanding,
     comments: req.body.comments,
-    otp:otpGenerated
+    otp:generateOTP()
 
   };
-  console.log(`data entered = ${user.username}`)
+  console.log(`data entered = ${user.otp}`)
   // Save user in the database
 
   User.create(user)
