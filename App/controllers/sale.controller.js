@@ -106,7 +106,8 @@ exports.findARByInvoiceId = async (req,res) =>{
     from sales 
     where "Outstanding">0
    group by "customerId") "age"
-   on  ssum."customerId"=age."custId";`
+   on  ssum."customerId"=age."custId"
+   where s."customerId"=ssum."customerId";`
     , {
     type: db.sequelize.QueryTypes.SELECT
   });

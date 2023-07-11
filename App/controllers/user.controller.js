@@ -62,7 +62,9 @@ exports.create = (req, res) => {
       //   await sendMail({
       //     to: user.email,
       //     OTP: otpGenerated,
-      //   });
+      //   })
+      // }
+     
       res.send(data)
     })
     .catch(err => {
