@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Brand = sequelize.define("category", {
+    const Category = sequelize.define("category", {
         name: {
         type: Sequelize.STRING
       },
@@ -11,5 +11,5 @@ module.exports = (sequelize, Sequelize) => {
       }
     });
   
-    return Brand;
+    return Category;
   };

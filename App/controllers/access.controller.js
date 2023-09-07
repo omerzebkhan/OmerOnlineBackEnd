@@ -72,6 +72,65 @@ exports.findOne = (req, res) => {
     });
 };
 
+exports.findAccessByRole = async(req,res) =>{
+  const roleId = req.params.id;
+
+  const finalRes = await db.sequelize.query(`
+  select * from accesses where "roleId" = ${roleId};`, {
+    replacements: { itemId: req.params.itemId },
+    type: db.sequelize.QueryTypes.SELECT
+  });
+  console.log(finalRes)
+  return res.status(200).json(finalRes)
+
+}
+
+exports.updateRoleAccess = (req,res) =>{
+  const roleId = req.params.id;
+  const data = req.body;
+//  console.log(`roleid = ${roleId} and data = ${data[0].screenname}`)
+//   var data = "";
+//   //customerId==="0" ? 
+data.map((item,index) => {
+  //console.log(`screen Name = ${item.screenname}  rights = ${item.status}`)
+  db.sequelize.query(`update accesses set status =${item.status=="1" ?"true":"false"} where "screenName" ='${item.screenname}' and "roleId"='${roleId}';`, {
+    // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+    type: db.sequelize.QueryTypes.UPDATE
+  })
+  .then((result => {
+    console.log(result[1])
+    // if(result[1]===1)
+    // {
+    //   console.log("User has been activated")
+    //   return res.status(200).send({
+    //     message:
+    //        "User has been activated"
+    //   });
+    // }
+    // else
+    // {
+    //   console.log("Unable to verify your OTP")
+    //   return res.status(418).send({
+    //     message:
+    //        "Unable to verify OTP"
+    //   });
+   // }
+    
+  }))
+    .catch(err => {
+      console.log(err.message || "Some error Executing sellingItemTrend with date")
+      res.status(500).send({
+        message:
+          err.message || "Some error Executing sellingItemTrend query"
+      });
+    })
+
+})
+
+return res.status(200).json(data)
+
+}
+
 // Update a user by the id in the request
 exports.update = (req, res) => {
   
@@ -116,6 +175,10 @@ exports.adminBoard = (req, res) => {
 
 exports.aPa = (req, res) => {
   res.status(200).send("Admin Or Purchase Content.");
+};
+
+exports.saleAgent = (req, res) => {
+  res.status(200).send("Admin Or SaleAgent Content.");
 };
 
 exports.moderatorBoard = (req, res) => {

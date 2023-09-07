@@ -41,8 +41,6 @@ exports.findAll = (req, res) => {
     });
 };
 
-
-
   function writeCustomError(message) {
     var errorObject = {};
     errorObject.message = message;

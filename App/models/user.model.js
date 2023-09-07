@@ -35,8 +35,10 @@ module.exports = (sequelize, Sequelize) => {
         },
         otp: {
             type: Sequelize.STRING
-        }
-        
+        },
+        status: {
+            type: Sequelize.STRING
+        }       
     });
 
     return User;

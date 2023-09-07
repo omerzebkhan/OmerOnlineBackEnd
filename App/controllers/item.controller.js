@@ -1,4 +1,4 @@
-const { brands } = require("../models");
+//const { brands } = require("../models");
 const db = require("../models");
 const Item = db.items;
 const Op = db.Sequelize.Op;
@@ -34,15 +34,17 @@ exports.create = (req, res) => {
     lowerlimit: req.body.lowerlimit
   };
 
-  // Save Tutorial in the database
+  // Save Item in the database
   Item.create(item)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
+      //console.log(err)
+      console.log(err.errors[0].message)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Item."
+        `Error :Item Creation ${err.message} ${err.errors[0].message} `
       });
     });
 };

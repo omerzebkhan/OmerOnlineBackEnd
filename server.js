@@ -79,7 +79,7 @@ app.get("/", (req, res) => {
 
 app.use((req, res, next) => { 
   console.log("App request");
-  console.log(req.method, req.url,req.body.saleInvoiceId);
+ // console.log(req.method, req.url,req.body.saleInvoiceId);
    next() })
 
 

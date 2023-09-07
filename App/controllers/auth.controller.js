@@ -66,6 +66,19 @@ exports.signin = (req, res) => {
         });
       }
 
+      console.log(`user status =${user.status} `)
+      
+      if (user.status!=="Active")
+      {
+        return res.status(401).send({
+          accessToken: null,
+          message: "User Is Not Active!"
+        });
+      }
+     
+
+
+
       const token = jwt.sign({ id: user.id }, config.secret, {
         expiresIn: config.jwtExpiration
       });

@@ -9,16 +9,17 @@ const { sendMail } = require('../services/emailService');
 
 const getPagination = (page, size) => {
  // const limit = size ? +size : 3;
-  const limit = size ;
+  const limit = size ? size : 100000  ;
   const offset = page ? page * limit : 0;
 
   return { limit, offset };
 };
 
 const getPagingData = (data, page, limit,newData) => {
- // console.log(`count = ${data.count}  rows = ${data.rows}  `)
+  //console.log(`count = ${data.count}  rows = ${data.length}  `)
   //var objArr = [];
-  const { count: totalItems} = data;
+  //const { count: totalItems} = data.lenght;
+  const totalItems = data.lenght;
   var user = newData;
   const currentPage = page ? +page : 0;
   const totalPages = Math.ceil(totalItems / limit);
@@ -49,7 +50,8 @@ exports.create = (req, res) => {
     totalamount: req.body.totalamount,
     outstanding: req.body.Outstanding,
     comments: req.body.comments,
-    otp:generateOTP()
+    otp:generateOTP(),
+    status:req.body.status
 
   };
   console.log(`data entered = ${user.otp}`)
@@ -58,14 +60,19 @@ exports.create = (req, res) => {
   User.create(user)
     .then(data => {
       ////////////////////SEND email for the user with OTP
-      // try {
-      //   await sendMail({
-      //     to: user.email,
-      //     OTP: otpGenerated,
-      //   })
-      // }
-     
-      res.send(data)
+      try {
+         sendMail({
+          to: user.email,
+          OTP: user.otp,
+        })  
+      }
+      catch (err){
+        console.log(err);
+      }
+
+     //////////////////////////////////////////////////////
+     res.send(data)
+
     })
     .catch(err => {
       res.status(500).send({
@@ -75,6 +82,51 @@ exports.create = (req, res) => {
     });
 };
 
+//verify online customer
+exports.verifyCust = async (req,res) => {
+  const email = req.body.email;
+  const OTP = req.body.otp;
+
+  console.log(`verifyCust has been called values are email = ${email} and OTP = ${OTP}`)
+  var data = "";
+  //customerId==="0" ? 
+  db.sequelize.query(`update users set status ='Active',comments='Activated by OTP' where email ='${email}' and otp='${OTP}';`, {
+    // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+    type: db.sequelize.QueryTypes.UPDATE
+  })
+  .then((result => {
+    console.log(result[1])
+    if(result[1]===1)
+    {
+      console.log("User has been activated")
+      return res.status(200).send({
+        message:
+           "User has been activated"
+      });
+    }
+    else
+    {
+      console.log("Unable to verify your OTP")
+      return res.status(418).send({
+        message:
+           "Unable to verify OTP"
+      });
+    }
+    
+  }))
+    .catch(err => {
+      console.log(err.message || "Some error Executing sellingItemTrend with date")
+      res.status(500).send({
+        message:
+          err.message || "Some error Executing sellingItemTrend query"
+      });
+    })
+
+
+ // return res.status(200).json(data)
+
+  };
+
 
 
 
@@ -83,7 +135,7 @@ exports.findAll = (req, res) => {
  
 
   const { page, size } = req.query;
- // console.log(`page = ${page} size = ${size}`)
+  //console.log(`page = ${page} size = ${size}`)
   //var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
   const { limit, offset } = getPagination(page, size);
@@ -123,14 +175,22 @@ exports.findAll = (req, res) => {
          // console.log(`role list values ${roleList[0].id}`)
 
           //////////////////get all subscribers 
-          User.findAndCountAll({limit, offset })
+          //User.findAndCountAll({limit, offset })
           //User.findAll()
-            .then(d => {
+          db.sequelize.query(`select * from users
+          left join (select "customerId",sum("Outstanding") from sales where "Outstanding" > 0 group by "customerId") s 
+          on users.id = s."customerId"
+          LIMIT ${limit} offset ${offset};`, {
+            // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+            type: db.sequelize.QueryTypes.SELECT
+          })
+          .then(d => {
             
-             // console.log(`repsonse to be sent =${d.count}  ${d.rows}`)
+             console.log(`repsonse to be sent =${d}  ${d.count}  ${d.rows}`)
             
               var newData = []
-              d.rows.map((item, index) => {
+              //d.rows.map((item, index) => {
+                d.map((item, index) => {
                 var obj = JSON.parse(JSON.stringify(item));
                 var roleValue = "";
                 roleList.map((i)=>{
@@ -141,11 +201,8 @@ exports.findAll = (req, res) => {
                   }
                   obj.roles = roleValue;
                 })
-
                 newData.push(obj);
                 //console.log(newData.roles)
-
-
               }),
                 // console.log(`role value ===== ${newData[8].roles}`)
                  response = getPagingData(d, page, limit,newData)
@@ -163,15 +220,7 @@ exports.findAll = (req, res) => {
                   err.message || "Some error occurred while retrieving users."
               });
             });
-
-
           ///////////////////////////////////////
-
-
-
-
-
-
         })
         .catch(err => {
           console.log(err.message)
@@ -261,3 +310,4 @@ exports.aPa = (req, res) => {
 exports.moderatorBoard = (req, res) => {
   res.status(200).send("Moderator Content.");
 };
+

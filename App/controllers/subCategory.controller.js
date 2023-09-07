@@ -17,9 +17,9 @@ exports.create = (req, res) => {
     name: req.body.name,
     description: req.body.description,
     category:req.body.category,
-    url: req.body.url
+    imageUrl: ''
   };
-
+  console.log (subCat)
   // Save Tutorial in the database
   SubCategory.create(subCat)
     .then(data => {

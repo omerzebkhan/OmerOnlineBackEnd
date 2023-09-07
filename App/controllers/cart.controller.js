@@ -137,9 +137,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
 
     const id = req.params.id;
-    // console.log(`brand update is triggred
-    // id=${id}
-    // imageurl = ${req.body.imageUrl}`);
+   
     Cart.update(req.body, {
         where: { id: id }
     })

@@ -191,35 +191,6 @@ exports.delete = (req, res) => {
     });
 };
 
-//Delete all Tutorials from the database
-exports.deleteAll = (req, res) => {
-    Category.destroy({
-    where: {},
-    truncate: false
-  })
-    .then(nums => {
-      res.send({ message: `${nums} Tutorials were deleted successfully!` });
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all tutorials."
-      });
-    });
-};
 
-//Find all Tutorials with published = true
-exports.findAllPublished = (req, res) => {
-    Category.findAll({ where: { published: true } })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
-    });
-};
 
 //
