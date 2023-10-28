@@ -41,9 +41,9 @@ db.sequelize.sync();
 
 
 //In case of the first time use the following then comment it for the second time
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("Drop and re-sync db.");
-});
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and re-sync db.");
+// });
 
 var corsOptions = {
  origin: ["http://localhost:90","http://localhost:3000","http://localhost:8081","https://protected-gorge-40768.herokuapp.com","https://omerwholesale-dbe41ec6a9be.herokuapp.com"]

@@ -16,19 +16,19 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
   ////////////////////////local db
-  operatorsAliases: false,
+  //operatorsAliases: false,
   //strConfig,
   ////////////////////////////////////////////
 
 
   ///////////////////////////Remote heruko db
-//   operatorsAliases: 0,//
-//   dialectOptions: {
-//     ssl: {
-//       require: true, // This will help you. But you will see nwe error
-//       rejectUnauthorized: false // This line will fix new error
-//     }
-//  },
+  operatorsAliases: 0,//
+  dialectOptions: {
+    ssl: {
+      require: true, // This will help you. But you will see nwe error
+      rejectUnauthorized: false // This line will fix new error
+    }
+ },
   //////////////////////////////////////////////
   pool: {
     max: dbConfig.pool.max,
