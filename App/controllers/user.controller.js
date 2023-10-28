@@ -15,15 +15,15 @@ const getPagination = (page, size) => {
   return { limit, offset };
 };
 
-const getPagingData = (data, page, limit,newData) => {
+const getPagingData = (data, page, limit,newData,totalCount) => {
   //console.log(`count = ${data.count}  rows = ${data.length}  `)
   //var objArr = [];
   //const { count: totalItems} = data.lenght;
-  const totalItems = data.lenght;
+  const totalItems = totalCount;
   var user = newData;
   const currentPage = page ? +page : 0;
   const totalPages = Math.ceil(totalItems / limit);
-
+console.log(`totalpages = ${totalItems}  rows = ${limit}  `)
   return { totalItems, user, totalPages, currentPage };
 };
 
@@ -186,32 +186,56 @@ exports.findAll = (req, res) => {
           })
           .then(d => {
             
-             console.log(`repsonse to be sent =${d}  ${d.count}  ${d.rows}`)
+            //////////////To Get Total Count of the data 
+            db.sequelize.query(`select count(*) from users
+          left join (select "customerId",sum("Outstanding") from sales where "Outstanding" > 0 group by "customerId") s 
+          on users.id = s."customerId";`, {
+            // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+            type: db.sequelize.QueryTypes.SELECT
+          })
+          .then(c => {
+            console.log(c[0].count)
+
+
+
+
+
+          //d.count = c[0].count
+          console.log(d)
             
-              var newData = []
-              //d.rows.map((item, index) => {
-                d.map((item, index) => {
-                var obj = JSON.parse(JSON.stringify(item));
-                var roleValue = "";
-                roleList.map((i)=>{
-                  //console.log(`${i.userId} === ${item.id}`)
-                  if (i.userId ===item.id)
-                  {
-                    roleValue = i.name
-                  }
-                  obj.roles = roleValue;
-                })
-                newData.push(obj);
-                //console.log(newData.roles)
-              }),
-                // console.log(`role value ===== ${newData[8].roles}`)
-                 response = getPagingData(d, page, limit,newData)
-                  // console.log(`total items ===== ${response.totalItems}
-                  // user = ${response.user} ,
-                  // ${response.totalPages},
-                  // ${response.currentPage}`)
-               // res.send(response);
-                res.send(response)
+          var newData = []
+          //d.rows.map((item, index) => {
+            d.map((item, index) => {
+            var obj = JSON.parse(JSON.stringify(item));
+            var roleValue = "";
+            roleList.map((i)=>{
+              //console.log(`${i.userId} === ${item.id}`)
+              if (i.userId ===item.id)
+              {
+                roleValue = i.name
+              }
+              obj.roles = roleValue;
+            })
+            newData.push(obj);
+            //console.log(newData.roles)
+          }),
+            // console.log(`role value ===== ${newData[8].roles}`)
+             response = getPagingData(d, page, limit,newData,c[0].count)
+              // console.log(`total items ===== ${response.totalItems}
+              // user = ${response.user} ,
+              // ${response.totalPages},
+              // ${response.currentPage}`)
+           // res.send(response);
+            res.send(response)
+
+
+
+          })
+          .catch(err => {
+            console.log(err.message)
+          });
+
+
             })
             .catch(err => {
               console.log(err.message);

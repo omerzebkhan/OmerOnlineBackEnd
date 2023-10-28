@@ -30,6 +30,7 @@ exports.create = (req, res) => {
                 status: req.body.cartstatus,
                 price:req.body.price
             };
+            console.log(cartDetail)
             CartDetail.create(cartDetail)
                 .then(data1 => {
                     res.send(data);

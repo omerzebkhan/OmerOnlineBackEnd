@@ -24,6 +24,7 @@ const cashFlow = require("../controllers/cashFlow.controller");
 const cashFlowPayment = require("../controllers/cashFlowPayment.controller");
 const invDebug = require("../controllers/invDebug.controller");
 const access = require("../controllers/access.controller.js");
+const ownerStock = require("../controllers/ownerStock.controller");
 
 const { authJwt } = require("../middleware");
 const controller1 = require("../controllers/auth.controller");
@@ -40,9 +41,22 @@ module.exports = app => {
     next();
   });
 
-
-
   var router = require("express").Router();
+
+  /////////////////////
+  /////OWNERSTOCK//////
+  /////////////////////
+
+  // Create a new owner Stock
+  router.post("/ownerStock/", ownerStock.create);
+
+  //Get ownerStock by ownerId and ItemId
+  router.get("/OSByOwnerAndDate/:ownerId/:itemId", ownerStock.getOSByOwnerAndItem);
+
+   // Update a Item with id
+   router.put("/ownerStock/:id", ownerStock.update);
+
+
   ////////////////
   /////CART//////
   ////////////////
@@ -216,7 +230,7 @@ router.post("/verifyOnlineCust/", user.verifyCust);
 
   ////////////////
   ////PURCHASE////
-  ////////////////
+  /////////////////
   // Create a new Purchase
   router.post("/purchase/", [authJwt.verifyToken, authJwt.isAdmin,authJwt.checkScreenAccess], purchase.create);
 

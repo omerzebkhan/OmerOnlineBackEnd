@@ -287,18 +287,21 @@ exports.ItemSalePurchaseDateWise = async (req, res) => {
 exports.update = (req, res) => {
 
   const id = req.params.id;
-  // console.log(`brand update is triggred
-  // id=${id}
-  // imageurl = ${req.body.imageUrl}`);
+ // console.log(`item update is triggred   id=${id}  showroom = ${req.body.showroom}`);
+  //console.log();
   Item.update(req.body, {
     where: { id: id }
   })
     .then(num => {
       if (num == 1) {
+        console.log("Record has been update......")
         res.send({
-          message: "Item was updated successfully."
+          message: "Item was updated successfully....."
+
         });
       } else {
+        console.log("Some problem in the item update")
+        console.log(num)
         res.send({
           message: `Cannot update Item with id=${id}. Maybe Item was not found or req.body is empty!`
         });

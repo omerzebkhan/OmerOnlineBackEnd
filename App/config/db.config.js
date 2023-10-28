@@ -18,6 +18,7 @@ else {
   // Pass = "d6549961c432a46605c023c80903b7ccac70040091059484708dbe29ea1534ba";
   // Db = "da9hhbf5iglnut";
   // Dialet = "postgres"; 
+
   // Host = "ec2-52-3-60-53.compute-1.amazonaws.com";
   // User = "vhfrkametazjdk";
   // Pass = "772da0e515b0829fc25faca16d0bc17ee91095e793e57ffba930a797ed54fb8b";
@@ -30,20 +31,27 @@ else {
 
 module.exports = {
 
+  //////////// Remote heruko DB omerwholesale   port 5342
 
-  //////////// Remote heruko DB
-  HOST: "ec2-52-3-60-53.compute-1.amazonaws.com",
-  USER: "vhfrkametazjdk",
-  PASSWORD: "772da0e515b0829fc25faca16d0bc17ee91095e793e57ffba930a797ed54fb8b",
-  DB: "d40cas9scuggao",
-  dialect: "postgres",
+  Host:"ec2-34-236-103-63.compute-1.amazonaws.com",
+  User:"hqosarqtccdpic",
+  Pass:"c3aae3967d1ca5fffd93ed8d504f74232f7a448156b7f2f4ecaac60832612c36",
+  Db:"d1b9ifkkdsrp0t",
+  Dialet:"postgres",
+
+  //////////// Remote heruko DB N&M  port 5342
+  // HOST: "ec2-52-3-60-53.compute-1.amazonaws.com",
+  // USER: "vhfrkametazjdk",
+  // PASSWORD: "772da0e515b0829fc25faca16d0bc17ee91095e793e57ffba930a797ed54fb8b",
+  // DB: "d40cas9scuggao",
+  // dialect: "postgres",
 
   ////////////////local DB  N&A Traders
-  // HOST : "localhost",
-  // USER : "postgres",
-  // PASSWORD : "omer",
-  // DB : "pakBusinessDB",
-  // dialect : "postgres",
+  HOST : "localhost",
+  USER : "postgres",
+  PASSWORD : "omer",
+  DB : "pakBusinessDB",
+  dialect : "postgres",
   
   ////////////////local DB Test
   // HOST : "localhost",

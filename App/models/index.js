@@ -16,19 +16,19 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
   ////////////////////////local db
-//  operatorsAliases: false,
+  operatorsAliases: false,
   //strConfig,
   ////////////////////////////////////////////
 
 
   ///////////////////////////Remote heruko db
-  operatorsAliases: 0,
-  dialectOptions: {
-    ssl: {
-      require: true, // This will help you. But you will see nwe error
-      rejectUnauthorized: false // This line will fix new error
-    }
- },
+//   operatorsAliases: 0,//
+//   dialectOptions: {
+//     ssl: {
+//       require: true, // This will help you. But you will see nwe error
+//       rejectUnauthorized: false // This line will fix new error
+//     }
+//  },
   //////////////////////////////////////////////
   pool: {
     max: dbConfig.pool.max,
@@ -70,8 +70,8 @@ db.purchases.belongsTo(db.users,{foreignKey:"supplierId",as :"suppliers"});
 ///////////////////////////////////////////////////////////////////
 //Creating one to many relationship between cart and cartDetails//
 //////////////////////////////////////////////////////////////////
-db.carts.hasMany(db.cartDetail,{as : "cartDetail"})   
-db.cartDetail.belongsTo(db.carts,{foreignKey:"cartid",as :"carts"});
+//db.carts.hasMany(db.cartDetail,{as : "cartDetail"})   
+//db.cartDetail.belongsTo(db.carts,{foreignKey:"cartid",as :"carts"});
 //////////////////////////////////////////////////////////////////////
 //Creating one to many relationship between purchaseDetails and item//
 //////////////////////////////////////////////////////////////////////
@@ -127,5 +127,6 @@ db.userRole = require("./userRole.model")(sequelize, Sequelize);
 db.cashFlow = require("./cashFlow.model")(sequelize, Sequelize);
 db.cashFlowPayment = require("./cashFlowPayment.model")(sequelize, Sequelize);
 db.invDebug = require("./invDebug.model")(sequelize, Sequelize);
+db.ownerStock = require("./ownerStock.model")(sequelize, Sequelize);
 
 module.exports = db;

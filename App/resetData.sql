@@ -16,6 +16,14 @@ delete from "purchaseDetails"
 
 ALTER TABLE users
 ADD COLUMN password character varying(255);
+
+ALTER TABLE users
+ADD COLUMN otp character varying(255);
+
+ALTER TABLE users
+ADD COLUMN status character varying(255);
+
+
 --------------------------------------Roles-------------------------------------
 
 
@@ -49,8 +57,9 @@ $2a$08$szIjLpoTvzl9gtCJ0bB1iuCEOtO.xms3t2F9wMC5bzpWtDu1nfXFG  =1
 $2a$08$Y1oMrgOfnnCKlfufCi4znOOwa5L8u4uKl5mL6XjfLY1He9/GwAkv.  =NabeelB@hi
 $2a$08$9Lq4bvZQaozpC0I2/M2r3egehTKNWGuDu9D1hlx9/5W8/yfTyl0l2  = (Nabeel Rasheed old password)
 
-INSERT INTO public."accesses"
-	VALUES (22, 6, 'Add Expense', true, '2021-09-07 20:11:44.559+03','2021-09-07 20:11:44.559+03');
+INSERT INTO public."accesses" VALUES (22, 6, 'Add Expense', true, '2021-09-07 20:11:44.559+03','2021-09-07 20:11:44.559+03');
+
+
 	
 	SELECT * FROM information_schema.sequences;
 	
@@ -146,6 +155,8 @@ select currval('items_id_seq')
 	ALTER SEQUENCE user_roles_id_seq RESTART WITH 313;
 	
 	SELECT SETVAL('users_id_seq', (SELECT MAX(id) FROM users));
+	
+	SELECT SETVAL('items_id_seq', (SELECT MAX(id) FROM items));
 	
 ---------------------------------heruko plan-------------------------------------------	
 
@@ -545,6 +556,55 @@ sum of the invoices cost / sum of the
 
 ----------------------------------------update invest one stock in N&M account-------------------
 select concat('update items set investone=',quantity,' where id =',id,';') from items;
+
+
+
+
+
+-----------------------------------------DOCKER ------------------------------------------
+Images: A docker image contains everything you need to run your application. It is a template that holds a set of instructions needed to create a working container.
+Container: This is a running process/instance of an image. A docker container ‘contains’ everything your application needs to run and can run your application in any environment — as discussed above.
+Dockerfile: A dockerfile is a blueprint/set of instructions that defines how your image is built. It is a series of steps that you have defined, and that must happen before your image is successfully built.
+Docker hub: Think of Github. Docker hub is a registry that allows you to host your images and gives you access to a wide number of other docker images that you can pull and work with.
+Dockerignore: The .dockerignore file acts like the .gitignore file. It contains any file in your local application that you do not want in your docker image.
+
+npx create-react-app my-app-docker
+cd my-app-docker
+my-app-docker>npm start
+
+--create a Dockerfile under the my-app-docker
+FROM node:latest
+WORKDIR /app
+COPY package.json ./
+RUN npm install
+COPY . .
+CMD ["npm", "start"]
+
+--create .dockerignore file under the my-app-docker
+node_modules
+Dockerfile
+.git
+
+--create docker image
+C:\D drive\frelance project\react js\my-app-docker>docker build -t my-app-docker:latest .
+
+--Running our container
+docker run --omerapp -d -p 3000:3000 my-app-docker:latest
+
+-- list all the containers
+docker container ls --all
+
+--check logs of specific container 
+docker logs d24459e9c422
+
+
+
+docker container ls --all --format ‘{{ json . }}’ | python3 -m json.tool --json-lines   -- not working 
+
+docker container ls --all --format ‘table {{ .Names }}/t{{ .Status }}/t{{ .Command }}’ --no-trunc
+
+
+--
 
 
 --------------------------------------responsive dynamic styled side bar------------------------------
