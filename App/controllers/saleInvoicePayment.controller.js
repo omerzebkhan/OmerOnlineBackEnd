@@ -52,7 +52,8 @@ exports.findAllByReffId = (req, res) => {
     });
 };
 
-// Retrieve all purchase invoice payment from the database.
+// Retrieve all sale invoice payment from the database.
+// AR screen 
 exports.findPayHist = async (req, res) => {
   const id = req.params.id;
   // const name = req.query.name;

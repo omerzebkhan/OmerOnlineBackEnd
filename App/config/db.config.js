@@ -33,10 +33,10 @@ module.exports = {
 
   //////////// Remote heruko DB omerwholesale   port 5342
 
-  HOST:"ec2-34-236-103-63.compute-1.amazonaws.com",
-  USER:"hqosarqtccdpic",
-  PASSWORD:"c3aae3967d1ca5fffd93ed8d504f74232f7a448156b7f2f4ecaac60832612c36",
-  DB:"d1b9ifkkdsrp0t",
+  HOST:"ec2-34-206-106-3.compute-1.amazonaws.com",
+  USER:"iewpjpohuilezs",
+  PASSWORD:"2312ee47cf68f67fc259ce1325d4a0346a0f32dcbabe2de2c7ac289a264b03a8",
+  DB:"d5h5rl31efk32a",
   dialect:"postgres",
 
   //////////// Remote heruko DB N&M  port 5342

@@ -155,8 +155,16 @@ select currval('items_id_seq')
 	ALTER SEQUENCE user_roles_id_seq RESTART WITH 313;
 	
 	SELECT SETVAL('users_id_seq', (SELECT MAX(id) FROM users));
-	
+	SELECT SETVAL('brands_id_seq', (SELECT MAX(id) FROM brands));
+	SELECT SETVAL('categories_id_seq', (SELECT MAX(id) FROM categories));
+	SELECT SETVAL('subcategories_id_seq', (SELECT MAX(id) FROM subcategories));
 	SELECT SETVAL('items_id_seq', (SELECT MAX(id) FROM items));
+	SELECT SETVAL('user_roles_id_seq', (SELECT MAX(id) FROM user_roles));
+	
+	
+	
+	
+	
 	
 ---------------------------------heruko plan-------------------------------------------	
 

@@ -436,7 +436,7 @@ exports.findAllByCustId = (req, res) => {
   // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
 
   Sale.findAll({
-    where: { customerId: id },
+    where: {customerId: id},
     include: ["customers"],
     order: [['id', 'ASC'],]
   })
