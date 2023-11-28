@@ -248,7 +248,7 @@ router.post("/verifyOnlineCust/", user.verifyCust);
   router.get("/purchaseByDate/:sDate/:eDate/:customerId", purchase.findAllByDate);
 
   // get all Sale by given date summary
-  router.get("/purchaseByDateSummary/:sDate/:eDate", sale.findAllByDateSummary);
+  router.get("/purchaseByDateSummary/:sDate/:eDate", purchase.findAllByDateSummary);
 
 
   //Retrive Purchase invoice for given customer
