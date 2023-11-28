@@ -88,8 +88,8 @@ exports.findAllByDateSummary = async (req, res) => {
   const customerId = req.params.customerId;
   var data = "";
   //customerId==="0" ? 
-  data = await db.sequelize.query(`select "name",sum("saleDetails"."quantity") from "purchaseDetails","items" 
-  where "saleDetails"."itemId" = items.id and   ("saleDetails"."createdAt" between '${startedDate}' and '${endDate}') 
+  data = await db.sequelize.query(`select "name",sum("purchaseDetails"."quantity") from "purchaseDetails","items" 
+  where "purchaseDetails"."itemId" = items.id and   ("purchaseDetails"."createdAt" between '${startedDate}' and '${endDate}') 
   group by "name" order by "name";`, {
     // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
     type: db.sequelize.QueryTypes.SELECT
