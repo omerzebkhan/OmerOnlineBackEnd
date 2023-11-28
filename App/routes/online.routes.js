@@ -247,6 +247,9 @@ router.post("/verifyOnlineCust/", user.verifyCust);
   // get all Purchase by given date
   router.get("/purchaseByDate/:sDate/:eDate/:customerId", purchase.findAllByDate);
 
+  // get all Sale by given date summary
+  router.get("/purchaseByDateSummary/:sDate/:eDate", sale.findAllByDateSummary);
+
 
   //Retrive Purchase invoice for given customer
   router.get("/purchaseByCustId/:id", purchase.findAllByCustId);
@@ -330,7 +333,6 @@ router.post("/verifyOnlineCust/", user.verifyCust);
 
     // get sale agent closed invoices 
     router.get("/saleAgentClosedInvoices/:sDate/:eDate", sale.getSaleAgentClosedInvoices);
-
 
   // get latest sale for the customer by item id
   router.get("/saleByLatestDate/:itemId/:customerId", sale.findlatestSale);
