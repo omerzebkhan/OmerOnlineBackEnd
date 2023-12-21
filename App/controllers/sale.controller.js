@@ -88,7 +88,7 @@ exports.findAllAR = async (req, res) => {
 };
 
 // Retrive account recievable by invoice id
-exports.findARByInvoiceId = async (req,res) =>{
+exports.findARByInvoiceId = async (req, res) => {
   const id = req.params.id;
 
   const saleAR = await db.sequelize.query(
@@ -109,8 +109,8 @@ exports.findARByInvoiceId = async (req,res) =>{
    on  ssum."customerId"=age."custId"
    where s."customerId"=ssum."customerId";`
     , {
-    type: db.sequelize.QueryTypes.SELECT
-  });
+      type: db.sequelize.QueryTypes.SELECT
+    });
 
 
   return res.status(200).json(saleAR)
@@ -120,7 +120,7 @@ exports.findARByInvoiceId = async (req,res) =>{
 exports.getSaleRecalculate = async (req, res) => {
   console.log(`calling get sale Recalculate.....`)
   const id = req.params.id;
-//"Outstanding" = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = '${id}') 
+  //"Outstanding" = (select sum(price*quantity) from "saleDetails" where "saleInvoiceId" = '${id}') 
   const [results, metadata] = await db.sequelize.query(`
   update sales set 
   totalitems = (select sum(quantity) from "saleDetails" where "saleInvoiceId" = '${id}'),
@@ -193,7 +193,7 @@ exports.findlatestSale = async (req, res) => {
 }
 
 // get monthly sale report
-exports.getMonthlySale = async (req,res) =>{
+exports.getMonthlySale = async (req, res) => {
   const startedDate = req.params.sDate;
   const endDate = req.params.eDate;
   const customerId = req.params.customerId;
@@ -221,7 +221,7 @@ exports.getMonthlySale = async (req,res) =>{
 }
 
 //get agent wise sale report
-exports.getSaleAgentTrend = async (req,res) =>{
+exports.getSaleAgentTrend = async (req, res) => {
   const startedDate = req.params.sDate;
   const endDate = req.params.eDate;
   const customerId = req.params.customerId;
@@ -245,11 +245,11 @@ exports.getSaleAgentTrend = async (req,res) =>{
 
 
   return res.status(200).json(data)
- 
+
 }
 
 //get agent wise closed invoice report (AR recieved)
-exports.getSaleAgentClosedInvoices = async (req,res) =>{
+exports.getSaleAgentClosedInvoices = async (req, res) => {
   const startedDate = req.params.sDate;
   const endDate = req.params.eDate;
   const customerId = req.params.customerId;
@@ -289,7 +289,7 @@ on tbl.agent = monthlysale.name
 
 
   return res.status(200).json(data)
- 
+
 }
 
 
@@ -299,91 +299,135 @@ exports.findAllByDateProfit = async (req, res) => {
   const endDate = req.params.eDate;
   const customerId = req.params.customerId;
   const agentId = req.params.agentId;
+  const itemId = req.params.itemId;
+  const invoiceId = req.params.invoiceId;
+
   var saleProfit = "";
 
-  if (customerId !== "0" && agentId !== "0") {
-    saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity*cost) "profit" ,
-    TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name",sales.agentid,agent.name as agentname
-      from "saleDetails","sales","users","users" as agent
-    where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id and ("sales"."createdAt" between '${startedDate}' and '${endDate}')
-    and "sales"."agentid" = ${agentId}
-    and "sales"."customerId" = ${customerId} and "sales".agentid = agent.id
-    group by sales.agentid,agent.name,"sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy')
-    order by "saleInvoiceId" DESC;`, {
-        replacements: { startDate: req.params.sDate, endDate: req.params.eDate },
-        type: db.sequelize.QueryTypes.SELECT
-      })
-        .catch(err => {
-          console.log(err.message || "Some error Executing sale profit query with customer")
-          res.status(500).send({
-            message:
-              err.message || "Some error Executing sale profit query with customer"
-          });
-        })
+  var queryFilter = `and ("sales"."createdAt" between '${startedDate}' and '${endDate}') `;
   
+
+  if (customerId !== "0") {
+    queryFilter = `${queryFilter} and "sales"."customerId" = ${customerId}`;
   }
-  else if (customerId !== "0") {
-    saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity*cost) "profit" ,
-    TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name",sales.agentid,agent.name as agentname
-      from "saleDetails","sales","users","users" as agent
-    where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id and ("sales"."createdAt" between '${startedDate}' and '${endDate}')
-    and "sales"."customerId" = ${customerId} and "sales".agentid = agent.id
-    group by sales.agentid,agent.name,"sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy')
-    order by "saleInvoiceId" DESC;`, {
-        replacements: { startDate: req.params.sDate, endDate: req.params.eDate },
-        type: db.sequelize.QueryTypes.SELECT
-      })
-        .catch(err => {
-          console.log(err.message || "Some error Executing sale profit query with customer")
-          res.status(500).send({
-            message:
-              err.message || "Some error Executing sale profit query with customer"
-          });
-        })
-  
+  if (agentId !== "0") {
+    queryFilter = `${queryFilter} and "sales"."agentid" = ${agentId}`;
   }
-  else if (agentId !== "0") {
-    saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity*cost) "profit" ,
-    TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name",sales.agentid,agent.name as agentname
-      from "saleDetails","sales","users","users" as agent
-    where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id and ("sales"."createdAt" between '${startedDate}' and '${endDate}')
-    and "sales"."agentid" = ${agentId} and "sales".agentid = agent.id
-    group by sales.agentid,agent.name,"sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy')
-    order by "saleInvoiceId" DESC;`, {
-        replacements: { startDate: req.params.sDate, endDate: req.params.eDate },
-        type: db.sequelize.QueryTypes.SELECT
-      })
-        .catch(err => {
-          console.log(err.message || "Some error Executing sale profit query with customer")
-          res.status(500).send({
-            message:
-              err.message || "Some error Executing sale profit query with customer"
-          });
-        })
-  
+  if (itemId !== "0") {
+    queryFilter = `${queryFilter} and "saleDetails"."itemId" = ${itemId}`;
   }
-  else {
-    saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity*cost) "profit" ,
-    TO_CHAR("sales"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name",sales.agentid,agent.name as agentname
-    from "saleDetails","sales","users" ,"users" as agent
-    where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id 
-    and ("sales"."createdAt" between '${startedDate}' and '${endDate}') and "sales".agentid = agent.id
-    group by sales.agentid,agent.name,"sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("sales"."createdAt",'dd/mm/yyyy')
-    order by "saleInvoiceId" DESC;`, {
-      // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
-      type: db.sequelize.QueryTypes.SELECT
-    })
-      .catch(err => {
-        console.log(err.message || "Some error Executing sale profit query with date")
-        res.status(500).send({
-          message:
-            err.message || "Some error Executing sale profit query"
-        });
-      })
+  if (invoiceId !== "0") {
+    queryFilter = ""
+    queryFilter = `and "saleDetails"."saleInvoiceId" = ${invoiceId}`;
   }
 
-  
-    
+  console.log(`${queryFilter}`)
+
+  saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity*cost) "profit" ,
+    TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name",sales.agentid,agent.name as agentname,sales."Outstanding",sales."Returned"
+      from "saleDetails","sales","users","users" as agent
+    where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id 
+    ${queryFilter}
+    and "sales".agentid = agent.id
+    group by sales.agentid,agent.name,"sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy'),sales."Outstanding",sales."Returned"
+    order by "saleInvoiceId" DESC;`, {
+    replacements: { startDate: req.params.sDate, endDate: req.params.eDate },
+    type: db.sequelize.QueryTypes.SELECT
+  })
+    .catch(err => {
+      console.log(err.message || "Some error Executing sale profit query with customer")
+      res.status(500).send({
+        message:
+          err.message || "Some error Executing sale profit query with customer"
+      });
+    })
+
+
+
+
+  // if (customerId !== "0" && agentId !== "0") {
+  //   saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity*cost) "profit" ,
+  //   TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name",sales.agentid,agent.name as agentname
+  //     from "saleDetails","sales","users","users" as agent
+  //   where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id and ("sales"."createdAt" between '${startedDate}' and '${endDate}')
+  //   and "sales"."agentid" = ${agentId}
+  //   and "sales"."customerId" = ${customerId} and "sales".agentid = agent.id
+  //   group by sales.agentid,agent.name,"sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy')
+  //   order by "saleInvoiceId" DESC;`, {
+  //       replacements: { startDate: req.params.sDate, endDate: req.params.eDate },
+  //       type: db.sequelize.QueryTypes.SELECT
+  //     })
+  //       .catch(err => {
+  //         console.log(err.message || "Some error Executing sale profit query with customer")
+  //         res.status(500).send({
+  //           message:
+  //             err.message || "Some error Executing sale profit query with customer"
+  //         });
+  //       })
+
+  // }
+  // else if (customerId !== "0") {
+  //   saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity*cost) "profit" ,
+  //   TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name",sales.agentid,agent.name as agentname
+  //     from "saleDetails","sales","users","users" as agent
+  //   where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id and ("sales"."createdAt" between '${startedDate}' and '${endDate}')
+  //   and "sales"."customerId" = ${customerId} and "sales".agentid = agent.id
+  //   group by sales.agentid,agent.name,"sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy')
+  //   order by "saleInvoiceId" DESC;`, {
+  //       replacements: { startDate: req.params.sDate, endDate: req.params.eDate },
+  //       type: db.sequelize.QueryTypes.SELECT
+  //     })
+  //       .catch(err => {
+  //         console.log(err.message || "Some error Executing sale profit query with customer")
+  //         res.status(500).send({
+  //           message:
+  //             err.message || "Some error Executing sale profit query with customer"
+  //         });
+  //       })
+
+  // }
+  // else if (agentId !== "0") {
+  //   saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity*cost) "profit" ,
+  //   TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name",sales.agentid,agent.name as agentname
+  //     from "saleDetails","sales","users","users" as agent
+  //   where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id and ("sales"."createdAt" between '${startedDate}' and '${endDate}')
+  //   and "sales"."agentid" = ${agentId} and "sales".agentid = agent.id
+  //   group by sales.agentid,agent.name,"sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("saleDetails"."createdAt",'dd/mm/yyyy')
+  //   order by "saleInvoiceId" DESC;`, {
+  //       replacements: { startDate: req.params.sDate, endDate: req.params.eDate },
+  //       type: db.sequelize.QueryTypes.SELECT
+  //     })
+  //       .catch(err => {
+  //         console.log(err.message || "Some error Executing sale profit query with customer")
+  //         res.status(500).send({
+  //           message:
+  //             err.message || "Some error Executing sale profit query with customer"
+  //         });
+  //       })
+
+  // }
+  // else {
+  //   saleProfit = await db.sequelize.query(`select "saleInvoiceId",sum(quantity) totalitems,sum(quantity*price) "invoicevalue",sum(quantity*cost) "invoice cost",sum(quantity*price) - sum(quantity*cost) "profit" ,
+  //   TO_CHAR("sales"."createdAt",'dd/mm/yyyy') date,"sales"."customerId","users"."name",sales.agentid,agent.name as agentname
+  //   from "saleDetails","sales","users" ,"users" as agent
+  //   where  "saleDetails"."saleInvoiceId" = "sales"."id" and "sales"."customerId" = "users".id 
+  //   and ("sales"."createdAt" between '${startedDate}' and '${endDate}') and "sales".agentid = agent.id
+  //   group by sales.agentid,agent.name,"sales"."customerId","users"."name","saleInvoiceId",TO_CHAR("sales"."createdAt",'dd/mm/yyyy')
+  //   order by "saleInvoiceId" DESC;`, {
+  //     // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+  //     type: db.sequelize.QueryTypes.SELECT
+  //   })
+  //     .catch(err => {
+  //       console.log(err.message || "Some error Executing sale profit query with date")
+  //       res.status(500).send({
+  //         message:
+  //           err.message || "Some error Executing sale profit query"
+  //       });
+  //     })
+  // }
+
+
+
   return res.status(200).json(saleProfit)
 }
 
@@ -436,7 +480,7 @@ exports.findAllByCustId = (req, res) => {
   // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
 
   Sale.findAll({
-    where: {customerId: id},
+    where: { customerId: id },
     include: ["customers"],
     order: [['id', 'ASC'],]
   })

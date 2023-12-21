@@ -301,6 +301,9 @@ router.post("/verifyOnlineCust/", user.verifyCust);
   // Create a new Sale
   router.post("/sale/", [authJwt.verifyToken, authJwt.isAdmin,authJwt.checkScreenAccess], sale.create);
 
+  // Retrieve sale by its ID
+  router.get("/sale/:id", sale.findOne);
+
   // Retrieve all Sale
   router.get("/sale/", sale.findAll);
 
@@ -320,7 +323,7 @@ router.post("/verifyOnlineCust/", user.verifyCust);
   router.get("/saleByCustId/:id", sale.findAllByCustId);
 
   // get all Sale by given date
-  router.get("/SaleByDate/:sDate/:eDate/:customerId/:agentId", sale.findAllByDateProfit);
+  router.get("/SaleByDate/:sDate/:eDate/:customerId/:agentId/:itemId/:invoiceId", sale.findAllByDateProfit);
 
   // get all Sale by given date summary
   router.get("/saleByDateSummary/:sDate/:eDate", sale.findAllByDateSummary);
@@ -337,9 +340,7 @@ router.post("/verifyOnlineCust/", user.verifyCust);
   // get latest sale for the customer by item id
   router.get("/saleByLatestDate/:itemId/:customerId", sale.findlatestSale);
 
-  // Retrieve sale by its ID
-  router.get("/sale/:id", sale.findOne);
-
+  
   // //updateSaleRIvOTi
   // router.put("/updateSaleRIvOTi/:id", sale.update);
 
