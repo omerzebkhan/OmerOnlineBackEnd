@@ -15,6 +15,7 @@ const sale = require("../controllers/sale.controller");
 const saledetail = require("../controllers/saleDetail.controller");
 const saleReturn = require("../controllers/saleReturn.controller");
 const salePayment = require("../controllers/saleInvoicePayment.controller");
+const saleEdit = require("../controllers/editSale.controller");
 const userRole = require("../controllers/userRole.controller")
 const report = require("../controllers/Report.controller")
 const expense = require("../controllers/expense.controller");
@@ -61,7 +62,7 @@ module.exports = app => {
   /////CART//////
   ////////////////
   // Create a new Cart
-  router.post("/cart/", [authJwt.verifyToken, authJwt.isAdmin], cart.create);
+  router.post("/cart/", [authJwt.verifyToken], cart.create);
 
   //update cart
   router.put("/cart/:id", cart.update);
@@ -126,6 +127,10 @@ module.exports = app => {
   ////////////////
   //////ITEM//////
   ////////////////
+  //Get Invetory mismatch base on sale - purchase != quantity in the stock
+  router.get("/inventoryMismatch/",report.getInventoryMismatch);
+
+
   // Create a new Item
   router.post("/item/",[authJwt.verifyToken, authJwt.isAdmin,authJwt.checkScreenAccess], item.create);
 
@@ -181,15 +186,10 @@ module.exports = app => {
     authJwt.isAdmin], user.create);
 
 // Create a online customer new User without JWT verification
-router.post("/createOnlineCustomer/", [
-  verifySignUp.checkDuplicateUsernameOrEmail,
-  verifySignUp.checkRolesExisted
- ], user.create);
+router.post("/createOnlineCustomer/", [verifySignUp.checkDuplicateUsernameOrEmail,verifySignUp.checkRolesExisted], user.create);
 
 // Verify an online customer new User without JWT verification
 router.post("/verifyOnlineCust/", user.verifyCust);
-
-
 
   // Retrieve all Item
   router.get("/user/", user.findAll);
@@ -292,6 +292,16 @@ router.post("/verifyOnlineCust/", user.verifyCust);
 
   // Retrieve purchase invoice payment based on the sale invoice id
   router.get("/purchaseInvPay/:id", purchasePayment.findAllByReffId);
+
+  ////////////////////////
+  ////Edit Sale Record////
+  ///////////////////////
+  // Create a edit Sale
+  router.post("/editSale/", saleEdit.create);
+
+  // get all Sale by given date
+  router.get("/editSale/:sDate/:eDate/:itemId/:invoiceId", saleEdit.findAllEditSale);
+
 
 
 

@@ -178,7 +178,7 @@ checkScreenAccess = async (req,res,next) =>{
     {  access = 'True'  }
     else if (i.screenName == 'Update Sale' && i.status == 'true' && req.route.path.startsWith('/item/') )
     {  access = 'True'  }
-    //Pricing should be handled by fronend only because it is using same route.path from other pats
+    //Pricing should be handled by fronend only because it is using same route.path from other paths
     else if (i.screenName == 'Account Receivable' && i.status == 'true' && req.route.path == ('/saleAR/') )
     {  access = 'True'  }
     else if (i.screenName == 'Account Payable' && i.status == 'true' && req.route.path == ('/purchaseAP/') )
@@ -215,6 +215,7 @@ else
 {
   res.status(403).send({
     message: `Not allowed from the checkScreenAccess for url ${req.route.path}`
+    //console.log(`Not allowed from the checkScreenAccess for url ${req.route.path}`)
   });
 }
   

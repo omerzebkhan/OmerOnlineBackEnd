@@ -293,7 +293,7 @@ on tbl.agent = monthlysale.name
 }
 
 
-// Retrieve all sales with profit
+// Retrieve all sales with profit with dynamic query filter
 exports.findAllByDateProfit = async (req, res) => {
   const startedDate = req.params.sDate;
   const endDate = req.params.eDate;

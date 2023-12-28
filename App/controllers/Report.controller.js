@@ -3,18 +3,6 @@ const Sale = db.sales;
 const Op = db.Sequelize.Op;
 
 exports.findBalanceSheet = async (req, res) => {
-    // const name = req.query.name;
-    // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
-  
-    //const startedDate = req.params.sDate;
-    //const endDate = req.params.eDate;
-    // Sale.findAll(
-    //   {attributes: [[sequelize.fn('min', sequelize.col('price')), 'minPrice']], 
-    //       where : {"createdAt" : {[Op.between] : [startedDate , endDate ]}}}
-    // )
-
-
-
     const allDates = [];
     const sumSale = await db.sequelize.query('SELECT TO_CHAR("createdAt",\'dd/mm/yyyy\') date,sum(quantity*price) "InvoiceValue",sum((price-cost)*quantity) profit from "saleDetails" WHERE "createdAt" between (:startDate) and (:endDate) group by TO_CHAR("createdAt",\'dd/mm/yyyy\') ', {
         replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
@@ -152,3 +140,23 @@ exports.getInv = async (req,res)=>{
   return res.status(200).json(totalInv)
 }
 
+exports.getInventoryMismatch = async (req,res)=>{
+  const totalInv = await db.sequelize.query(
+    `select items.id,items.name,quantity,pur.totalpurchase,sales.totalsale,quantity-(pur.totalpurchase-sales.totalsale) as diff
+    from items
+    Join (
+    select "itemId",sum(quantity) as totalsale 
+    from "saleDetails"
+    group by "itemId") as sales on items.id =sales."itemId"
+    Join(
+    select "itemId",sum(quantity) as totalpurchase
+    from "purchaseDetails"
+    group by "itemId") as pur on items.id=pur."itemId"
+    where quantity!=pur.totalpurchase-sales.totalsale;`
+    , {
+    type: db.sequelize.QueryTypes.SELECT
+  });
+
+
+  return res.status(200).json(totalInv)
+}
