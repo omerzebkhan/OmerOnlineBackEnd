@@ -127,8 +127,7 @@ module.exports = app => {
   ////////////////
   //////ITEM//////
   ////////////////
-  //Get Invetory mismatch base on sale - purchase != quantity in the stock
-  router.get("/inventoryMismatch/",report.getInventoryMismatch);
+ 
 
 
   // Create a new Item
@@ -431,8 +430,20 @@ router.get("/saleReturnDetailByInvoice/:id", saleReturn.findSaleReturnDetailByIn
   // get Balance Sheet
   router.get("/BalanceSheetByDate/:sDate/:eDate", report.findBalanceSheet);
 
+   // item count daily report invoice wise as per manual daily sheet by N & A
+   router.get("/itemCountDailyReport/:sDate/:eDate", report.getItemCountDailyReport);
+
   // get Total Inventory value
   router.get("/getTotalInv/", report.getInv);
+
+   //Get Invetory mismatch base on sale - purchase != quantity in the stock
+   router.get("/inventoryMismatch/",report.getInventoryMismatch);
+
+  //get sale Sale Detail mismatch incase if both are not matching
+  router.get("/saleSaleDetailMismatch/",report.getSaleSaleDetailMismatch);
+
+
+
 
 
   ////////////////

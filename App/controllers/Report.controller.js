@@ -142,7 +142,7 @@ exports.getInv = async (req,res)=>{
 
 exports.getInventoryMismatch = async (req,res)=>{
   const totalInv = await db.sequelize.query(
-    `select items.id,items.name,quantity,pur.totalpurchase,sales.totalsale,quantity-(pur.totalpurchase-sales.totalsale) as diff
+    `select items.id,items.name,quantity,pur.totalpurchase,sales.totalsale,quantity-(sales.totalsale-pur.totalpurchase) as diff
     from items
     Join (
     select "itemId",sum(quantity) as totalsale 
@@ -160,3 +160,109 @@ exports.getInventoryMismatch = async (req,res)=>{
 
   return res.status(200).json(totalInv)
 }
+
+
+exports.getSaleSaleDetailMismatch = async (req,res)=>{
+  const data = await db.sequelize.query(
+    `select sales.id,invoicevalue,sum("saleDetails".quantity*"saleDetails".price) as saledetailtotal
+    from sales,"saleDetails"
+    where sales.id = "saleDetails"."saleInvoiceId"
+    group by sales.id
+    having  invoicevalue != sum("saleDetails".quantity*"saleDetails".price)
+    order by sales.id desc;`
+    , {
+    type: db.sequelize.QueryTypes.SELECT
+  });
+
+
+  return res.status(200).json(data)
+}
+
+exports.getItemCountDailyReport = async (req, res) => {
+  const allDates = [];
+  const saleItemCount = await db.sequelize.query('SELECT TO_CHAR("createdAt",\'dd/mm/yyyy\') date,id,totalitems from "sales" WHERE "createdAt" between (:startDate) and (:endDate) ', {
+      replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+      type: db.sequelize.QueryTypes.SELECT
+    });
+  
+   // console.log(sumSale)
+   saleItemCount.map((i)=>{
+        allDates.push(i.date)
+    })
+
+    
+    const purchaseItemCount= await db.sequelize.query('SELECT TO_CHAR("createdAt",\'dd/mm/yyyy\') date,id,totalitems FROM "purchases" WHERE "createdAt" between (:startDate) and (:endDate) ', {
+      replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+      type: db.sequelize.QueryTypes.SELECT
+    });
+   // console.log(sumPurchase)
+    
+   purchaseItemCount.map((i)=>{
+        var found ="False"
+        allDates.map((ii)=>{
+            if (i.date === ii)
+            {found = "True"}
+        })
+        if (found ==="False")
+        {allDates.push(i.date)}
+    })
+
+    const editSaleItemCount= await db.sequelize.query(`SELECT TO_CHAR("createdAt",'dd/mm/yyyy') date,saleinvoiceid,sum(oldqty-newqty) as totalitems 
+    from "editSales" WHERE "createdAt" between (:startDate) and (:endDate) 
+    group by TO_CHAR("createdAt",'dd/mm/yyyy'),saleinvoiceid`, {
+      replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+      type: db.sequelize.QueryTypes.SELECT
+    });
+   // console.log(sumPurchase)
+    
+   editSaleItemCount.map((i)=>{
+        var found ="False"
+        allDates.map((ii)=>{
+            if (i.date === ii)
+            {found = "True"}
+        })
+        if (found ==="False")
+        {allDates.push(i.date)}
+    })
+    
+  
+  console.log(`printing Dates ${allDates}`);
+    var finalRes = []
+    allDates.map((i)=>{
+      const obj = {}
+      obj.date = i;
+
+      const ss = saleItemCount.filter(sale => sale.date === i);
+      //console.log(`printing sumSale ${ss}`)
+      obj.saleid = ss.length>0 ? ss[0].id:0;
+      obj.saleitem = ss.length>0 ? ss[0].totalitems:0;
+     
+      const sp = purchaseItemCount.filter(purchase => purchase.date === i);
+      //console.log(sp)
+      obj.purchaseid = sp.length>0 ?sp[0].id:0;
+      obj.purchaseitem = sp.length>0 ?sp[0].totalitems:0;
+
+      const es = editSaleItemCount.filter(editSale => editSale.date === i);
+      //console.log(sp)
+      obj.editsaleid = sp.length>0 ?sp[0].id:0;
+      obj.editsaleitem = sp.length>0 ?sp[0].totalitems:0;
+
+      finalRes.push(obj)
+      
+
+    })
+    
+    
+   
+
+    finalRes.map((item)=>{
+        console.log(`date = ${item.date} 
+        total Sale = ${item.totalSale} 
+        total Purchase = ${item.totalPurchase}
+        `)
+    })
+  
+  return res.status(200).json(finalRes)
+
+    
+};
