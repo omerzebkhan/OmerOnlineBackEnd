@@ -244,8 +244,8 @@ exports.getItemCountDailyReport = async (req, res) => {
 
       const es = editSaleItemCount.filter(editSale => editSale.date === i);
       //console.log(sp)
-      obj.editsaleid = sp.length>0 ?sp[0].id:0;
-      obj.editsaleitem = sp.length>0 ?sp[0].totalitems:0;
+      obj.editsaleid = es.length>0 ?es[0].id:0;
+      obj.editsaleitem = es.length>0 ?es[0].totalitems:0;
 
       finalRes.push(obj)
       
