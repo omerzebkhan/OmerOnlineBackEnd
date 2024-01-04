@@ -225,7 +225,7 @@ exports.getItemCountDailyReport = async (req, res) => {
         {allDates.push(i.date)}
     })
     
-  
+  //commets to redeploye the build
   console.log(`printing Dates ${allDates}`);
     var finalRes = []
     allDates.map((i)=>{
