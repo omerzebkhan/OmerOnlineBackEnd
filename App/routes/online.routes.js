@@ -10,6 +10,7 @@ const role = require("../controllers/role.controller");
 const purchase = require("../controllers/purchase.controller");
 const purchasedetail = require("../controllers/purchaseDetail.controller");
 const purchasePayment = require("../controllers/purchaseInvoicePayment.controller");
+const purchaseEdit = require("../controllers/editPurchase.controller");
 const moveStock = require("../controllers/moveStock.controller");
 const sale = require("../controllers/sale.controller");
 const saledetail = require("../controllers/saleDetail.controller");
@@ -301,7 +302,14 @@ router.post("/verifyOnlineCust/", user.verifyCust);
   // get all Sale by given date
   router.get("/editSale/:sDate/:eDate/:itemId/:invoiceId", saleEdit.findAllEditSale);
 
+  ////////////////////////
+  ////Edit Purchase Record////
+  ///////////////////////
+  // Create a edit Purchase
+  router.post("/editPurchase/", purchaseEdit.create);
 
+  // get all Sale by given date
+  router.get("/editPurchase/:sDate/:eDate/:itemId/:invoiceId", purchaseEdit.findAllEditPurchase);
 
 
   ////////////////////

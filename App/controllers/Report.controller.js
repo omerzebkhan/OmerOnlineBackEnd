@@ -180,8 +180,8 @@ exports.getSaleSaleDetailMismatch = async (req,res)=>{
 
 exports.getItemCountDailyReport = async (req, res) => {
   const allDates = [];
-  const saleItemCount = await db.sequelize.query('SELECT TO_CHAR("createdAt",\'dd/mm/yyyy hh24:MI:SS\') date,id,totalitems from "sales" WHERE "createdAt" between (:startDate) and (:endDate) ', {
-      replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+  const saleItemCount = await db.sequelize.query('SELECT TO_CHAR("createdAt",:format) date,id,totalitems from "sales" WHERE "createdAt" between (:startDate) and (:endDate) ', {
+      replacements: {startDate: req.params.sDate,endDate:req.params.eDate,format:'dd/mm/yyyy hh24:MI:SS'},
       type: db.sequelize.QueryTypes.SELECT
     });
   
@@ -191,8 +191,8 @@ exports.getItemCountDailyReport = async (req, res) => {
     })
 
     
-    const purchaseItemCount= await db.sequelize.query('SELECT TO_CHAR("createdAt",\'dd/mm/yyyy hh24:MI:SS\') date,id,totalitems FROM "purchases" WHERE "createdAt" between (:startDate) and (:endDate) ', {
-      replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+    const purchaseItemCount= await db.sequelize.query('SELECT TO_CHAR("createdAt",:format) date,id,totalitems FROM "purchases" WHERE "createdAt" between (:startDate) and (:endDate) ', {
+      replacements: {startDate: req.params.sDate,endDate:req.params.eDate,format:'dd/mm/yyyy hh24:MI:SS'},
       type: db.sequelize.QueryTypes.SELECT
     });
    // console.log(sumPurchase)
@@ -207,10 +207,10 @@ exports.getItemCountDailyReport = async (req, res) => {
         {allDates.push(i.date)}
     })
 
-    const editSaleItemCount= await db.sequelize.query(`SELECT TO_CHAR("createdAt",'dd/mm/yyyy hh24:MI:SS') date,saleinvoiceid,sum(oldqty-newqty) as totalitems 
+    const editSaleItemCount= await db.sequelize.query(`SELECT TO_CHAR("createdAt",:format) date,saleinvoiceid,sum(oldqty-newqty) as totalitems 
     from "editSales" WHERE "createdAt" between (:startDate) and (:endDate) 
-    group by TO_CHAR("createdAt",'dd/mm/yyyy'),saleinvoiceid`, {
-      replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+    group by TO_CHAR("createdAt",:format),saleinvoiceid`, {
+      replacements: {startDate: req.params.sDate,endDate:req.params.eDate,format:'dd/mm/yyyy hh24:MI:SS'},
       type: db.sequelize.QueryTypes.SELECT
     });
    // console.log(sumPurchase)
