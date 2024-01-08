@@ -28,7 +28,7 @@ exports.create = (req, res) => {
   };
 
   // Save sale in the database
-  PurchaseSale.create(purchaseSale)
+  EditPurchase.create(editPurchase)
     .then(data => {
       res.send(data);
     })
