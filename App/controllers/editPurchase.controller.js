@@ -65,7 +65,7 @@ exports.findAllEditPurchase = async (req, res) => {
   console.log(`${queryFilter}`)
 
   
-  purchaseProfit = await db.sequelize.query(`SELECT "editPurchases".id, saleinvoiceid, saledetailid, itemid, oldprice, oldqty, newprice, newqty, finalprice, finalqty, comments, beforeqty, "editPurchases"."createdAt", "editPurchases"."updatedAt"
+  purchaseProfit = await db.sequelize.query(`SELECT "editPurchases".id, purchaseinvoiceid, purchasedetailid, itemid, oldprice, oldqty, newprice, newqty, finalprice, finalqty, comments, beforeqty, "editPurchases"."createdAt", "editPurchases"."updatedAt"
 	,items.name
 	FROM "editPurchases",items
 	where "editPurchases".itemid = items.id

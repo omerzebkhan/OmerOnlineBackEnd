@@ -308,13 +308,13 @@ exports.findAllByDateProfit = async (req, res) => {
   
 
   if (customerId !== "0") {
-    queryFilter = `${queryFilter} and "sales"."customerId" = ${customerId}`;
+    queryFilter = `${queryFilter} and "saleDetails"."saleInvoiceId" in (select id from "sales" where "sales"."customerId" = ${customerId})`;
   }
   if (agentId !== "0") {
-    queryFilter = `${queryFilter} and "sales"."agentid" = ${agentId}`;
+    queryFilter = `${queryFilter} and "saleDetails"."saleInvoiceId" in (select id from "sales" where "agentid" = ${agentId})`;
   }
   if (itemId !== "0") {
-    queryFilter = `${queryFilter} and "saleDetails"."itemId" = ${itemId}`;
+    queryFilter = `${queryFilter} and "saleDetails"."saleInvoiceId" in (select "saleInvoiceId" from "saleDetails" where "itemId" = ${itemId})`;
   }
   if (invoiceId !== "0") {
     queryFilter = ""
