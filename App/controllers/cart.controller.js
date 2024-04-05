@@ -28,7 +28,8 @@ exports.create = (req, res) => {
                 itemid: req.body.itemid,
                 quantity: req.body.quantity,
                 status: req.body.cartstatus,
-                price:req.body.price
+                price:req.body.price,
+                cost:req.body.cost
             };
             console.log(cartDetail)
             CartDetail.create(cartDetail)
@@ -103,20 +104,27 @@ exports.findCartsByDate = async (req, res) => {
 }
 
 // Retrieve all Brand from the database.
-exports.findAll = (req, res) => {
+exports.findAll = async (req, res) => {
     // const name = req.query.name;
     // var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
-
-    Brand.findAll()
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving brands."
-            });
+    var data = "";
+    //customerId==="0" ? 
+    data = await db.sequelize.query(`select * from carts;`, {
+      // replacements: {startDate: req.params.sDate,endDate:req.params.eDate},
+      type: db.sequelize.QueryTypes.SELECT
+    })
+      .catch(err => {
+        console.log(err.message || "Some error Executing cart with date")
+        res.status(500).send({
+          message:
+            err.message || "Some error Executing cart query"
         });
+      })
+  
+  
+    return res.status(200).json(data)
+  
+   
 };
 
 // Find a single Brand with an id

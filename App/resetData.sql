@@ -160,6 +160,9 @@ select currval('items_id_seq')
 	SELECT SETVAL('subcategories_id_seq', (SELECT MAX(id) FROM subcategories));
 	SELECT SETVAL('items_id_seq', (SELECT MAX(id) FROM items));
 	SELECT SETVAL('user_roles_id_seq', (SELECT MAX(id) FROM user_roles));
+	SELECT SETVAL('user_roles_id_seq', (SELECT MAX(id) FROM user_roles));
+	
+	select currval ('saleInvoicePayments_seq_id_seq')
 	
 	
 	

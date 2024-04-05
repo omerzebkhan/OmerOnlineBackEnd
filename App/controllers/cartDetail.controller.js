@@ -12,7 +12,8 @@ exports.create = (req, res) => {
     cartid: req.body.cartid,
     itemid: req.body.itemid,
     quantity:req.body.quantity,
-    status:req.body.cartstatus
+    status:req.body.cartstatus,
+    cost:req.body.cost
   };
 
 //   console.log(`brand data = 

@@ -14,6 +14,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       price: {
         type: Sequelize.DECIMAL(10,3)
+      },
+      cost: {
+        type: Sequelize.DECIMAL(10,3)
       }
     });
   

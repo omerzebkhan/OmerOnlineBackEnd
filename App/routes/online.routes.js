@@ -71,6 +71,10 @@ module.exports = app => {
   //get all carts by the date
   router.get("/cartByDate/", cart.findCartsByDate);
 
+  //get all carts
+  router.get("/cart/", cart.findAll);
+
+
   ////////////////
   /////CART DETAIL//////
   ////////////////

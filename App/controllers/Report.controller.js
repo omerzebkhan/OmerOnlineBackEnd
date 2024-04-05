@@ -207,6 +207,7 @@ exports.getItemCountDailyReport = async (req, res) => {
         {allDates.push(i.date)}
     })
 
+    //EDIT SALE
     const editSaleItemCount= await db.sequelize.query(`SELECT TO_CHAR("createdAt",:format) date,saleinvoiceid,sum(oldqty-newqty) as totalitems 
     from "editSales" WHERE "createdAt" between (:startDate) and (:endDate) 
     group by TO_CHAR("createdAt",:format),saleinvoiceid`, {
@@ -224,6 +225,47 @@ exports.getItemCountDailyReport = async (req, res) => {
         if (found ==="False")
         {allDates.push(i.date)}
     })
+  
+    //EDIT PURCHASE
+    const editPurchaseItemCount= await db.sequelize.query(`SELECT TO_CHAR("createdAt",:format) date,purchaseinvoiceid,sum(oldqty-newqty) as totalitems 
+    from "editPurchases" WHERE "createdAt" between (:startDate) and (:endDate) 
+    group by TO_CHAR("createdAt",:format),saleinvoiceid`, {
+      replacements: {startDate: req.params.sDate,endDate:req.params.eDate,format:'dd/mm/yyyy hh24:MI:SS'},
+      type: db.sequelize.QueryTypes.SELECT
+    });
+   // console.log(sumPurchase)
+    
+   editPurchaseItemCount.map((i)=>{
+        var found ="False"
+        allDates.map((ii)=>{
+            if (i.date === ii)
+            {found = "True"}
+        })
+        if (found ==="False")
+        {allDates.push(i.date)}
+    })
+
+  // SALE RETURN
+  const saleReturnCount= await db.sequelize.query(`SELECT TO_CHAR("createdAt",:format) date,"saleInvoiceId" as saleinvoiceid,sum(quantity) as totalitems 
+    from "saleReturns" WHERE "createdAt" between (:startDate) and (:endDate) 
+    group by TO_CHAR("createdAt",:format),"saleInvoiceId"`, {
+      replacements: {startDate: req.params.sDate,endDate:req.params.eDate,format:'dd/mm/yyyy hh24:MI:SS'},
+      type: db.sequelize.QueryTypes.SELECT
+    });
+   // console.log(sumPurchase)
+    
+   saleReturnCount.map((i)=>{
+        var found ="False"
+        allDates.map((ii)=>{
+            if (i.date === ii)
+            {found = "True"}
+        })
+        if (found ==="False")
+        {allDates.push(i.date)}
+    })
+  
+
+
     
   //commets to redeploye the build
   console.log(`printing Dates ${allDates}`);
@@ -233,19 +275,25 @@ exports.getItemCountDailyReport = async (req, res) => {
       obj.date = i;
 
       const ss = saleItemCount.filter(sale => sale.date === i);
-      //console.log(`printing sumSale ${ss}`)
       obj.saleid = ss.length>0 ? ss[0].id:0;
       obj.saleitem = ss.length>0 ? ss[0].totalitems:0;
      
       const sp = purchaseItemCount.filter(purchase => purchase.date === i);
-      //console.log(sp)
       obj.purchaseid = sp.length>0 ?sp[0].id:0;
       obj.purchaseitem = sp.length>0 ?sp[0].totalitems:0;
 
       const es = editSaleItemCount.filter(editSale => editSale.date === i);
-      //console.log(sp)
       obj.editsaleid = es.length>0 ?es[0].saleinvoiceid:0;
       obj.editsaleitem = es.length>0 ?es[0].totalitems:0;
+
+      const ep = editPurchaseItemCount.filter(editPurchase => editPurchase.date === i);
+      obj.editpurchaseid = es.length>0 ?es[0].purchaseinvoiceid:0;
+      obj.editpurchaseitem = es.length>0 ?es[0].totalitems:0;
+
+
+      const sr = saleReturnCount.filter(saleReturn => saleReturn.date === i);
+      obj.salereturnid = sr.length>0 ?sr[0].saleinvoiceid:0;
+      obj.salereturnitem = sr.length>0 ?sr[0].totalitems:0;
 
       finalRes.push(obj)
       

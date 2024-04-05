@@ -33,18 +33,18 @@ module.exports = {
 
   //////////// Remote heruko DB omerwholesale   port 5342
 
-  // HOST:"ec2-34-206-106-3.compute-1.amazonaws.com",
-  // USER:"iewpjpohuilezs",
-  // PASSWORD:"2312ee47cf68f67fc259ce1325d4a0346a0f32dcbabe2de2c7ac289a264b03a8",
-  // DB:"d5h5rl31efk32a",
-  // dialect:"postgres",
+  HOST:"ec2-3-218-243-246.compute-1.amazonaws.com",
+  USER:"nbzlndivtkcpgr",
+  PASSWORD:"acfda065e9f967309a7ab6fe73567cd3f94b90d86d859af08f06527097dce3fb",
+  DB:"d72hlopofnomoi",
+  dialect:"postgres",
 
   //////////// Remote heruko DB N&M  port 5342
-  HOST: "ec2-52-3-60-53.compute-1.amazonaws.com",
-  USER: "vhfrkametazjdk",
-  PASSWORD: "772da0e515b0829fc25faca16d0bc17ee91095e793e57ffba930a797ed54fb8b",
-  DB: "d40cas9scuggao",
-  dialect: "postgres",
+  // HOST: "ec2-52-3-60-53.compute-1.amazonaws.com",
+  // USER: "vhfrkametazjdk",
+  // PASSWORD: "772da0e515b0829fc25faca16d0bc17ee91095e793e57ffba930a797ed54fb8b",
+  // DB: "d40cas9scuggao",
+  // dialect: "postgres",
 
   ////////////////local DB  N&A Traders
   // HOST : "localhost",
