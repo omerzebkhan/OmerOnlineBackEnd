@@ -481,7 +481,7 @@ router.get("/saleReturnDetailByInvoice/:id", saleReturn.findSaleReturnDetailByIn
   //InvDegub/////
   ////////////////
   // Create a new Inv Debug entry
-  router.post("/createInvDebug", invDebug.create);
+  router.post("/createInvDebug/", invDebug.create);
 
   ////////////////
   //Tutorails//

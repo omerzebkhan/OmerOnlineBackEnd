@@ -1,5 +1,5 @@
 const db = require("../models");
-const InvDebgu = db.incDebug;
+const InvDebug = db.invDebug;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Brand
@@ -27,6 +27,7 @@ exports.create = (req, res) => {
       res.send(data);
     })
     .catch(err => {
+      console.log(`catch error msg of InvDebug ${err}`);
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the inv debug"

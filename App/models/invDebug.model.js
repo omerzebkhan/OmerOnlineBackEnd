@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
         type:Sequelize.INTEGER
      },
      invtype : {
-        type:Sequelize.INTEGER
+        type:Sequelize.STRING
      },
         userid: {
         type: Sequelize.INTEGER

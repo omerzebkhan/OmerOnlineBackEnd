@@ -559,7 +559,7 @@ exports.delete = (req, res) => {
       }
     })
     .catch(err => {
-      res.status(500).send({
+        res.status(500).send({
         message: err.message || "Could not delete Sale Invoice with id=" + id
       });
     });
