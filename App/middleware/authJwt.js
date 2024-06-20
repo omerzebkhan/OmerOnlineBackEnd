@@ -160,6 +160,8 @@ checkScreenAccess = async (req,res,next) =>{
     {  access = 'True'  }
     else if (i.screenName == 'Search subCategory' && i.status == 'true' && req.route.path =='/subCategory/' )
     {  access = 'True'  }
+    else if (i.screenName == 'Search Brand' && i.status == 'true' && req.route.path =='/brand/' )
+      {  access = 'True'  }
     else if (i.screenName == 'Add Item' && i.status == 'true' && req.route.path =='/item/' )
     {  access = 'True'  }
     else if (i.screenName == 'Search Item' && i.status == 'true' && req.route.path =='/item/' )

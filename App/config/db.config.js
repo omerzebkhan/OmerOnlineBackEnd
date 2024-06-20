@@ -46,12 +46,20 @@ module.exports = {
   // DB: "d40cas9scuggao",
   // dialect: "postgres",
 
+////////////////Amazone AS3
+HOST : "localhost",
+USER : "postgres",
+PASSWORD : "Incredible!123",
+DB : "pakBusinessDB",
+dialect : "postgres",
+
+
   ////////////////local DB  N&A Traders
-  HOST : "localhost",
-  USER : "postgres",
-  PASSWORD : "omer",
-  DB : "pakBusinessDB",
-  dialect : "postgres",
+  // HOST : "localhost",
+  // USER : "postgres",
+  // PASSWORD : "omer",
+  // DB : "pakBusinessDB",
+  // dialect : "postgres",
   
   ////////////////local DB Test
   // HOST : "localhost",

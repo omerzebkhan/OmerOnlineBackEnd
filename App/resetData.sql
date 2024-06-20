@@ -120,6 +120,9 @@ INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt
 INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (18, 1,'Update Access','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
 INSERT INTO accesses(id, "roleId", "screenName", status, "createdAt", "updatedAt")VALUES (19, 1,'Add Expense','true', '2021-09-07 20:11:44.559+03', '2021-09-07 20:11:44.559+03');
 
+---------------------------------Actuvate user id =1
+update users set status = 'Active' where id = 1
+
 --------------------Create Test customer -------------------------------
 INSERT INTO users(
 	id, name, address, mobile, email, ph,description, totalamount, outstanding, comments, "createdAt", "updatedAt", username, password)
